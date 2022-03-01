@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="referrer" content="always">
+	
+	<meta name="keywords" content="jfinal admin">
+	<meta name="description" content="jfinal admin">
+	<title>jfinal admin</title>
+	
+	<link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+	
+	<link rel="stylesheet" href="/assets/css/app.css?v=1">
+</head>
+
+<body>
+	
+	<!-- 根容器 -->
+	<div id="root-box" class="root-box container-fluid">
+		
+		
+		<!-- 左部容器 -->
+		<div class="left-box" id="left-box">
+			<!-- 左上角 logo -->
+			<div class="left-logo-box">
+				<a href="/admin">JFinal Admin</a>
+			</div>
+			<!-- 实现滚动功能容器 -->
+			<div class="left-scroll-box">
+				<div class="left-menu-box">
+					### 如果静态 html 部署在 jfinal 之外，可以将 include 过来的内容直接放在这里，实现前后分离
+					#include("/_view/admin/common/_menu.html")
+				</div>
+			</div>
+		</div>
+		
+		<!-- 顶部容器 -->
+		<div class="header-box">
+			#include("/_view/admin/common/_header.html")
+		</div>
+		
+		<!-- 右部容器 -->
+		<div class="right-box">
+			<!-- 内容容器，kit.fill(..) 函数动态填充内容 -->
+			<div id="content-box" class="container-fluid">
+				
+			</div>
+		</div>
+		
+		
+		<!-- 底部容器 -->
+		<div class="footer-box">
+			<a href="https://jfinal.com?f=jfa-footer" target="_blank">Copyright &copy; JFinal.com</a>
+        </div>
+        
+        
+	</div>
+	
+	
+	<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
+	<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+	<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+	<script src="/assets/lib/layer/layer.js"></script>
+	<script src="/assets/js/jfinal-kit.js"></script>
+	<script src="/assets/js/jfinal-admin.js?v=1"></script>
+	
+	<script src="/assets/js/app.js?v=1"></script>
+	
+</body>
+</html>
+
+

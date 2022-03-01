@@ -1,0 +1,90 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<div class="role-permission">
+		<div class="role">
+			正在为角色<span>#(role.name)</span>分配权限，点亮左侧开关分配权限给当前角色
+		</div>
+		
+		<div class="permission container-flux">
+			#set(n = 0)
+			
+			#for(mapItem : permissionMap)
+				#if(n % 2 == 0)
+					<div class="row">
+				#end
+					
+					#@genTable()
+					#set(n = n + 1)
+					
+				#if(n % 2 == 0)
+					</div>
+				#end
+			#end
+			
+		</div>
+		
+	</div>
+	
+</div>
+
+#define genTable()
+<div class="table-box col-md-6">
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th colspan="3">#(mapItem.key)</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			#for(x : mapItem.value)
+			<tr>
+				<td style="width: 60px; text-align: center;">
+					
+					### switch 开关使用 bootstrap 4 官方组件
+					<div class="custom-control custom-switch">
+						### 二次开发时，只需要修改 input 标签内的 url 与 checked 属性即可。还可以添加 confirm="确定改变权限？" 开启确认功能
+	 						<input #(x.assigned ? 'checked':'') url='/admin/role/assignPermission?permissionId=#(x.id)&roleId=#(role.id)' type="checkbox" class="custom-control-input" id="id-#(x.id)">
+	 						<label class="custom-control-label" for="id-#(x.id)"></label>
+					</div>
+					
+				</td>
+				
+				<td style="width: 240px">#(x.actionKey)</td>
+				<td>#(x.remark)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+</div>
+#end
+
+
+<style>
+.role-permission {
+	min-height: 350px;
+	padding: 15px 15px;
+}
+
+.role-permission .role {
+	font-size: 18px;
+}
+.role-permission .role span {
+	font-weight: bold;
+	color: red;
+	margin: 0 5px;
+}
+
+.role-permission .permission {
+	margin-top: 20px;
+}
+.table-box {
+	margin-bottom: 20px;
+}
+</style>
+
+
+
+
+

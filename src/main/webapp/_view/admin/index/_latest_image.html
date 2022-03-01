@@ -1,0 +1,26 @@
+	<div class="panel-header">
+		图片
+	</div>
+	
+	<div class="image-box" style="padding:20px 10px;">
+		#for ( x : latestImage)
+			<div class="image-item">
+				<img src="/upload#(x.path)#(x.fileName)">
+			</div>
+		#end
+	</div>
+
+<script>
+	/**
+	 * 点击图片显示大图
+	 */
+	layer.photos({
+		photos: '.image-box',
+		shade: 0.5,
+		// closeBtn: 2,
+		offset: '50px',
+		anim: 5
+	});
+</script>
+
+

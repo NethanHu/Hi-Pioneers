@@ -1,0 +1,94 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 工具栏 -->
+	<div class="toolbar">
+		### msg 支持 layer 参数，例如：msg="{time:0, closeBtn:1, btn:'我知道了'}"
+		### 以下按钮演示了 msg 交互时弹出层不自动关闭，并且右上角新增了一个关闭按钮
+		<button msg="{time:0, closeBtn:1}" url="/admin/permission/sync" class="btn btn-success btn-sm">
+			<i class="fa fa-refresh mr-1"></i>一键同步
+		</button>
+		
+		<!-- 右侧搜索 -->
+		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
+		<form action='/admin/permission' onsubmit="return admin.search();" id="search-form" class="search-box">
+			<input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
+			<i class="fa fa-search"></i>
+		</form>
+	</div>
+	
+	<!-- 表格容器 -->
+	<div id="table-box" class="table-box">
+		
+		<table class="table table-hover">
+			
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>actionKey</th>
+					<th>controller</th>
+					<th>备注</th>
+					<th class="operation">操作</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			#for (x : page.getList())
+				<tr>
+					<td>#(x.id)</td>
+					
+					### 标记为 removed 值的 permission 显示中划线与红色字体，提示用户可以删掉
+					<td #if(x.removed) class="removed-action-key" #end>#(x.actionKey)</td>
+					
+					<td>#(x.controller)</td>
+					<td>#(x.remark ?? '无')</td>
+					
+					<td class="operation">
+						
+						### 演示 permission 指令细粒度控制修改按钮的显示与否
+						#permission("/admin/permission/edit")
+						<a open="{area:'600px', offset:'139px'}" url="/admin/permission/edit?id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
+						#end
+						
+						
+						### 演示 role 指令细粒度控制删除按钮的显示与否
+						#role("权限管理员")
+						<a confirm="确定删除 #escape(x.title) ？" ok-remove="tr" url="/admin/permission/delete?id=#(x.id)">删除</a>
+						#end
+						
+					</td>
+				</tr>
+			#end
+			</tbody>
+			
+		</table>
+	</div>
+	
+	#if(hasRemovedPermission)
+	<div class="removed-notes">
+		注：红色字体的 actionKey 表示该 action 已在 Controller 中被删除，
+		点击右侧删除按钮无死角清除数据库中与之有关的所有数据
+	</div>
+	#end
+	
+	<!-- 分页 -->
+	### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+	#set(append = keyword ? '&keyword=' + keyword : '')
+	#@adminPaginate(page, "/admin/permission?pn=")
+	
+</div>
+
+
+<style type="text/css">
+	.table-box td.removed-action-key {
+		text-decoration: line-through;
+		color: red;
+	}
+
+	.removed-notes {
+		margin: 20px 0 25px 0;
+		color: red;
+		font-size: 16px;
+	}
+</style>
+

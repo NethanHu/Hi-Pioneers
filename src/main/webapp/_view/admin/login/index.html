@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="referrer" content="always">
+	
+	<meta name="keywords" content="jfinal admin">
+	<meta name="description" content="jfinal admin">
+	<title>jfinal admin login</title>
+	
+	<link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/css/jfinal-admin.css">
+	
+	<style>
+	.root-box {
+		/* background-color: #555; */
+		background-color: #444;
+	}
+	
+	.footer-box,
+	.footer-box a {
+		font-family: Tahoma, Arial, "Helvetica Neue", Helvetica, sans-serif;
+		background-color: #555;
+		color: #ddd;
+	}
+		
+	.login-box {
+		position: absolute;
+		z-index: 999;
+		padding: 20px 40px 10px;
+		background-color: #fff;
+		border-radius: 4px;
+		
+		left: 50%;
+		width: 440px;
+		margin-left: -220px;
+		
+		top: 50%;
+		margin-top: -240px;
+	}
+	
+	.login-title {
+		font-family: Tahoma, Arial, "Helvetica Neue", Helvetica, sans-serif;
+		text-align: center;
+		margin-left: -18px;
+		font-size: 26px;
+		color: #444;
+		
+		margin-bottom: 30px;
+		overflow: hidden;
+	}
+	.login-line {
+		margin-bottom: 32px;
+	}
+	.login-line input {
+		background: transparent;
+		width: 100%;
+		line-height: 30px;
+		border: #d1d1d1 1px solid;
+		padding: 5px 10px;
+		position: relative;
+		box-shadow: 0 3px 5px -4px rgba(0,0,0,0.4) inset,-1px 0 3px -2px rgba(0,0,0,0.1) inset;
+		border-radius: 3px;
+	}
+	input.login-btn {
+		width: 100%;
+		height: 44px;
+		background: #20a53a;
+		background: linear-gradient(#20a53a,#189d32);
+		box-shadow: inset 0 1px 2px #30ad42;
+		color: #fff;
+		text-shadow: #00851a 0 -1px 0;
+		border: 1px solid #20a53a;
+		text-align: center;
+		font-size: 16px;
+		color: #fff;
+		border-radius: 3px;
+		cursor: pointer;
+		letter-spacing: 5px;
+	}
+	
+	</style>
+	
+</head>
+
+<body>
+	
+	<div class="root-box container-fluid" style="min-height:100%;">
+		
+		<!-- 登录容器 -->
+		<div class="login-box">
+			
+			<div class="login-title">
+				JFinal Admin
+			</div>
+			
+			<form onsubmit="return false;">
+				<div class="login-line">
+					<input type="text" name="userName" placeholder="账号">
+				</div>
+				<div class="login-line">
+					<input type="password" name="password" placeholder="密码">
+				</div>
+				<div class="login-line">
+					### 当 button 与 input 标签拥有 type="submit" 属性时，支持回车触发提交
+					<input class="login-btn" type="submit" value="登录">
+				</div>
+			</form>
+			
+		</div>
+		
+		<!-- 底部容器 -->
+		<div class="footer-box">
+			<a href="https://jfinal.com" target="_blank">Copyright &copy; JFinal.com</a>
+        </div>
+        
+	</div>
+	
+	<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
+	<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/lib/layer/layer.js"></script>
+	<script src="/assets/js/jfinal-kit.js"></script>
+	
+	<script>
+		$(function() {
+			// 存在 type="submit" 的 input 或 button 时，回车键也能触发以下 click 事件
+			$(".login-btn").on("click", login);
+			$(".login-line input:first").focus();
+		});
+		
+		/**
+		 * 登录
+		 */
+		function login(event) {
+			var loading = kit.loading({msg: "正在登录，请稍候 .....", offset: '235px'});
+			kit.post("/admin/doLogin", $("form").serialize(), function(ret) {
+				loading.close();		// 关闭 loading 层
+				
+				if (ret.state == "ok") {
+					kit.go(ret.returnUrl);
+				} else {
+					kit.fail(ret.msg, {offset: '235px', time:1500});
+				}
+			});
+		}
+	</script>
+	
+</body>
+</html>
+
+

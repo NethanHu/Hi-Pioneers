@@ -1,0 +1,202 @@
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+
+<div class="demo-main d-flex">
+	<div class="panel">
+		<div class="panel-header">饼图</div>
+		<div class="panel-body" id="pie"></div>
+	</div>
+	
+	<div class="panel">
+		<div class="panel-header">柱状图</div>
+		<div class="panel-body" id="bar"></div>
+	</div>
+	
+	<div class="panel">
+		<div class="panel-header">散点图</div>
+		<div class="panel-body" id="scatter"></div>
+	</div>
+	
+	<div class="panel">
+		<div class="panel-header">折线图</div>
+		<div class="panel-body" id="line"></div>
+	</div>
+	
+</div>
+
+<style>
+.demo-main {
+	margin: 1px -7px;
+	flex-wrap: wrap;
+}
+.panel {
+	flex: 1 1 auto;
+	width: 45%;		/* 该配置不能放在 flex 的 auto 位置 */
+	margin: 15px 8px 0;
+}
+.panel-body {
+	padding: 15px;
+	/* width: 550px; */
+	width: 100%;	/* echarts 支持使用百分比 */
+	height: 330px;
+}
+
+</style>
+
+<!-- 引入 echarts 依赖 -->
+<script src="/assets/lib/echarts/echarts.min.js"></script>
+
+<script type="text/javascript">
+	// 饼图
+	var pieOpt = {
+		title : {
+			text : '某站点用户访问来源',
+			subtext : '纯属虚构',
+			left : 'center'
+		},
+		tooltip : {
+			trigger : 'item'
+		},
+		legend : {
+			orient : 'vertical',
+			left : 'left',
+		},
+		series : [ {
+			name : '访问来源',
+			type : 'pie',
+			radius : '50%',
+			data : [ {
+				value : 1048,
+				name : '搜索引擎'
+			}, {
+				value : 735,
+				name : '直接访问'
+			}, {
+				value : 580,
+				name : '邮件营销'
+			}, {
+				value : 484,
+				name : '联盟广告'
+			}, {
+				value : 300,
+				name : '视频广告'
+			} ],
+			emphasis : {
+				itemStyle : {
+					shadowBlur : 10,
+					shadowOffsetX : 0,
+					shadowColor : 'rgba(0, 0, 0, 0.5)'
+				}
+			}
+		} ]
+	};
+	
+	// 柱状图
+	var barOpt = {
+		title : {
+			text : '世界人口总量',
+			subtext : '数据来自网络'
+		},
+		tooltip : {
+			trigger : 'axis',
+			axisPointer : {
+				type : 'shadow'
+			}
+		},
+		legend : {
+			data : [ '2011年', '2012年' ]
+		},
+		grid : {
+			left : '3%',
+			right : '4%',
+			bottom : '3%',
+			containLabel : true
+		},
+		xAxis : {
+			type : 'value',
+			boundaryGap : [ 0, 0.01 ]
+		},
+		yAxis : {
+			type : 'category',
+			data : [ '巴西', '印尼', '美国', '印度', '中国', '世界人口(万)' ]
+		},
+		series : [ {
+			name : '2011年',
+			type : 'bar',
+			data : [ 18203, 23489, 29034, 104970, 131744, 630230 ]
+		}, {
+			name : '2012年',
+			type : 'bar',
+			data : [ 19325, 23438, 31000, 121594, 134141, 681807 ]
+		} ]
+	};
+	
+	// 散点图
+	var scatterOpt = {
+		title : {
+			text : '基础散点图'
+		},
+		xAxis : {},
+		yAxis : {},
+		series : [ {
+			symbolSize : 20,
+			data : [ [ 10.0, 8.04 ], [ 8.07, 6.95 ], [ 13.0, 7.58 ],
+					[ 9.05, 8.81 ], [ 11.0, 8.33 ], [ 14.0, 7.66 ],
+					[ 13.4, 6.81 ], [ 10.0, 6.33 ], [ 14.0, 8.96 ],
+					[ 12.5, 6.82 ], [ 9.15, 7.20 ], [ 11.5, 7.20 ],
+					[ 3.03, 4.23 ], [ 12.2, 7.83 ], [ 2.02, 4.47 ],
+					[ 1.05, 3.33 ], [ 4.05, 4.96 ], [ 6.03, 7.24 ],
+					[ 12.0, 6.26 ], [ 12.0, 8.84 ], [ 7.08, 5.82 ],
+					[ 5.02, 5.68 ] ],
+			type : 'scatter'
+		} ]
+	};
+	
+	// 折线图
+	var lineOpt = {
+		title : {
+			text : '基础平滑折线图',
+		},
+		xAxis : {
+			type : 'category',
+			data : [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ]
+		},
+		yAxis : {
+			type : 'value'
+		},
+		series : [ {
+			data : [ 820, 932, 901, 934, 1290, 1330, 1320 ],
+			type : 'line',
+			smooth : true
+		} ]
+	};
+	
+	// 泻染图表
+	function renderChart(containerId, option) {
+		var dom = document.getElementById(containerId);
+		var chart = echarts.init(dom);
+		chart.setOption(option);
+		
+		// 页面缩放时重新渲染
+		window.addEventListener("resize",function(){
+			chart.resize();
+		});
+	}
+	
+	/**
+	 * 分别渲染多个图表
+	 */
+	$(function() {
+		renderChart('pie', pieOpt);
+		renderChart('bar', barOpt);
+		renderChart('scatter', scatterOpt);
+		renderChart('line', lineOpt);
+	});
+</script>
+
+
+
+
+
+
+
+

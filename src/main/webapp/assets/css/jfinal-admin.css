@@ -1,0 +1,725 @@
+@charset "UTF-8";
+
+/* html 是根元素
+   rem（font size of the root element）是相对于 html 元素的字体大小单位
+   在不指定时多数浏览器的默认值为 16px
+*/
+html {font-size: 14px;}
+
+html, body {
+	/* 在右侧内容高度很小时，保持 footer 在底部不能使用 min-height */
+	height: 100%;
+	
+	/*
+		body 的 margin 值会被浏览器默认指定为 8px，需要将其置为 0，否则在 height:100% 时必然出现 Y 轴滚动条
+		并且在 width:100% 时，必然出现 X 轴滚动条
+	 */
+	margin: 0;
+	
+	/* Verdana 与 Tahoma 相似，但字符间距大，适合显示金额 */
+	/* font-family: "Helvetica Neue", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif; */
+	font-family: "Helvetica Neue", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+	font-size: 14px;
+	
+	-webkit-font-smoothing: antialiased;	/* chrome、safari */
+	-moz-osx-font-smoothing: grayscale;	/* firefox */
+}
+
+.container {
+	/* 常见的设备网页宽度为：1920px 1600px 1440px 1280px 1140px 960px 768px 640px 320px */
+	/* min-width: 1140px; */
+}
+
+
+/* 覆盖 bootstrap a 标签样式，当 a 标签没有 href 时样式会有所变化 */
+/* bootstrap 文件选择按钮由 'Browser' 改为 '浏览' */
+.custom-file-label::after {
+	content: "浏览";
+}
+a, a:hover {
+	/* 如果 a 标签没有 href，hover 事件不会出现手掌图标，需要强行指定 */
+	cursor: pointer;
+	text-decoration: none;
+}
+/* a:not([href]), a:not([href]):hover {
+	color: #fff;
+} */
+
+/* 添加 bootstrap 3 中的 btn-default 样式 */
+.btn-default {
+    color: #555;
+    background-color: #fff;
+    border-color: #ccc
+}
+.btn-default.focus,.btn-default:focus {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c
+}
+.btn-default:hover {
+    color: #fff;
+    background-color: #10952a;
+    border-color: #398439
+}
+.btn-default.active,.btn-default:active,.open>.dropdown-toggle.btn-default {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad
+}
+.btn-default.active.focus,.btn-default.active:focus,.btn-default.active:hover,.btn-default:active.focus,.btn-default:active:focus,.btn-default:active:hover,.open>.dropdown-toggle.btn-default.focus,.open>.dropdown-toggle.btn-default:focus,.open>.dropdown-toggle.btn-default:hover {
+    color: #fff;
+    background-color: #d4d4d4;
+    border-color: #8c8c8c
+}
+.btn-default.active,.btn-default:active,.open>.dropdown-toggle.btn-default {
+    background-image: none
+}
+.btn-default.disabled,.btn-default.disabled.active,.btn-default.disabled.focus,.btn-default.disabled:active,.btn-default.disabled:focus,.btn-default.disabled:hover,.btn-default[disabled],.btn-default[disabled].active,.btn-default[disabled].focus,.btn-default[disabled]:active,.btn-default[disabled]:focus,.btn-default[disabled]:hover,fieldset[disabled] .btn-default,fieldset[disabled] .btn-default.active,fieldset[disabled] .btn-default.focus,fieldset[disabled] .btn-default:active,fieldset[disabled] .btn-default:focus,fieldset[disabled] .btn-default:hover {
+    background-color: #fff;
+    border-color: #ccc
+}
+.btn-default .badge {
+    color: #fff;
+    background-color: #333
+}
+
+/* Responsive images */
+img {
+	max-width: 100%;
+	border: 0
+}
+
+/* 重定义页面基础元素间距 */
+div, ul, li, p, a,
+h1, h2, h3, h4, h5, h6,
+section, fieldset, legend, label {
+	padding: 0px;
+	margin: 0px;
+}
+ul, ol {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+pre {
+	font-family: Consolas, Monaco, "Courier New", "Microsoft YaHei", monospace;
+}
+
+.bgf2 {
+	background-color: #F2F2F2;
+}
+.bgw {
+	background-color: white;
+}
+.px10 {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.c4 {
+	color: #444;
+}
+
+/* 公共样式 */
+/* 主色 */
+.mc, .main-color {color: #20a53a;}
+/* .mbc {border-color: #20a53a;} */
+/* .mbgc {background-color: #20a53a;} */
+.bc-f2 {background-color: #F2F2F2!important;}
+
+
+/* root-box 为根容器，left-box、right-box、footer 为其内部并列容器 */
+.root-box {
+	/*
+		在右侧内容高度超出屏幕时，保持 footer 保持在底部，不能使用 height，通常取值为 100%
+				
+		取值为 99.9% 的原因：
+		  1：ckeditor 组件会在 body 标签内动态创建 div 标签，其 height 值为 1px
+		  2：.root-box 所在的 div 与上述创建的 div 属于同级标签并处在 body 标签之下
+		  3：body 标签的 height 已指定为 100%（html 标签也已指定为 100%）
+		  3：如果 .root-box 取值为 100%，那么加上上述创建的 1px div 高度将超过 body，从而出现滚动条
+		  4：也可通过配置 .cke_screen_reader_only 样式 height:0px 解决，暂时不用以免对 ckeditor 产生影响
+	 */
+	min-height: 99.9%;
+	position: relative;
+	padding: 0;
+	
+	/* bootstrap container-fluid 部分样式 */
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	
+	/* 灰色 #F0F0F0 #F2F2F2 #EEEEEE #E2E2E2 #DDDDDD #D2D2D2 #C2C2C2 */
+	background-color: #F2F2F2;
+}
+.left-box {
+    width: 200px;
+    z-index: 100;
+    height: 100%;
+    position: fixed;
+    
+    /* 主要用于隐藏 .left-scroll-box 右侧的滚动条 */
+    overflow: hidden;
+    
+    /* 左侧最底层的背景色 */
+    background-color: #3c444d;
+    
+    -webkit-font-smoothing: antialiased;	/* chrome、safari */
+	-moz-osx-font-smoothing: grayscale;	/* firefox */
+}
+.right-box {
+	/* 避免与 left-box 重叠 */
+	/* margin-left: 200px; */
+	padding-left: 200px;
+	
+	/* 避免与 footer 重叠，只能使用 padding-bottom，否则 footer 高度会增加 */
+	/* margin-bottom: 66px; */
+	padding-bottom: 51px;
+	
+	/* 避免 header 的 margin-top 值破坏顶部样式 */
+	/* padding-top: 1px; */
+	padding-top: 51px;
+	min-height: 285px;
+}
+.footer-box {
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	width: 100%;
+	line-height: 35px;
+	background-color: white;
+	font-size: 14px;
+}
+.footer-box a {
+	font-family: Tahoma, Arial, "Helvetica Neue", Helvetica, sans-serif;
+	color:#20a53a;
+}
+
+/* 左部滚动容器 */
+.left-scroll-box {
+	/* 开启右侧滚动条 */
+	overflow-x: hidden;
+	overflow-y: auto;
+	/* 开启滚动条必要配置 */
+	height: 100%;
+	/* 负值使 Y 轴滚动条处于父容器之外，然后父容器的 overflow:hidden 使超出的滚动条不可见 */
+	margin-right: -20px;
+	
+	/* 该配置转移到了 .left-box */
+	/* background-color: #3c444d; */
+}
+.left-scroll-box::-webkit-scrollbar {
+	width: 7px;		/* 针对 webkit 浏览器，配合 margin-right: -20px 使用 */
+	height: 7px;	/* x 轴滚动条宽度，由于配置了 overflow-x: hidden，所以不起作用 */
+	background-color: #999;
+}
+
+.left-logo-box {
+	height: 50px;
+	
+	/* logo 背景渐变 */
+	transition-duration: 500ms;
+	transition-property: background;
+	transition-timing-function: ease;
+}
+.left-logo-box:hover {
+	background: #20a53a;
+	opacity: 1
+}
+.left-logo-box a {
+	line-height: 50px;
+	
+	display: block;
+	font-size: 18px;
+	font-family: Tahoma, Arial, "Helvetica Neue", Helvetica, sans-serif;
+	letter-spacing: 1px;
+	color: white;
+
+	
+	/* text-align: center; */
+	padding-left: 20px;
+}
+
+.left-menu-box {
+	background-color: #353d44;
+	margin-top: 1px;
+}
+.left-menu {
+	padding: 0px;
+	margin: 0px;
+}
+
+.left-main-menu {
+	line-height: 50px;
+	
+	/* margin-bottom: 1px; */
+	
+	display: block;
+	cursor: pointer;
+	position: relative;
+	
+	/* font-size: 14px; */
+	font-size: 15px;
+	
+	color: #d6d7d9;
+	padding-left: 20px;
+	
+	/* border-left: #404040 3px solid; */
+	/* 左侧竖条在菜单未选中时与菜单背景色一致 */
+	border-left: #353d44 3px solid;
+	
+	letter-spacing: 1px;
+}
+.menu-icon {
+	margin-right: 6px;
+	font-size: 15px;
+}
+.menu-arrow {
+	line-height: 50px;
+	font-size: 18px;
+	
+	position: absolute;
+	/* right: 28px; */
+	left: 168px;		/* 使用 left 定位，否则滚动条出现会影响其位置 */
+	
+	transition: transform .3s; /* 指定主菜单箭头转换耗时 */
+}
+
+.left-menu a.active {
+    color: #fff;
+	background-color: #2c3138;
+    border-left: #20a53a 3px solid;
+}
+
+.left-main-menu:hover,
+.left-sub-menu a:hover {
+	color: #fff;
+	
+	/* background-color: #2c3138!important; */
+	/* border-left: #20a53a 2px solid!important; */
+	
+	background-color: #2d8cf0!important;
+	border-left: #2d8cf0 3px solid!important;
+}
+/* 主菜单右侧箭头旋转 180 度 */
+.left-main-menu i.change {
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+.left-sub-menu {
+	/* color: #d6d7d9; */
+	color: #bbb;
+	/* background-color: #2c3138; */
+}
+.left-sub-menu a {
+	line-height: 40px;
+	
+	/* margin-bottom: 1px; */
+	
+	display: block;
+	position: relative;
+	padding-left: 46px;
+	
+	/* border-left: #404040 3px solid; */
+	/* 左侧竖条在菜单未选中时与菜单背景色一致 */
+	border-left: #353d44 3px solid;
+	
+	/* color: #ffffffb3; */
+	/* color: #bbb; */
+	color: #c1c6c8;
+	font-size: 14px;
+}
+
+/* 左侧 "系统管理" 菜单的图标添加一个 hover 动画 */
+.left-main-menu:hover i.fa-cog {
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+}
+
+
+/* 重定义 layer 样式，加上 body 是为了保证优先级 */
+body .layui-layer-dialog {
+	min-width: 350px;
+}
+body .layui-layer-dialog.layui-layer-msg {
+	/* 覆盖 layui-layer-dialog 中 min-width，否则 msg 弹窗过宽 */
+	/* min-width: 180px; */
+	/* min-width: 260px; */
+	min-width: 210px;
+}
+body .layui-layer-btn a {
+	border-radius: 3px;
+	font-size: 14px;
+}
+body .layui-layer-btn a.layui-layer-btn0 {
+	background-color: #20a53a;
+}
+body .layui-layer-btn a.layui-layer-btn0:hover {
+	color: #fff;
+}
+
+
+/* 右侧头部容器 */
+.header-box {
+	display: -ms-flexbox;
+	/* flex 布局：http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html */
+	display: flex;
+	/* 主轴方向，即 item 的排列方向：row（默认值）、row-reverse、column、column-reverse; */
+	flex-direction: row;
+	/* item 换行规则：nowrap（默认值）、wrap、wrap-reverse */
+	flex-wrap: nowrap;
+	/* 多根轴线的对齐方式。如果 item 只有一根轴线，该属性不起作用：flex-start、flex-end、center、space-between、space-around、stretch（默认值） */
+	/* align-content: stretch; */
+	
+	/* item 在主轴上的对齐方式：flex-start（默认值）、flex-end、center、space-between、space-around */
+	/* 如果是左右结构，左右侧 item 分别配置为 flex: 1 1 auto, flex: 0 1 auto 可实现该配置的左右分离，但注意左侧会 flex-grow */
+	/* justify-content: space-between; */
+	
+	/* item 在交叉轴上的对齐方式：flex-start、flex-end、center、baseline、stretch（默认值） */
+	align-items: center;
+	
+	/* 所有 tab 关闭后 header div 的 height 保持为 50px */
+	line-height: 50px;
+	
+    /* box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); */
+    /* margin: 14px 0 15px 0; */
+    /* padding: 0 20px; */
+    /* background-color: white; */
+    
+    
+    font-size: 15px;
+    
+    position:fixed;
+    left: 200px;
+    top: 0;
+    right: 0;
+    padding: 0 15px;
+    z-index: 1001;
+    
+	/* background-color: #F2F2F2; */
+	/*background-color: #f7f7f7;*/
+	/* 去掉头部的 tab 设计后，换成白色 */
+	background-color: white;
+	
+	/* border-bottom: 1px solid #DDD; */
+	border-bottom: 1px solid #d6d6d6;
+	
+	/* box-shadow: 0 1px 4px rgba(0,21,41,0.08); */
+}
+/* flex 用于配置 item 的三个属性：flex-grow、flex-shrink、flex-basis */
+.header-box .crumb-box {flex: 1 1 auto;}
+.header-box .user-box {flex: 0 1 auto;}
+
+
+.crumb-box {
+	padding-left: 8px;
+}
+.crumb-box span {
+	/* color: #444; */
+	color: #212529;
+	font-size: 16px;
+}
+.crumb-box span.pathchar {
+	margin: 0 8px;
+	font-size: 17px;
+}
+.crumb-box i {
+	font-size: 18px;
+	vertical-align: text-bottom;
+	margin-right: 3px;
+}
+
+
+.user-box a {
+	cursor: pointer;
+}
+.user-box a.user {
+	display: inline-block;
+	/* line-height: 50px; 去除该配置才能使头像垂直居中 */
+	color: #333;
+	padding: 0 10px;
+	
+	/* 用户头像上移一个像素 */
+	position: relative;
+	top: -1px;
+}
+.user-box a.user:hover {
+	background-color: #fff;
+}
+.user-box a img {
+	width: 40px;
+	height: 40px;
+	border-radius: 6px;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+
+
+/** 主体内容部分 **/
+/* 覆盖 bootstrap 样式 */
+.btn-sm {
+	padding: 5px 10px;
+}
+.main {
+	position: relative;
+	background-color: white;
+	padding: 15px;
+	margin: 15px 0;
+}
+.toolbar {
+	position: relative;
+	margin-top: 5px;
+}
+.toolbar > .btn {
+	margin-right: 5px;
+}
+.search-box {
+	position: relative;
+	float: right;
+}
+.search-box input {
+	width: 200px;
+	padding-right: 22px;
+}
+.search-box i.fa-search {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	color: #999;
+}
+.table-box {
+	position: relative;
+	margin-top: 15px;
+	margin-bottom: 25px;
+}
+.table-box .table {
+	border: 1px solid #ddd;
+	color: #666;
+	/* font-size: 12px; */
+	margin-bottom: 0;
+}
+.table-box th.operation {
+	text-align: right;
+}
+.table-box td.operation {
+	text-align: right;
+	color: #20a53a;
+	font-size: 13px;
+}
+.table-box .table thead th {
+	vertical-align: inherit;
+	background-color: #f6f6f6;
+	border-bottom: 1px solid #e6e6e6;
+	color: #666;
+	padding: 8px;
+	
+	/* font-weight: normal; */
+	font-weight: bold;
+}
+.table-hover tbody tr:hover {
+	background-color: #f5f5f5;
+}
+
+.table-box th {
+	color: #666;
+}
+.table-box td,
+.table-box td a {
+	/* color: #303030; */
+	/* color: #383838; */
+	/* color: #404040; */
+	/* color: #484848; */
+	color: #505050;
+	/* color: #585858; */
+	/* color: #606060; */
+	/* color: #666; */
+}
+.table-box td.operation a {
+	color: #20a53a;
+}
+
+
+/* 分页 */
+.pagination a {
+	font-family: "Arial";
+	color: #666;
+}
+.page-item.active .page-link {
+	color: #fff;
+	background-color: #20a53a;
+	border-color: #20a53a;
+}
+/* 分页时的总记录数 */
+nav.pagination-nav {
+	position: relative;
+}
+nav .page-total-row {
+	position: absolute;
+	top: 0;
+	right: 5px;
+	/* line-height: 28px; */
+	/* color: #666; */
+	color: #333;
+}
+
+
+/* open 弹出层主体容器 */
+.open-box {
+	/* padding: 1.5rem 1.5rem 0 1.5rem; */
+	padding: 30px 30px 0 30px;
+}
+/* ckeditor 工具栏的最大化按钮放置在最右侧 */
+.form-group {
+	position: relative;
+}
+/* ckeditor 的最大化按钮放在最右侧 */
+.cke .cke_toolbox .cke_button.cke_button__maximize {
+	position: absolute;
+	right: 10px;
+}
+/* bootstrap 的 switch 开关选中状态改变背景色 */
+.custom-control-input:checked~.custom-control-label::before {
+	color: #fff;
+	border-color: #20a53a;
+	background-color: #20a53a;
+}
+.custom-control-label:hover {
+	cursor: pointer;
+}
+
+
+/* image 管理 */
+.image-box {
+	display: -ms-flexbox;
+	/* flex 布局：http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html */
+	display: flex;
+	/* 主轴方向，即 item 的排列方向：row、row-reverse、column、column-reverse; */
+	flex-direction: row;
+	/* item 换行规则：nowrap、wrap、wrap-reverse */
+	flex-wrap: wrap;
+	/* 多根轴线的对齐方式。如果 item 只有一根轴线，该属性不起作用：flex-start、flex-end、center、space-between、space-around、stretch */
+	/* align-content: stretch; */
+	
+	/* item 在主轴上的对齐方式：flex-start、flex-end、center、space-between、space-around */
+	/* 如果是左右结构，左右侧 item 分别配置为 flex: 1 1 auto, flex: 0 1 auto 可代替该配置 */
+	/* justify-content: space-center; */
+	
+	/* item 在交叉轴上的对齐方式：flex-start、flex-end、center、baseline、stretch */
+	align-items: center;
+}
+.image-item {
+	flex: 0 0 auto;
+	margin: 5px 10px 12px 10px;
+	/* border: 1px solid #fff; */
+	border-radius: 3px;
+}
+.image-item:hover {
+	/* border: 1px solid #EEE; */
+}
+.image-item img {
+	width: 200px;
+	max-height: 350px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.image-footer {
+	margin-top: 5px;
+	font-size: 16px;
+	text-align: center;
+	visibility: hidden;
+}
+.image-footer i {
+	margin-right: 10px;
+	cursor: pointer;
+}
+.image-item:hover .image-footer {
+	visibility: visible;
+}
+
+/* 与头部并列的提示信息 */
+#content-box div.tips-row {
+	font-size: 13px;
+	color:red;
+	background-color: #fef3e2;
+    line-height: 46px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+}
+/* main 内部提示信息 */
+.main div.tips {
+	font-size: 13px;
+	color: #333;
+	background-color: #fbfbfb;
+    border: 1px solid #eee;
+    line-height: 46px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+
+
+.panel {
+	background-color: white;
+	margin: 15px 0;
+}
+.panel-header {
+	height: 50px;
+	line-height: 50px;
+	border-bottom: 1px solid #eee;
+	
+	padding: 0 15px;
+	/* color: #666; */
+	color: #333;
+	font-size: 16px;
+}
+.panel-body {
+	padding: 20px 0 0 0;
+	
+	display: -ms-flexbox;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	/* justify-content: space-between; */
+	align-items: center;
+}
+
+/* 首页 */
+.home-main {
+	margin: 15px 0;
+}
+.home-main .panel-body div {
+	flex: 0 0 160px;
+	margin: 0 0 20px 20px;
+	height: 100px;
+	
+	background-color: #f9f9f9;
+	border: #f0f0f0 1px solid;
+	
+	text-align: center;
+}
+.home-main .panel-body div span {
+	display: block;
+	line-height: 40px;
+	margin-top: 8px;
+	
+	/* color: #585858; */
+	/* color: #606060; */
+	color: #666;
+	/* color: #999; */
+	
+	font-size: 16px;
+}
+.home-main .panel-body div a {
+	display: block;
+	font-size: 26px;
+	font-family: arial;
+	color: #20a53a;
+}
+
+
+
+
+

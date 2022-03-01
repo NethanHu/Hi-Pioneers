@@ -1,0 +1,187 @@
+<div class="home-main">
+	<div class="panel">
+		<div class="panel-header">
+			极简文档
+		</div>
+		
+		<div class="panel-body doc" style="display:block;">
+			<p>
+				在本页面挑选出需要的图标，将图标下方的文本添加前缀 <span>"fa fa-"</span> 作为样式添加到 i 标签即可
+				<br>
+				例如，假定图标下方文本为 <span>"bus"</span>，
+				将其添加前缀 <span>"fa fa-"</span> 之后变为 <span>"fa fa-bus"</span>，
+				然后将其作为样式添加到 i 标签即可
+				<span>#escape('<i class="fa fa-bus"></i>')</span>，
+				最终生成的图标为：<i class="fa fa-bus"></i>
+				<br>
+				<span>快捷使用：</span>点击图标可将其内容复制到剪贴板，粘贴出复制的内容即可（部分浏览器不支持）
+			</p>
+			
+			<br>
+			<p>
+				由于 Font Awesome 图标本质上是字体，所以可以通过调整其字体样式改变其大小、颜色，
+				还可以通过其提供的内置样式来改变大小，可供使用的内置样式有：fa-lg、fa-2x、fa-3x、fa-4x、fa-5x。
+				例如代码 <span>#escape('<i class="fa fa-bus fa-2x"></i>')</span>
+				生成的图标为：<i class="fa fa-bus fa-2x"></i>
+			</p>
+			
+			<br>
+			<p>
+				图标还可以通过添加 fa-spin 样式让其旋转，例如代码
+				<span>#escape('<i class="fa fa-cog fa-spin fa-2x"></i>')</span>
+				的效果是：
+				<i class="fa fa-cog fa-spin fa-2x"></i>
+				<br>
+				用于旋转的图标有：cog、spinner、refresh、circle-o-notch，其代码与效果如下：
+				<br>
+				
+				
+				<span>#escape('<i class="fa fa-cog fa-spin fa-2x"></i>')</span>
+				<i class="fa fa-cog fa-spin fa-2x"></i>
+				<br>
+				
+				<span>#escape('<i class="fa fa-spinner fa-spin fa-2x"></i>')</span>
+				<i class="fa fa-spinner fa-spin fa-2x"></i>
+				<br>
+				
+				<span>#escape('<i class="fa fa-refresh fa-spin fa-2x"></i>')</span>
+				<i class="fa fa-refresh fa-spin fa-2x"></i>
+				<br>
+				
+				
+				<span>#escape('<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>')</span>
+				<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+				
+			</p>
+			
+			<br>
+			<p>
+				图标 spinner 还有一个 pulse 效果，其代码与效果如下：
+				<br>
+				<span>#escape('<i class="fa fa-spinner fa-pulse fa-2x"></i>')</span>
+				<i class="fa fa-spinner fa-pulse fa-2x"></i>
+			</p>
+			
+			<br>
+			<p>
+				最后，还有一个将多个图标堆叠为一个图标的功能，例如将图标 camera <i class="fa fa-camera fa-2x"></i>
+				与图标 ban <i class="fa fa-ban fa-2x text-danger"></i>
+				堆叠起来的效果为
+				<span class="fa-stack fa-lg" style="color:#333;">
+					<i class="fa fa-camera fa-stack-1x"></i>
+					<i class="fa fa-ban fa-stack-2x text-danger"></i>
+				</span>
+				其代码如下：
+				
+				<span>
+				<br>
+				#escape('<span class="fa-stack fa-lg">')<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;	#escape('<i class="fa fa-camera fa-stack-1x"></i>')<br>
+					&nbsp;&nbsp;&nbsp;&nbsp;	#escape('<i class="fa fa-ban fa-stack-2x text-danger"></i>')<br>
+				#escape('</span>')<br>
+				</span>
+			</p>
+		</div>
+	</div>
+
+	#@genIcons("Web 应用图标", webAppIcons)
+	#@genIcons("手形图标", handIcons)
+	#@genIcons("交通运输图标", transportationIcons)
+	#@genIcons("性别图标", genderIcons)
+	#@genIcons("文件类型图标", fileTypeIcons)
+	#@genIcons("可旋转图标", spinnerIcons)
+	#@genIcons("表单控件图标", formControlIcons)
+	#@genIcons("支付图标", paymentIcons)
+	#@genIcons("图表图标", chartIcons)
+	#@genIcons("货币图标", currencyIcons)
+	#@genIcons("文本编辑器图标", textEditorIcons)
+	#@genIcons("方向图标", directionalIcons)
+	#@genIcons("视频播放器图标", videoPlayerIcons)
+	#@genIcons("品牌图标", brandIcons)
+	#@genIcons("医学图标", medicalIcons)
+	#@genIcons("无障碍图标", accessibilityIcons)
+	
+	### 新增的图标在上述相应的分类中已经放入，不再展示
+	###@genIcons("Font Awesome 4.7 版新增 41 个新图标", newIcons)
+</div>
+
+#define genIcons(title, icons)
+<div class="panel">
+	<div class="panel-header">
+		#(title)
+	</div>
+	
+	<div class="panel-body">
+		#for(x: icons)
+		<div class="fa-box" title="点击图标可复制其内容到剪贴板，然后粘贴即可使用">
+			<i class="fa fa-#(x)"></i>
+			<p>#(x)</p>
+		</div>
+		#end
+	</div>
+</div>
+#end
+
+
+<style>
+	.panel-body {
+		/* flex 元素多行时多行的对齐方式，默认值 stretch 占满整个交叉轴 */
+		align-content: flex-start;
+		flex-wrap: wrap;
+		padding: 20px;
+	}
+	.home-main .panel-body div.fa-box {
+		flex: 0 0 auto;
+		width: 160px;
+		margin: 0 20px 20px 0px;
+		padding: 20px 0;
+	}
+	.home-main .panel-body div.fa-box i {
+		font-size: 35px;
+		color: #555;
+		margin-bottom: 0.8rem;
+	}
+	.fa-box p {
+		font-size: 15px;
+	}
+	.home-main .panel-body div.fa-box i:hover,
+	.home-main .panel-body div.fa-box p:hover {
+		color: #28a745;
+	}
+	.home-main .panel-body div.fa-box i:hover {
+		font-size: 36px;
+		cursor: pointer;
+	}
+	
+	div.panel-header {
+		color: #28a745;
+		font-weight: bold;
+		font-size: 18px;
+	}
+	
+	.panel-body.doc p {
+		 margin:12px;
+		 font-size: 16px;
+	}
+	.panel-body span {
+		 color:red;
+		 font-weight:bold;
+	}
+</style>
+
+
+<script>
+	$(function() {
+		// 将剪贴板钩子函数注册为 'copy' 事件监听器
+		// $('.home-main')[0].addEventListener('copy', clipboard.hook);
+		document.addEventListener('copy', clipboard.hook);
+		
+		// 点击复制图标内容到剪贴板，粘贴出来即可使用
+		$('.panel-body div.fa-box i').on('click', function(event) {
+			var iconHtml = $(this)[0].outerHTML;
+			clipboard.copy(iconHtml);
+			kit.ok("图标内容已被复制到剪贴板（部分浏览器不支持）", {time:3700, closeBtn:2, area: '400px', shadeClose:true});
+		});
+	});
+</script>
+

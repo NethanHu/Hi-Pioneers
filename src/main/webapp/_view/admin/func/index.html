@@ -1,0 +1,66 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 提示信息 -->
+	<div class="tips">
+	    <i class="fa fa-warning mr-2" style="color: #f39c12;"></i>
+	    前后端极简、轻量、快捷交互（无需写 js 代码，学习成本极低，三分钟学会使用）
+	</div>
+	
+	<!-- 功能容器 -->
+	<div class="func-box">
+		
+		<!-- msg 交互模式 -->
+		<button msg url="/admin/func/clearExpiredSession" class="btn btn-success btn-sm">
+			<i class="fa fa-trash mr-1"></i>
+			清除过期 Session
+		</button>
+		
+		<!-- msg 交互模式 -->
+		<button msg="{offset:'139px'}" url="/admin/func/getTotalOrdersToday" class="btn btn-default btn-sm">
+			查看今日订单数
+		</button>
+		
+		<!-- msg 交互模式 -->
+		<button msg="{offset:'139px', time:1600}" url="/admin/func/clearCache" class="btn btn-default btn-sm">
+			清除缓存
+		</button>
+		
+		<!-- msg 交互模式，并通过 data 属性传递数 -->
+		<button msg url="/admin/func/passData" data="{k1:123, k2:'abc'}" class="btn btn-default btn-sm">
+			data属性传参
+		</button>
+		
+		<!-- 对话框交互模式，手动输入数据传递到后端 -->
+		<button onclick="admin.openDialog(this);" url="/admin/func/switchAccount" class="btn btn-default btn-sm">
+			切换账号
+		</button>
+		
+		<!-- confirm 交互模式 -->
+		<button confirm="确定重启项目 ？" url="/admin/func/restart" class="btn btn-danger btn-sm">
+			<i class="fa fa-power-off mr-1"></i>
+			重启项目
+		</button>
+		
+	</div>
+</div>
+
+<style>
+	.main {
+		padding: 25px 45px;
+	}
+	.func-box {
+		display: -ms-flexbox;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.func-box button {
+		flex: 0 0 auto;
+		margin-right: 12px;
+		margin-bottom: 15px;
+	}
+</style>
+
+
+

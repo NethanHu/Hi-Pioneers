@@ -1,0 +1,89 @@
+<!--
+   弹出层 html、css、js 封装在此同一个模板文件中，模块化管理
+ -->
+
+### isAdd 为 true 表示创建账户，为 false 表示修改账户
+#set(isAdd = (account == null))
+
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+	#(isAdd ? '创建账户' : '修改账户')
+</div>
+
+<!-- 弹出层主体内容 -->
+<div class="open-box">
+	<form id="open-form" action="/admin/account/#(isAdd ? 'save' : 'update')" onsubmit="return false;">
+		
+		#if( ! isAdd )
+			<input type="hidden" name="account.id" value="#(account.id)">
+		#end
+		
+		### 参考 bootstrap 文档：垂直排列表单
+		<div class="form-group d-flex">
+			<label class="col-form-label">昵称</label>
+			<div class="flex-grow-1 ml-3">
+				<input class="form-control" name="account.nickName" value="#(account.nickName??)" type="text" autocomplete="off">
+			</div>
+		</div>
+		
+		<div class="form-group d-flex">
+			<label class="col-form-label">账号</label>
+			<div class="flex-grow-1 ml-3">
+				<input class="form-control" name="account.userName" value="#(account.userName??)" type="text" autocomplete="off">
+			</div>
+		</div>
+		
+		<div class="form-group d-flex">
+			<label class="col-form-label">密码</label>
+			<div class="flex-grow-1 ml-3">
+				<input class="form-control" name="account.password" type="password" #if(!isAdd) placeholder="留空不修改密码" #end>
+			</div>
+		</div>
+		
+	</form>
+</div>
+
+<!-- 弹出层 button -->
+<div class="layui-layer-btn" style="padding: 0 25px 20px 0;">
+	<a class="layui-layer-btn0">确定</a>
+	<a class="layui-layer-btn1">取消</a>
+</div>
+
+
+<!-- 弹出层样式 -->
+<style>
+/* 限定左侧 label 宽度，使右侧 input 输入框的宽度保持一致，实现对齐的效果 */
+.col-form-label {
+	width: 30px;
+	text-align: center;
+}
+</style>
+
+
+<!-- 弹出层 js 脚本 -->
+<script>
+	$(function() {
+		$('#open-form input:first').focus();
+		
+		// 绑定提交按钮事件
+		$(".layui-layer-btn0").on("click", submitAccount);
+	});
+	
+	function submitAccount() {
+		var $form = $('#open-form');
+		var loading = kit.loading('正在处理, 请稍候 .....');
+		kit.post($form.attr('action'), $form.serialize(), function(ret) {
+			loading.close();		// 关闭 loading 层
+			
+			if (ret.state == 'ok') {
+				layer.closeAll();	// 提交成功关闭 open 弹出层
+				
+				kit.fill('/admin/account?pn=#(pn ?? 1)', null, '#content-box');
+			}
+			kit.msg(ret, {time:3200, closeBtn:2});
+		});
+	}
+</script>
+
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="referrer" content="always">
+	
+	<meta name="keywords" content="jfinal admin">
+	<meta name="description" content="jfinal admin">
+	<title>jfinal admin</title>
+	
+	<style>
+		body, 
+		#root-box {
+			background-color: #f2f2f2;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<!-- 根容器 -->
+	<div id="root-box" class="root-box container-fluid">
+	</div>
+	
+	<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
+	<script src="/assets/lib/layer/layer.js"></script>
+	
+	<script>
+		$(function() {
+			layer.msg('当前账户没有操作权限，即将跳转到后台首页',
+				{icon:2, anim:6, shade:0.3, offset:'139px', time:3900, closeBtn: 2},
+				function() {
+					window.location.href = '/admin';
+				}
+			);
+		});
+	</script>
+	
+</body>
+</html>
+
+

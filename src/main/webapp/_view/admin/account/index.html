@@ -1,0 +1,93 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 工具栏 -->
+	<div class="toolbar">
+		<button open="{area:'365px', offset:'139px'}" url="/admin/account/add" class="btn btn-success btn-sm mr-1">
+			<i class="fa fa-plus mr-1"></i>创建
+		</button>
+		
+		<a fill pushState="false" url="/admin/account/showAdminList" class="btn btn-default btn-sm mr-1">
+			查看后台账户
+		</a>
+		
+		<a msg url="/admin/account/exportExcel" class="btn btn-default btn-sm mr-1">
+			导出 Excel
+		</a>
+		
+		<!-- 右侧搜索 -->
+		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
+		<form action='/admin/account' onsubmit="return admin.search();" id="search-form" class="search-box">
+			<input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
+			<i class="fa fa-search"></i>
+		</form>
+	</div>
+	
+	<!-- 表格容器 -->
+	<div id="table-box" class="table-box">
+		
+		<table class="table table-hover">
+			
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>昵称</th>
+					<th>登录名</th>
+					<th>创建</th>
+					<th>更新</th>
+					<th>启用</th>
+					<th class="operation">操作</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			#for (x : page.getList())
+				<tr>
+					<td>#(x.id)</td>
+					<td>#(x.nickName)</td>
+					<td>#(x.userName)</td>
+					<td>#date(x.created)</td>
+					<td>#date(x.updated)</td>
+					
+					<td>
+					### state 有三个值：已注册（未激活）、锁定（未启用）、正常（已启用），后两个值可用于 switch
+					#if (x.isStateReg())
+						未激活
+					#else
+						<div class="custom-control custom-switch">
+	  						<input confirm="确定要改变账户状态 : #(x.nickName) ？" #(x.state == 1 ? 'checked':'') url='/admin/account/switchState?id=#(x.id)' type="checkbox" class="custom-control-input" id="id-#(x.id)">
+	  						<label class="custom-control-label" for="id-#(x.id)"></label>
+						</div>
+					#end
+					</td>
+					
+					<td class="operation">
+						<a open="{area:'400px', offset:'139px'}" url="/admin/account/edit?id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
+						
+						#role("权限管理员")
+						<a fill pushState="false" url="/admin/account/assignRoles?id=#(x.id)">分配角色</a> |
+						#end
+						
+						#role("超级管理员")
+						### 这里用 url 代替 href 是为了防止意外删除数据
+						<a confirm="确定删除 #escape(x.title) ？" ok-remove="tr" url="/admin/account/delete?id=#(x.id)">删除</a>
+						#end
+						
+					</td>
+				</tr>
+			#end
+			</tbody>
+			
+		</table>
+	</div>
+	
+	<!-- 分页 -->
+	### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+	#set(append = keyword ? '&keyword=' + keyword : '')
+	#@adminPaginate(page, "/admin/account?pn=")
+	
+</div>
+
+
+
+

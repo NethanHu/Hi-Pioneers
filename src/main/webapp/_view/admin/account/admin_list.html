@@ -1,0 +1,44 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 表格容器 -->
+	<div id="table-box" class="table-box">
+		
+		<table class="table table-bordered table-hover">
+			
+			<thead>
+				<tr>
+					<th>角色</th>
+					<th>昵称</th>
+					<th>accountId</th>
+					<th>登录名</th>
+					<th class="operation">操作</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			#for(x : adminList)
+				<tr>
+					<th>#(x.name)</th>
+					<td>#(x.nickName)</td>
+					<td>#(x.accountId)</td>
+					<td>#(x.userName)</td>
+					
+					<td class="operation">
+						<a fill pushState="false" url="/admin/account/assignRoles?id=#(x.accountId)">分配角色</a>
+					</td>
+				</tr>
+			#end
+			</tbody>
+			
+		</table>
+	</div>
+	
+	<div style="font-size:16px;">
+		注：上表显示 account_role 表中所有数据，账号与角色是多对多关系，因此上表中的相同账号和角色可重复出现
+	</div>
+	
+</div>
+
+
+

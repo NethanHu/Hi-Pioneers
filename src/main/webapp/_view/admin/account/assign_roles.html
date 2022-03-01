@@ -1,0 +1,62 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<div class="user-role">
+		<div class="user">
+			<img src="/upload/avatar/#(account.avatar)">
+			<span>#(account.nickName)</span>
+		</div>
+		
+		<div class="role">
+			<table class="table table-bordered table-hover">
+				<thead></thead>
+				<tbody>
+				#for(x : roleList)
+				<tr>
+					
+					<td style="width: 100px; text-align: center;">
+						### switch 开关使用 bootstrap 4 官方组件
+						<div class="custom-control custom-switch">
+							### 二次开发时，只需要修改 input 标签内的 url 与 checked 属性即可。还可以添加 confirm="确定改变权限？" 开启确认功能
+	  						<input #(x.assigned ? 'checked':'') url='/admin/account/assignRole?accountId=#(account.id)&roleId=#(x.id)' type="checkbox" class="custom-control-input" id="id-#(x.id)">
+	  						<label class="custom-control-label" for="id-#(x.id)"></label>
+						</div>
+					</td>
+					
+					<td>#(x.name)</td>
+					
+				</tr>
+				#end
+				</tbody>
+			</table>
+		</div>
+		
+		<div>
+			点亮左侧开关分配角色，同一账号可分配多个角色
+		</div>
+		
+	</div>
+	
+</div>
+
+<style>
+.user-role {
+	min-height: 350px;
+	padding: 15px 65px;
+}
+
+.user-role .role {
+	width: 500px;
+	margin: 20px 0 20px 0;
+}
+
+.user-role .user img {
+	height: 45px;
+    width: 45px;
+    border-radius: 3px;
+    border: 1px solid #d6d6d6;
+    margin-right: 15px;
+}
+
+</style>
+

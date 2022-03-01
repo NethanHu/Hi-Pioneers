@@ -1,0 +1,178 @@
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+	更换头像
+</div>
+
+<!-- 弹出层主体内容 -->
+<div class="open-box">
+	
+	<div class="avatar-row">
+		<div class="img-box">
+			<img src="" id="photo" style="max-width:100%;">
+		</div>
+		<div class="preview-box">
+			<div class="preview-title">预览</div>
+			<div class="img-preview" style="width:100px; height:100px; overflow: hidden;"></div>
+			<div class="preview-size-text">100 × 100</div>
+			<div class="img-preview" style="width:50px; height:50px; overflow: hidden;"></div>
+			<div class="preview-size-text">50 × 50</div>
+		</div>
+	</div>
+	
+	<div class="btn-row">
+		<div class="text-center">
+			<label for="input" class="btn btn-danger btn-sm">
+				<span>选择图片</span>
+				<input type="file" id="input" class="sr-only">
+			</label>
+			
+			<button class="btn btn-success btn-sm ml-2" id="uploadBtn">
+				上传头像
+			</button>
+		</div>
+	</div>
+	
+</div>
+
+<style>
+	.open-box {
+		padding: 25px 25px 20px 25px;
+	}
+	.avatar-row {
+		display: -ms-flexbox;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+	}
+	.img-box {
+		flex: 0 1 360px;
+		height: 360px;
+		background-color: #f2f2f5;/* #f6f6f6; */
+	}
+	.preview-box {
+		flex: 0 1 130px;
+		height: 360px;
+		background-color: #f2f2f5;
+		padding-top: 10px;
+	}
+	.preview-box {
+		display: -ms-flexbox;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.preview-size-text {
+		margin-top: 10px;
+		margin-bottom: 30px;
+	}
+	.img-preview {
+		margin-top: 5px;
+		border-radius: 100px;
+	}
+	
+	.btn-row {
+		margin-top: 20px;
+	}
+</style>
+
+<link rel="stylesheet" href="/assets/lib/cropper/cropper.min.css">
+<script src="/assets/lib/cropper/cropper.min.js"></script>
+
+<script>
+	function initCropper(img, input) {
+		var $image = img;
+		var options = {
+			preview: '.img-preview',	// 预览图片 img 标签的 jquery 选择器
+			aspectRatio: 1,				// 纵横比，1:1 写成 1，16:9 写成16 / 9
+			dragMode: 'move',			// 在裁剪框外拖动鼠标的响应：'move' 会移动原图，'crop' 生成一个新的裁剪框
+			viewMode: 3,
+			guides: false,				// 裁剪区域是否显示虚线
+			center: true,				// 裁剪区域正中央是否显示 + 号
+			autoCrop: true,				// cropper 初始化完成后是否自动显示裁剪框
+			autoCropArea: 0.5,			// 自动显示的裁剪框的大小。数字应当在 0~1 之间
+			cropBoxResizable: true,		// 是否允许通过拖动裁剪框的边框来调整裁剪框的大小
+			movable: true,				// 是否允许移动原图
+			zoomable: true,				// 是否可以对原图进行缩小放大
+			zoomOnWheel: true			// 是否允许使用鼠标滚轮缩放原图
+		};
+		
+		$image.cropper(options);
+		var $inputImage = input;
+		var uploadedImageURL;
+		var URL = window.URL || window.webkitURL;
+		if (URL) {
+			// 给input添加监听
+			$inputImage.change(function () {
+				var files = this.files;
+				var file;
+				if (!$image.data('cropper')) {
+					return;
+				}
+				if (files && files.length) {
+					file = files[0];
+					// 判断是否是图像文件
+					if (/^image\/\w+$/.test(file.type)) {
+						// 如果URL已存在就先释放
+						if (uploadedImageURL) {
+							URL.revokeObjectURL(uploadedImageURL);
+						}
+						uploadedImageURL = URL.createObjectURL(file);
+						// 销毁cropper后更改src属性再重新创建cropper
+						$image.cropper('destroy').attr('src', uploadedImageURL).cropper(options);
+						$inputImage.val('');
+					} else {
+						window.alert('请选择一个图像文件！');
+					}
+				}
+			});
+		} else {
+			$inputImage.prop('disabled', true).addClass('disabled');
+		}
+	}
+	
+	function crop() {
+		// 获得裁剪框的 canvas 节点
+		var cropCanvas = $('#photo').cropper('getCroppedCanvas', {
+			width: 150,		// 裁剪后的长宽
+			height: 150
+		});
+		
+		// 转换为 base64，最后一个参数值越大图片质量越好
+		if (cropCanvas) {
+			var avatarData = cropCanvas.toDataURL('image/png', 0.9);
+			// $target.attr('src', avatarData);	// 将裁剪出的图片放到指定标签
+			return avatarData;
+		}
+	}
+	
+	// 上传头像
+	function uploadAvatar() {
+		var avatarData = crop();
+		if (!avatarData) {
+			kit.fail('请选择一个图像文件！');
+			return ;
+		}
+		
+		var loading = kit.loading('正在处理, 请稍候 .....');
+		kit.post("/admin/system/changeAvatar", {avatarData: avatarData}, function(ret) {
+			loading.close();		// 关闭 loading 层
+			
+			if (ret.state == 'ok') {
+				$('.user-box img').attr('src', avatarData);		// 操作成功更新右上角头像
+				layer.closeAll();								// 操作成功关闭 open 弹出层
+			}
+			kit.msg(ret, {time:0, closeBtn:1});
+		});
+	}
+	
+	$(function(){
+		initCropper($('#photo'), $('#input'));		// 初始化 cropper 组件
+		$('#uploadBtn').on('click', uploadAvatar);	// 绑定上传按钮
+	});
+</script>
+
+
+

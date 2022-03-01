@@ -1,0 +1,14 @@
+# 数据库配置
+jdbcUrl = jdbc:mysql://47.98.126.97:3306/hi-pioneers?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+user = Hi-Pioneers
+password = hdu123456
+
+# jfinal 开发模式
+devMode = true
+
+# enjoy 模板引擎开发模式
+engineDevMode = true
+
+
+
+

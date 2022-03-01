@@ -1,0 +1,1 @@
+从 jfinal admin 1.3 开始，去除了 tab 交互

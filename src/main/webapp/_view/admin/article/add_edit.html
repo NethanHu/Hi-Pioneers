@@ -1,0 +1,89 @@
+### isAdd 表示创建文章
+#set(isAdd = (article == null))
+
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+	#(isAdd ? '创建文章' : '修改文章')
+</div>
+
+<!-- 弹出层主体内容 -->
+<div class="open-box" style="padding: 20px 20px 0 20px;">
+	<form id="open-form" action="/admin/article/#(isAdd ? 'save' : 'update')" method="POST" onsubmit="return false;">
+		#if( ! isAdd )
+			<input type="hidden" name="article.id" value="#(article.id)">
+		#end
+		
+		<div class="form-group" style="margin-bottom:28px;">
+			<input autocomplete="off" name="article.title" value="#(article.title ??)" class="form-control form-control-lg" type="text" placeholder="文章标题">
+		</div>
+		
+		<div class="form-group">
+			### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
+			<textarea id="editor1" name="article.content">#escape(article.content ??)</textarea>
+		</div>
+	</form>
+</div>
+
+<!-- 弹出层 button -->
+<div class="layui-layer-btn" style="padding: 0 15px 15px 0;">
+	<a class="layui-layer-btn0">提交</a>
+	<a class="layui-layer-btn1">取消</a>
+</div>
+
+
+<!-- 添加 ckeditor 组件依赖 -->
+<script src="/assets/lib/ckeditor/ckeditor.js"></script>
+
+<script>
+$(function() {
+	
+	// 防止 esc 键关闭弹出层。注意目前只支持 input 组件内的 esc 键
+	$('.layui-layer-content').on('keydown', function(event) {
+		if (event.keyCode === 27) {
+			event.stopPropagation();	// 阻止将事件冒泡到上层组件
+		}
+	});
+	
+	// 初始化 ckeditor
+	CKEDITOR.replace('editor1', {height: '350px'});
+	
+	// 设置第一个 input 为输入焦点
+	$(".open-box input[type='text']:first").focus();
+	
+	// 绑定提交按钮事件
+	$(".layui-layer-btn0").on("click", submitArticle);
+	
+	// 解决 ckeditor 工具栏点击时触发的弹出层被 layer 弹出层遮盖的问题
+	var shadeDiv = $('div.layui-layer-shade');
+	shadeDiv.attr('style', shadeDiv.attr('style') + ' z-index:1024;');
+	var openDiv = $('div.layui-layer.layui-layer-page');
+	openDiv.attr('style', openDiv.attr('style') + ' z-index:1025;');
+});
+
+
+function submitArticle() {
+	// 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+	$("#open-form").ajaxSubmit({
+		dataType: 'json', type: 'POST',
+		beforeSerialize: function($form, options) {
+			// 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+			for (instance in CKEDITOR.instances) {
+				CKEDITOR.instances[instance].updateElement();
+			}
+			kit.loading({msg: '正在保存, 请稍候 .....'});
+		},
+		success: function(ret) {
+			kit.closeLoading();		// 关闭 loading 层
+			
+			if (ret.state == "ok") {
+				layer.closeAll();	// 提交成功关闭 open 弹出层
+				kit.fill('/admin/article', null, '#content-box');
+			}
+			kit.msg(ret);
+		}
+	});
+}
+</script>
+
+
+

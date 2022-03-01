@@ -1,0 +1,98 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 工具栏 -->
+	<div class="toolbar">
+		<button open="{area:'420px', offset:'139px'}" url="/admin/image/add" class="btn btn-success btn-sm">
+			<i class="fa fa-upload mr-1"></i>上传
+		</button>
+	</div>
+	
+	<!-- 图片容器 -->
+	<div class="image-box">
+		#for (x : page.getList())
+			<div class="image-item">
+				
+				### <img src="/upload/image/demo-0.jpg">
+				<img src="/upload#(x.path)#(x.fileName)">
+				
+				<div class="image-footer">
+					<i class="fa fa-copy text-info" image-url='/upload#(x.path)#(x.fileName)' title="复制地址"></i>
+					<i class="fa fa-trash text-danger" confirm='确定删除？' url='/admin/image/delete?id=#(x.id)' title="删除"></i>
+				</div>
+				
+			</div>
+		#end
+	</div>
+	
+	<!-- 分页 -->
+	#@adminPaginate(page, "/admin/image?pn=")
+	
+	<!-- 辅助实现图片 url 复制到剪贴板功能 -->
+	<input id="for-copy" type="text" style="display:none">
+	
+</div>
+
+<style>
+	.main {
+		padding-left: 45px;
+		padding-right: 45px;
+	}
+	.toolbar {
+		text-align: left;
+		margin-left:10px;
+		margin-bottom:20px;
+	}
+	
+</style>
+
+<script>
+	
+	$(function() {
+		// 复制图片 url 到剪贴板
+		$('.image-footer i[image-url]').on('click', copyImageUrl);
+		
+		// 删除图片
+		kit.bindConfirm('.image-box', 'i[confirm]', {shadeClose:true},
+			function(ret, $this, index) {
+				layer.close(index);
+				kit.msg(ret);
+				if (ret.state == 'ok') {
+					kit.fill('/admin/image', null, '#content-box');
+				}
+			}
+		);
+		
+	});
+	
+	/**
+	 * 复制图片 url 到剪贴板
+	 */
+	function copyImageUrl() {
+		var imageUrl = $(this).attr('image-url');
+		var temp = $('#for-copy');
+		temp.val(imageUrl).show();
+		try {
+			temp.select();
+			document.execCommand('copy');
+			temp.hide();
+			kit.ok('图片地址已复制到剪贴板');
+		} catch (error) {
+			temp.hide();
+			kit.fail('操作失败，浏览器不支持复制');
+		}
+	}
+	
+	/**
+	 * 点击图片显示大图
+	 */
+	layer.photos({
+		photos: '.image-box',
+		shade: 0.5,
+		// closeBtn: 2,
+		offset: '50px',
+		anim: 5
+	});
+	
+</script>
+

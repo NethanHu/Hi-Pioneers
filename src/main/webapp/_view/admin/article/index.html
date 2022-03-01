@@ -1,0 +1,73 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 工具栏 -->
+	<div class="toolbar">
+		<!-- 左侧按钮 -->
+		### maxmin:true 配置显示最大化最小化按钮
+		### 改为使用打开独立新页面，不再使用 open 交互 open="{maxmin:true, area:'960px', offset:'15px'}"
+		<a target="_blank" href="/admin/article/add" class="btn btn-success btn-sm">
+			<i class="fa fa-plus mr-1"></i>创建
+		</a>
+		
+		<!-- 右侧搜索 -->
+		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
+		<form action='/admin/article' onsubmit="return admin.search();" id="search-form" class="search-box">
+			<input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
+			<i class="fa fa-search"></i>
+		</form>
+	</div>
+	
+	<!-- 表格容器 -->
+	<div id="table-box" class="table-box">
+		
+		<table class="table table-hover">
+			
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>标题</th>
+					<th>创建时间</th>
+					<th>发布</th>
+					
+					<th class="operation">操作</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			#for (x : page.getList())
+				<tr>
+					<td>#(x.id)</td>
+					<td><a href="/admin/article/preview?id=#(x.id)" target="_blank">#(x.title)</a></td>
+					<td>#date(x.created)</td>
+					
+					<td>
+						<div class="custom-control custom-switch">
+	  						<input #(x.state == 1 ? 'checked':'') url='/admin/article/publish?id=#(x.id)' type="checkbox" class="custom-control-input" id="id-#(x.id)">
+	  						<label class="custom-control-label" for="id-#(x.id)"></label>
+						</div>
+					</td>
+					
+					<td class="operation">
+						<a target="_blank" href="/admin/article/edit?id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
+						
+						### 这里用 url 代替 href 是为了防止意外删除数据
+						<a confirm="确定删除 #escape(x.title) ？" ok-remove="tr" url="/admin/article/delete?id=#(x.id)">删除</a>
+					</td>
+				</tr>
+			#end
+			</tbody>
+			
+		</table>
+	</div>
+	
+	<!-- 分页 -->
+	### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+	#set(append = keyword ? '&keyword=' + keyword : '')
+	#@adminPaginate(page, "/admin/article?pn=")
+	
+</div>
+
+
+
+

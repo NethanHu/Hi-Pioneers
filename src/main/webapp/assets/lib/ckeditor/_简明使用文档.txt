@@ -1,0 +1,82 @@
+
+
+ckeditor 无法显示 html 源码的问题解决：
+http://komlenic.com/246/encoding-entities-to-work-with-ckeditor-3
+通过 #escape(article.content ??) 也可以解决
+
+
+版本：4.15.1，添加了 codesnippet 与 emoji 两个插件
+
+下载：Customize Online Builder 方式下载 https://ckeditor.com/cke4/builder
+     注意：页面加载时有些资源无法加载，造成无法新增插件，需要翻墙
+     preset 选择 full
+     语言选择了简体中文、繁体中文、英文、日文四种
+     添加了 codesnippet、emoji、markdown 三个插件
+
+demo
+https://ckeditor.com/ckeditor-4/demo/
+
+
+插件整合安装与独立下载安装时的配置：
+1：下载 ckeditor 时整合进来的插件会被自动安装生效，去除它需要使用如下配置：
+   config.removePlugins = 'flash';
+   去除多个插件用逗号分隔
+
+2：下载 ckeditor 后，再独立下载插件，需要手动整合，整合它需要使用如下配置：
+   config.extraPlugins = 'emoji,uploadimage';
+   独立下载的插件需要解压存放在 ckeditor/plugins 目录
+
+3：通过 Customize Online Builder 下载 ckeditor 整合进来的插件属于上述第一种情况，插件会被自动安装
+
+4：小结：删掉自动安装插件用 removePlugins，添加非自动安装插件用 extraPlugins
+
+
+配置：
+1：Customize Online Builder 下载方式会额外插件整合代码加入 ckeditor 相关脚本中去
+   如果额外插件单独下载，则配置方式有所不同, 例如在插件目录下面创建 plugin.js 来整合
+
+2：解压 ckeditor 到 assets/lib 目录
+
+3：修改 ckeditor 目录下的 config.js 文件，添加相关配置，该配置文件初始为空，
+   使用 config.js 配置比 CKEDITOR.replace(..., {}) 配置方式要强大灵活
+   工具栏配置可通过工具生成，该工具在 ckeditor/samples/toolbarconfigurator/index.html 之中
+   要使用该工具时，需要先清除 config.js 中的配置，如果 chrome 控制台输出错误，可先通过如下配置
+   去除出问题的插件，例如：config.removePlugins = 'emoji';
+   
+   其它配置参考文档：
+       https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
+   
+
+3：在使用页面引入 ckeditor.js
+   <script src="/assets/lib/ckeditor/ckeditor.js"></script>
+   注意，不必引入 config.js，该脚本会被动态引入
+
+4：在使用页面添加 <textarea id="editor1" name="blog.content">#escape(blog.content ??)</textarea>
+	并添加如下脚本：
+	<script>
+		$(function() {
+			CKEDITOR.replace('editor1', {height: '350px'});
+		});
+	</script>
+
+   注意：上面的 height:'350px' 与 config.js 中的 config.height='350px'
+        配置方式是完全等价的，只不过前者优先级高于后者
+        在配置形式上，前者是 key : value 形式，后者是 config.key = value 形式
+   
+   配置项文档：https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
+
+5：修改 contents.css，定制一下 font-size 这类样式，原有 font-size 太小
+
+6：新版取消了自动同步功能，所以提交数据前注意要先将 ckeditor 编辑器中的内容同步到 textarea 中去，
+   数据才能被提交到服务端：
+     for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+     }
+   
+
+警告：修改代码或配置有时并不会生效，需要打开 chrome 开发者工作，进入 Network 栏，再勾选 Disable cache
+     再强制刷新。否则正确的 js 代码都可能报错，无法查明原因
+
+
+
+
