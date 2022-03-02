@@ -1,72 +1,68 @@
 <!-- 主界面 -->
 <div class="main">
-	
-	<!-- 工具栏 -->
-	<div class="toolbar">
-		<!-- 左侧按钮 -->
-		### 通过点击新建按钮，跳转网页至add处可供选择题目类型
-		<button fill href="/admin/question/add" class="btn btn-success btn-sm">
-			<i class="fa fa-upload mr-1"></i>新建题目
-		</button>
-		
-		<!-- 右侧搜索 -->
-		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
-		<form action='/admin/question' onsubmit="return admin.search();" id="search-form" class="search-box">
-			<input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
-			<i class="fa fa-search" ></i>
-		</form>
-	</div>
-	
-	<!-- 表格容器 -->
-	<div id="table-box" class="table-box">
-		
-		<table class="table table-hover">
-			
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>问题</th>
-					<th>创建时间</th>
-					<th>发布</th>
-					
-					<th class="operation">操作</th>
-				</tr>
-			</thead>
-			
-			<tbody>
-			#for (x : page.getList())
-				<tr>
-					<td>#(x.id)</td>
-					<td><a href="/admin/question/preview?id=#(x.id)" target="_blank">#(x.content)</a></td>
-					<td>#date(x.update_time)</td>
-					
-					<td>
-						<div class="custom-control custom-switch">
-	  						<input #(x.state == 1 ? 'checked':'') url='/admin/question/publish?id=#(x.id)' type="checkbox" class="custom-control-input" id="id-#(x.id)">
-	  						<label class="custom-control-label" for="id-#(x.id)"></label>
-						</div>
-					</td>
-					
-					<td class="operation">
-						<a target="_blank" href="/admin/question/select_type?id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
-						
-						### 这里用 url 代替 href 是为了防止意外删除数据
-						<a confirm="确定删除 #escape(x.title) ？" ok-remove="tr" url="/admin/question/delete?id=#(x.id)">删除</a>
-					</td>
-				</tr>
-			#end
-			</tbody>
-			
-		</table>
-	</div>
-	
-	<!-- 分页 -->
-	### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
-	#set(append = keyword ? '&keyword=' + keyword : '')
-	#@adminPaginate(page, "/admin/question?pn=")
-	
+
+    <!-- 工具栏 -->
+    <div class="toolbar">
+        <!-- 左侧按钮 -->
+        ### 通过点击新建按钮，跳转网页至add处可供选择题目类型
+        <button fill href="/admin/question/add" class="btn btn-success btn-sm">
+            <i class="fa fa-upload mr-1"></i>新建题目
+        </button>
+
+        <!-- 右侧搜索 -->
+        ### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
+        <form action='/admin/question' onsubmit="return admin.search();" id="search-form" class="search-box">
+            <input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
+            <i class="fa fa-search" ></i>
+        </form>
+    </div>
+
+    <!-- 表格容器 -->
+    <div id="table-box" class="table-box">
+
+        <table class="table table-hover">
+
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>问题</th>
+                <th>创建时间</th>
+                <th>发布</th>
+
+                <th class="operation">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            #for (x : page.getList())
+            <tr>
+                <td>#(x.id)</td>
+                <td><a href="/admin/question/preview?id=#(x.id)" target="_blank">#(x.content)</a></td>
+                <td>#date(x.update_time)</td>
+
+                <td>
+                    <div class="custom-control custom-switch">
+                        <input #(x.state == 1 ? 'checked':'') url='/admin/question/publish?id=#(x.id)' type="checkbox" class="custom-control-input" id="id-#(x.id)">
+                        <label class="custom-control-label" for="id-#(x.id)"></label>
+                    </div>
+                </td>
+
+                <td class="operation">
+                    <a target="_blank" href="/admin/question/select_type?id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
+
+                    ### 这里用 url 代替 href 是为了防止意外删除数据
+                    <a confirm="确定删除 #escape(x.title) ？" ok-remove="tr" url="/admin/question/delete?id=#(x.id)">删除</a>
+                </td>
+            </tr>
+            #end
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- 分页 -->
+    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+    #set(append = keyword ? '&keyword=' + keyword : '')
+    #@adminPaginate(page, "/admin/question?pn=")
+
 </div>
-
-
-
-

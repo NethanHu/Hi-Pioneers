@@ -2,138 +2,138 @@
 <html lang="zh-CN">
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="referrer" content="always">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="referrer" content="always">
 
-	<meta name="keywords" content="jfinal admin">
-	<meta name="description" content="jfinal admin">
+  <meta name="keywords" content="jfinal admin">
+  <meta name="description" content="jfinal admin">
 
-	### isAdd 表示创建文章
-	#set(isAdd = (article == null))
-	<title>#(isAdd ? '创建文章' : '修改文章')</title>
+  ### isAdd 表示创建文章
+  #set(isAdd = (article == null))
+  <title>#(isAdd ? '创建文章' : '修改文章')</title>
 
-	<link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
-	<link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+  <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
 
-	<style>
-		/* html 是根元素
-		 * rem（font size of the root element）是相对于 html 元素的字体大小单位
-		 * 在不指定时多数浏览器的默认值为 16px
-		*/
-		body, html {
-			font-size: 17px;
-			background-color: #F2F2F2;
-		}
-		.container {
-			margin: 15px auto;
-			padding: 20px 40px 1px 40px;
-			background-color: #FFF;
-			border-radius: 5px;
-		}
-		.breadcrumb {
-			padding-left: 0.75rem;
-		}
-		.breadcrumb li.breadcrumb-item {
-			color: #555;
-		}
-		.form-group {
-			margin-top: 22px;
-		}
-	</style>
+  <style>
+    /* html 是根元素
+     * rem（font size of the root element）是相对于 html 元素的字体大小单位
+     * 在不指定时多数浏览器的默认值为 16px
+    */
+    body, html {
+      font-size: 17px;
+      background-color: #F2F2F2;
+    }
+    .container {
+      margin: 15px auto;
+      padding: 20px 40px 1px 40px;
+      background-color: #FFF;
+      border-radius: 5px;
+    }
+    .breadcrumb {
+      padding-left: 0.75rem;
+    }
+    .breadcrumb li.breadcrumb-item {
+      color: #555;
+    }
+    .form-group {
+      margin-top: 22px;
+    }
+  </style>
 </head>
 
 <body>
-	<!-- 根容器 -->
-	<div class="container">
+<!-- 根容器 -->
+<div class="container">
 
-		<!-- 主体内容 -->
-		<div class="article-box">
-			
-			<nav>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item active">文章管理</li>
-					<li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>
-				</ol>
-			</nav>
-			
-			<form id="open-form" action="/admin/article/#(isAdd ? 'save' : 'update')" method="POST"
-				onsubmit="return false;">
-				#if( ! isAdd )
-				<input type="hidden" name="article.id" value="#(article.id)">
-				#end
+  <!-- 主体内容 -->
+  <div class="article-box">
 
-				<div class="form-group">
-					<input autocomplete="off" name="article.title" value="#(article.title ??)" class="form-control" type="text" placeholder="文章标题">
-				</div>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">文章管理</li>
+        <li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>
+      </ol>
+    </nav>
 
-				<div class="form-group">
-					### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
-					<textarea id="editor1" name="article.content">#escape(article.content ??)</textarea>
-				</div>
+    <form id="open-form" action="/admin/article/#(isAdd ? 'save' : 'update')" method="POST"
+          onsubmit="return false;">
+      #if( ! isAdd )
+      <input type="hidden" name="article.id" value="#(article.id)">
+      #end
 
-				<div class="form-group text-center">
-					<button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
-						<i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更析')
-					</button>
-				</div>
+      <div class="form-group">
+        <input autocomplete="off" name="article.title" value="#(article.title ??)" class="form-control" type="text" placeholder="文章标题">
+      </div>
 
-			</form>
-		</div>
+      <div class="form-group">
+        ### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
+        <textarea id="editor1" name="article.content">#escape(article.content ??)</textarea>
+      </div>
 
-	</div>
+      <div class="form-group text-center">
+        <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
+          <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更析')
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
 
 
-	<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
-	<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
-	<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/assets/lib/jquery_form/jquery.form.js"></script>
-	<script src="/assets/lib/layer/layer.js"></script>
-	<script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
+<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+<script src="/assets/lib/layer/layer.js"></script>
+<script src="/assets/js/jfinal-kit.js"></script>
 
-	<!-- 添加 ckeditor 组件依赖 -->
-	<script src="/assets/lib/ckeditor/ckeditor.js"></script>
-	
-	<script>
-		$(function() {
-			// 初始化 ckeditor
-			CKEDITOR.replace('editor1', {height: '350px'});
-			
-			// 设置第一个 input 为输入焦点
-			$("#open-form input[type='text']:first").focus();
-			
-			// 绑定提交按钮事件
-			$("#submit-btn").on("click", submitArticle);
+<!-- 添加 ckeditor 组件依赖 -->
+<script src="/assets/lib/ckeditor/ckeditor.js"></script>
 
-			// 绑定 esc 键关键弹出层
-			kit.bindEscKeydown();
-		});
-		
-		
-		function submitArticle() {
-			// 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
-			$("#open-form").ajaxSubmit({
-				dataType: 'json', type: 'POST',
-				beforeSerialize: function($form, options) {
-					// 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
-					for (instance in CKEDITOR.instances) {
-						CKEDITOR.instances[instance].updateElement();
-					}
-					kit.loading({msg: '正在保存, 请稍候 .....'});
-				},
-				success: function(ret) {
-					kit.closeLoading();		// 关闭 loading 层
-					kit.msg(ret);
+<script>
+  $(function() {
+    // 初始化 ckeditor
+    CKEDITOR.replace('editor1', {height: '350px'});
 
-					if (ret.state == "ok") {
-						setTimeout(function() {
-							location.href = "/admin/article?pn=#(pn ? pn : 1)";
-						}, 2100);
-					}
-				}
-			});
-		}
-		</script>
+    // 设置第一个 input 为输入焦点
+    $("#open-form input[type='text']:first").focus();
+
+    // 绑定提交按钮事件
+    $("#submit-btn").on("click", submitArticle);
+
+    // 绑定 esc 键关键弹出层
+    kit.bindEscKeydown();
+  });
+
+
+  function submitArticle() {
+    // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+    $("#open-form").ajaxSubmit({
+      dataType: 'json', type: 'POST',
+      beforeSerialize: function($form, options) {
+        // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+        for (instance in CKEDITOR.instances) {
+          CKEDITOR.instances[instance].updateElement();
+        }
+        kit.loading({msg: '正在保存, 请稍候 .....'});
+      },
+      success: function(ret) {
+        kit.closeLoading();		// 关闭 loading 层
+        kit.msg(ret);
+
+        if (ret.state == "ok") {
+          setTimeout(function() {
+            location.href = "/admin/article?pn=#(pn ? pn : 1)";
+          }, 2100);
+        }
+      }
+    });
+  }
+</script>
 </body>
 </html>
