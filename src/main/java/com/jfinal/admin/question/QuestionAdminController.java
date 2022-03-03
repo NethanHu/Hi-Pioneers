@@ -47,19 +47,25 @@ public class QuestionAdminController extends BaseController {
 
     /**
      * 进入选择提醒页面
-     *
-     * 注意：使用独立于后台 layout 的页面 add_edit_full.html 时，需要清除掉 LayoutInterceptor 拦截器
      */
-    @Clear(LayoutInterceptor.class)
     public void add() {
         // render("add_edit.html");
         // 改用独立于后台 layout 的页面
         render("select_type.html");
     }
 
+    /**
+     * 调用添加对应题目的页面
+     *
+     * 不用 @Clear(LayoutInterceptor.class)，因为该页面依赖于 Layout.
+     */
     public void add_edit_full_choice() {
         render("add_edit_full_choice.html");
     }
+    public void add_edit_full_answer() {
+        render("add_edit_full_answer.html");
+    }
+
     /**
      * 保存
      */
