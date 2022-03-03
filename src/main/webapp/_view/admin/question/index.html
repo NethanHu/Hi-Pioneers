@@ -26,6 +26,7 @@
             <tr>
                 <th>ID</th>
                 <th>问题</th>
+                <th>type</th>
                 <th>创建时间</th>
                 <th>发布</th>
 
@@ -38,6 +39,7 @@
             <tr>
                 <td>#(x.id)</td>
                 <td><a href="/admin/question/preview?id=#(x.id)" target="_blank">#(x.content)</a></td>
+                <td>#(x.type)</td>
                 <td>#date(x.update_time)</td>
 
                 <td>

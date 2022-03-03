@@ -60,7 +60,7 @@ public class ArticleAdminController extends BaseController {
 	public void add() {
 		// render("add_edit.html");
 		// 改用独立于后台 layout 的页面
-		render("add_edit_full.html");
+		render("add8.html");
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class ArticleAdminController extends BaseController {
 		// render("add_edit.html");
 		// 改用独立于后台 layout 的页面
 		keepPara("pn");					// 将页号参数 pn 传递到页面使用
-		render("add_edit_full.html");
+		render("add8.html");
 	}
 	
 	/**

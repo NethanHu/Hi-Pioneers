@@ -58,7 +58,7 @@ public class QuestionAdminController extends BaseController {
     }
 
     public void add_edit_full_choice() {
-        render("add_edit_full_choice.html");
+        render("choice.html");
     }
     /**
      * 保存
