@@ -1,6 +1,7 @@
 package com.jfinal.admin.question;
 
 import com.jfinal.admin.common.model.Question;
+import com.jfinal.admin.common.model.QuestionChoice;
 import com.jfinal.kit.Ret;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
@@ -15,6 +16,7 @@ public class QuestionAdminService {
 
     private static int pageSize = 25;
     private Question dao = new Question().dao();
+    private QuestionChoice dao2 = new QuestionChoice().dao();
 
     /**
      * 分页
@@ -35,9 +37,7 @@ public class QuestionAdminService {
         if (question == null) {
             return Ret.fail("msg", "question 对象不能为 null");
         }
-        if (StrKit.isBlank(question.getContent())) {
-            return Ret.fail("msg", "title 不能为空");
-        }
+
         if (StrKit.isBlank(question.getContent())) {
             return Ret.fail("msg", "content 不能为空");
         }
@@ -56,7 +56,6 @@ public class QuestionAdminService {
         question.setAccountId(accountId);
         question.setState(question.STATE_UNPUBLISHED);	// 默认未发布
         question.setUpdateTime(new Date());
-//        question.setInvolvement();
         question.save();
         return Ret.ok("msg", "创建成功");
     }
@@ -97,6 +96,7 @@ public class QuestionAdminService {
      */
     public Ret deleteById(int id) {
         dao.deleteById(id);
+        dao2.deleteById(id);
         return Ret.ok("msg", "删除成功");
     }
 
