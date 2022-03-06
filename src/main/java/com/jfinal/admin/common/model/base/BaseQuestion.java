@@ -105,12 +105,28 @@ public abstract class BaseQuestion<M extends BaseQuestion<M>> extends Model<M> i
 		return getInt("state");
 	}
 	
-	public void setContent(java.lang.String content) {
-		set("content", content);
+	public void setQuestion(java.lang.String question) {
+		set("question", question);
 	}
 	
-	public java.lang.String getContent() {
-		return getStr("content");
+	public java.lang.String getQuestion() {
+		return getStr("question");
+	}
+	
+	public void setAnswer(java.lang.String answer) {
+		set("answer", answer);
+	}
+	
+	public java.lang.String getAnswer() {
+		return getStr("answer");
+	}
+	
+	public void setOption(java.lang.String option) {
+		set("option", option);
+	}
+	
+	public java.lang.String getOption() {
+		return getStr("option");
 	}
 	
 }

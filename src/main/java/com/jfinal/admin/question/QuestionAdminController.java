@@ -60,7 +60,7 @@ public class QuestionAdminController extends BaseController {
      * 不用 @Clear(LayoutInterceptor.class)，因为该页面依赖于 Layout.
      */
     public void add_edit_full_choice() {
-        render("choice.html");
+        render("add_edit_full_choice.html");
     }
     public void add_edit_full_answer() {
         render("add_edit_full_answer.html");

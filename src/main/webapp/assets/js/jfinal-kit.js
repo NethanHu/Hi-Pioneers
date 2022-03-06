@@ -597,8 +597,6 @@ var kit = {
 	}
 	
 	
-	
-	
 };	/*** end of kit ***/
 
 
@@ -616,6 +614,7 @@ $.fn.extend({
 		return this.length > 0 && this[0].hasAttribute(attrName);
 	}
 });
+
 
 
 

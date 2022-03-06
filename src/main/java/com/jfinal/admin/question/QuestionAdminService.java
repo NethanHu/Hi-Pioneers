@@ -38,7 +38,7 @@ public class QuestionAdminService {
             return Ret.fail("msg", "question 对象不能为 null");
         }
 
-        if (StrKit.isBlank(question.getContent())) {
+        if (StrKit.isBlank(question.getQuestion())) {
             return Ret.fail("msg", "content 不能为空");
         }
         return null;
