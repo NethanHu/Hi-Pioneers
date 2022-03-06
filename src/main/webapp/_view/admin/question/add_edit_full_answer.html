@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="referrer" content="always">
 
-  <meta name="keywords" content="jfinal admin">
-  <meta name="description" content="jfinal admin">
+  <meta name="keywords" content="Chaoxing">
+  <meta name="description" content="Chaoxing">
 
   ### isAdd 表示创建文章
-  #set(isAdd = (article == null))
-  <title>#(isAdd ? '创建文章' : '修改文章')</title>
+  #set(isAdd = (question == null))
+  <title>#(isAdd ? '创建题目' : '修改题目')</title>
 
   <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
@@ -51,31 +51,38 @@
   <!-- 主体内容 -->
   <div class="article-box">
 
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active">文章管理</li>
-        <li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>
-      </ol>
-    </nav>
+<!--    <nav>-->
+<!--      <ol class="breadcrumb">-->
+<!--        <li class="breadcrumb-item active">文章管理</li>-->
+<!--        <li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>-->
+<!--      </ol>-->
+<!--    </nav>-->
 
-    <form id="open-form" action="/admin/article/#(isAdd ? 'save' : 'update')" method="POST"
+    <form id="open-form" action="/admin/question/#(isAdd ? 'save' : 'update')" method="POST"
           onsubmit="return false;">
       #if( ! isAdd )
-      <input type="hidden" name="article.id" value="#(article.id)">
+      <input type="hidden" name="question.id" value="#(question.id)">
       #end
 
       <div class="form-group">
-        <input autocomplete="off" name="article.title" value="#(article.title ??)" class="form-control" type="text" placeholder="文章标题">
+        <input type="hidden" name="question.type" value="简答题">
+        请输入题目哦：
       </div>
 
       <div class="form-group">
         ### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
-        <textarea id="editor1" name="article.content">#escape(article.content ??)</textarea>
+        <textarea id="editor1" name="question.question">#escape(question.question ??)</textarea>
+      </div>
+      <div>
+        请输入题目答案：
+      </div>
+      <div class="form-group">
+        <textarea id="editor2" name="question.answer">#escape(question.answer ??)</textarea>
       </div>
 
       <div class="form-group text-center">
         <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
-          <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更析')
+          <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更新')
         </button>
       </div>
 
@@ -98,20 +105,21 @@
 <script>
   $(function() {
     // 初始化 ckeditor
-    CKEDITOR.replace('editor1', {height: '350px'});
+    CKEDITOR.replace('editor1', {height: '250px'});
+    CKEDITOR.replace('editor2', {height: '350px'});
 
     // 设置第一个 input 为输入焦点
     $("#open-form input[type='text']:first").focus();
 
     // 绑定提交按钮事件
-    $("#submit-btn").on("click", submitArticle);
+    $("#submit-btn").on("click", submitQuestion);
 
     // 绑定 esc 键关键弹出层
     kit.bindEscKeydown();
   });
 
 
-  function submitArticle() {
+  function submitQuestion() {
     // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
     $("#open-form").ajaxSubmit({
       dataType: 'json', type: 'POST',
@@ -128,7 +136,7 @@
 
         if (ret.state == "ok") {
           setTimeout(function() {
-            location.href = "/admin/article?pn=#(pn ? pn : 1)";
+            location.href = "/admin/question?pn=#(pn ? pn : 1)";
           }, 2100);
         }
       }
