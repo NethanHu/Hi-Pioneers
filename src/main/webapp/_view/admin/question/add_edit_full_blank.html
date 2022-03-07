@@ -65,7 +65,7 @@
       #end
 
       <div class="form-group">
-        <input type="hidden" name="question.type" value="一般选择题">
+        <input type="hidden" name="question.type" value="填空题">
           请输入题目哦：
       </div>
 
@@ -77,11 +77,10 @@
       <ul id="question_list">
         <li>
           <div class="form-group">
-<!--              在这个区域内，点击一次"添加选项"就会appendChildL来增加选项-->
+<!--              在这个区域内，点击一次"添加选项"就会 appendChild 来增加填空的题数-->
           </div>
         </li>
       </ul>
-        <input type="hidden" name='question.option' id="content_question_option" value="">
         <input type="hidden" name='question.answer' id="content_question_answer" value="">
 
 
@@ -94,7 +93,7 @@
 
       <div class="form-group text-center">
         <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
-          <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更析')
+          <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更新')
         </button>
       </div>
 
@@ -175,8 +174,8 @@
   function addOption() {
     var node = document.createElement('li');
     node.innerHTML = "          <div class=\"form-group\">\n" +
-            "            <input type=\"checkbox\" id=\"choice_" + choice_index + "\">\n" +
-            "           <input autocomplete=\"off\" id=\"choice_input_" + choice_index + "\" class=\"form-control\" type=\"text\" placeholder=\"请输入选项\">\n" +
+        "<label>第" + choice_index + "题</label> \n" +
+            "           <input autocomplete=\"off\" id=\"choice_input_" + choice_index + "\" class=\"form-control\" type=\"text\" placeholder=\"请输入填空题的答案\">\n" +
             "          </div>";
     question_list.appendChild(node);
     choice_index++;
@@ -184,10 +183,8 @@
   }
 
   function getFullElements() { // 得到题目内容、选项和正确答案上传到数据库
-      var content_question_option = document.getElementById('content_question_option');
       var content_question_answer = document.getElementById('content_question_answer');
-      var obj = combineChoiceContent(choice_index, 'choice_input_', 'choice_'); // 返回 option 和 answer 属性
-      content_question_option.setAttribute('value', obj.full_option);
+      var obj = combineBlankContent(choice_index, 'choice_input_'); // 返回 option 属性
       content_question_answer.setAttribute('value', obj.full_answer);
   }
 

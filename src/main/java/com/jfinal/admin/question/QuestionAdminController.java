@@ -65,6 +65,10 @@ public class QuestionAdminController extends BaseController {
     public void add_edit_full_answer() {
         render("add_edit_full_answer.html");
     }
+    public void add_edit_full_blank() {
+        render("add_edit_full_blank.html");
+    }
+
 
     /**
      * 保存
