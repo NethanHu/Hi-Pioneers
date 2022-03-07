@@ -83,13 +83,13 @@ public class QuestionAdminController extends BaseController {
      *
      * 注意：使用独立于后台 layout 的页面 add_edit_full.html 时，需要清除掉 LayoutInterceptor 拦截器
      */
-    @Clear(LayoutInterceptor.class)
+
     public void edit() {
         set("question", srv.getById(getInt("id")));
         // render("add_edit.html");
         // 改用独立于后台 layout 的页面
         keepPara("pn");					// 将页号参数 pn 传递到页面使用
-        render("select_type.html");
+        render("edit_choice.html");
     }
 
 

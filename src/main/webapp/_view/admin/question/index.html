@@ -50,7 +50,7 @@
                 </td>
 
                 <td class="operation">
-                    <a target="_blank" href="/admin/question/select_type?id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
+                    <a fill target="_blank" href="/admin/question/edit?type=#(x.type)&id=#(x.id)&pn=#(page.pageNumber)">修改</a> |
 
                     ### 这里用 url 代替 href 是为了防止意外删除数据
                     <a confirm="确定删除 #escape(x.title) ？" ok-remove="tr" url="/admin/question/delete?id=#(x.id)">删除</a>

@@ -60,7 +60,7 @@ function transDBSingleString(DBString, type) {
     var trans_array = DBString.split("~~~");
     var array_length = trans_array.length;
 
-    for (let i = 1; i <= array_length; i++) {
+    for (let i = 1; i < array_length; i++) {
         switch (type) {
             case 'ABCD' :
                 trans_array[i] = String.fromCharCode(64 + i) + '. ' + trans_array[i];
@@ -88,7 +88,7 @@ function transDBSingleAnswer(DBString) {
     var array_length = trans_array.length;
     var final_answer = "";
 
-    for (let i = 1; i <= array_length; i++) {
+    for (let i = 1; i < array_length; i++) {
         if (trans_array[i] == 'true') {
             final_answer += String.fromCharCode(64 + i);
         }
