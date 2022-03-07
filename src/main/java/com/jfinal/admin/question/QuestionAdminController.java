@@ -113,9 +113,8 @@ public class QuestionAdminController extends BaseController {
     /**
      * 预览文章
      */
-    @Clear(LayoutInterceptor.class)
     public void preview() {
-        set("article", srv.getById(getInt("id")));
+        set("question", srv.getById(getInt("id")));
         render("preview.html");
     }
 

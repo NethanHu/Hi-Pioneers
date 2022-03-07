@@ -9,7 +9,7 @@
     <meta name="keywords" content="jfinal admin">
     <meta name="description" content="jfinal admin">
 
-    <title>#()</title>
+    <title>题库第#(question.id)题</title>
 
     <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
@@ -61,22 +61,41 @@
             font-weight: 400;
             margin: 22px 0 16px 0;
         }
+
+        /*在这里修改选项和答案的span的CSS样式*/
+        #option_content span {
+            font-size: 16px;
+        }
     </style>
 </head>
 
 <body>
 <!-- 根容器 -->
 <div class="container">
+    <input type="hidden" value="#(question.option)" id="question_option">
+    <input type="hidden" value="#(question.answer)" id="question_answer">
 
     <!-- 主体内容 -->
     <div class="article-box">
 
         <h1 class="article-title">
-            #(article.title)
+            题库第#(question.id)题
         </h1>
 
         <div class="article-content">
-            #(article.content)
+            题目类型：#(question.type)
+        </div>
+
+        <div class="article-content">
+            #(question.question)
+        </div>
+
+        <div class="article-content" style="display: none" id="option_content">
+            ### 在这里会自动填充来自数据库的题目选项
+        </div>
+
+        <div class="article-content" id="answer_content">
+            ### 在这里会自动填充来自数据库的答案
         </div>
     </div>
 
@@ -88,11 +107,40 @@
 <script src="/assets/lib/jquery_form/jquery.form.js"></script>
 <script src="/assets/lib/layer/layer.js"></script>
 <script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/js/question-kit.js"></script>
+
 
 <script>
     $(function() {
+        var question_option = document.getElementById('question_option').getAttribute('value');
+        var question_answer = document.getElementById('question_answer').getAttribute('value');
+        var option_content = document.getElementById('option_content');
+        var answer_content = document.getElementById('answer_content');
 
+
+        fillOptionContent(question_option, option_content);
+        fillAnswerContent(question_answer, answer_content);
     });
+
+    function fillOptionContent(question_option, option_content) {
+        var node = document.createElement('span');
+
+        if (question_option != null) {
+            option_content.removeAttribute("style");
+            var option_obj = transDBSingleString(question_option, "ABCD");
+            for (let i = 1; i <= option_obj.index; i++) {
+                node.innerHTML += option_obj.indexed_array[i] + "&nbsp;&nbsp;";
+                option_content.appendChild(node);
+            }
+            option_content.appendChild(node);
+        }
+    }
+
+    function fillAnswerContent(question_answer, option_content) {
+        var node = document.createElement('span');
+        node.innerHTML = transDBSingleAnswer(question_answer);
+        option_content.appendChild(node);
+    }
 </script>
 </body>
 </html>

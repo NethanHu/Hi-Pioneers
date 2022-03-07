@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class QuestionAdminService {
 
-    private static int pageSize = 25;
+    private static int pageSize = 12;
     private Question dao = new Question().dao();
 
     /**
