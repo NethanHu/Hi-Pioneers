@@ -130,6 +130,9 @@
 
         // 绑定 esc 键关键弹出层
         kit.bindEscKeydown();
+
+        // 当进入修改页面时就决定 delButton 是否能显示出来
+        dsiplayDelButton();
     });
 
 
@@ -166,8 +169,9 @@
     var option_array = initial_option.split("~~~");
     var array_length = option_array.length;
     var answer_array = initial_answer.split("~~~");
-    var choice_index=array_length;
-    for(let i =1 ;i<array_length;i++){
+    var choice_index = array_length;
+
+    for (let i = 1; i < array_length; i++) {
         var node = document.createElement('li');
         node.innerHTML = "          <div class=\"form-group\">\n" +
             "            <input type=\"checkbox\" id=\"choice_" + i + "\">\n" +
@@ -175,22 +179,26 @@
             "          </div>";
         question_list.appendChild(node);
     }
-    for(let i=1;i<array_length;i++){
-        document.getElementById("choice_input_"+i).value=option_array[i];
+
+    for (let i = 1; i < array_length; i++) {
+        document.getElementById("choice_input_" + i).value = option_array[i];
     }
-    for(let i=1;i<array_length;i++){
-        var answer = document.getElementById("choice_"+i);
-        if(answer_array[i]=="true"){
+
+    for (let i = 1; i < array_length; i++) {
+        var answer = document.getElementById("choice_" + i);
+        if(answer_array[i] == "true"){
             answer.checked = true;
         }
     }
+
     function dsiplayDelButton() {
-        if (choice_index == array_length) {
+        if (choice_index == 1) {
             del_button.setAttribute('style', 'display: none');
         } else {
             del_button.removeAttribute('style');
         }
     }
+
     function addOption() {
         var node = document.createElement('li');
         node.innerHTML = "          <div class=\"form-group\">\n" +
@@ -201,12 +209,14 @@
         choice_index++;
         dsiplayDelButton();
     }
+
     function deleteOption() {
         var node = document.getElementsByTagName("li");
         document.getElementById('question_list').removeChild(node[node.length-1]);
         choice_index--;
         dsiplayDelButton();
     }
+
     function getFullElements() { // 得到题目内容、选项和正确答案上传到数据库
         var content_question_option = document.getElementById('content_question_option');
         var content_question_answer = document.getElementById('content_question_answer');
