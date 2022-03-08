@@ -6,12 +6,13 @@
         <!-- 左侧按钮 -->
         ### 通过点击新建按钮，跳转网页至add处可供选择题目类型
         <button fill href="/admin/question/add" class="btn btn-success btn-sm">
-            <i class="fa fa-upload mr-1"></i>新建题目
+            <i class="fa fa-upload mr-1"></i> 新建题目
         </button>
+
 
         <!-- 右侧搜索 -->
         ### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
-        <form action='/admin/question' onsubmit="return admin.search();" id="search-form" class="search-box">
+        <form action='/admin/question/' onsubmit="return admin.search();" id="search-form" class="search-box">
             <input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
             <i class="fa fa-search" ></i>
         </form>
@@ -36,6 +37,7 @@
 
             <tbody>
             #for (x : page.getList())
+
             <tr>
                 <td>#(x.id)</td>
                 <td><a fill href="/admin/question/preview?id=#(x.id)">#(x.question)</a></td>

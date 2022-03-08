@@ -8,6 +8,16 @@
 			<i class="fa fa-upload mr-1"></i>上传
 		</button>
 
+		<!-- 手动组卷 -->
+		<button open="{area:'1020px', offset:'60px'}" url="/admin/paper/generatePaperManual" class="btn btn-default btn-sm">
+			<i class="fa fa-hand-paper-o"></i> 手动组卷
+		</button>
+
+		<!-- 智能组卷 -->
+		<button msg="{offset:'139px'}" url="/admin/paper/generatePaperAuto" class="btn btn-default btn-sm">
+			<i class="fa fa-graduation-cap"></i> 智能组卷
+		</button>
+
 		<!-- 右侧搜索 -->
 		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
 		<form action='/admin/paper' onsubmit="return admin.search();" id="search-form" class="search-box">

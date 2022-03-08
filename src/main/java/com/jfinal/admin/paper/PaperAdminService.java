@@ -10,6 +10,7 @@ import com.jfinal.upload.UploadFile;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 试卷管理业务层
@@ -152,5 +153,21 @@ public class PaperAdminService {
         } catch (Exception e) {
             return Ret.fail("msg", "删除失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 手动组卷功能
+     */
+    public Ret generatePaperManual() {
+        int n = 222;
+        return Ret.ok("msg", "今天订单总数为 : " + n);
+    }
+
+    /**
+     * 智能组卷功能
+     */
+    public Ret generatePaperAuto() {
+        int n = 111;
+        return Ret.ok("msg", "今天订单总数为 : " + n);
     }
 }

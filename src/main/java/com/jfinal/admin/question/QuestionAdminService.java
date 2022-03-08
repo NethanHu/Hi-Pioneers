@@ -27,9 +27,10 @@ public class QuestionAdminService {
      * 搜索
      */
     public Page<Question> search(String key, int pageNumber) {
-        String sql = "select * from question where title like concat('%', #para(0), '%') order by update_time desc";
+        String sql = "select * from question where question like concat('%', #para(0), '%') order by update_time desc";
         return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
     }
+
 
     private Ret validate(Question question) {
         if (question == null) {

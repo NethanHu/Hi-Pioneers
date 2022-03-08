@@ -24,7 +24,6 @@ public class PaperAdminController extends BaseController {
     /**
      * 首页
      */
-
     public void index() {
         Page<Paper> page = srv.paginate(getInt("pn", 1));
         set("page", page);
@@ -80,5 +79,19 @@ public class PaperAdminController extends BaseController {
             }
             renderJson(srv.createUploadFailRet("上传异常，请告知管理员：" + e.getMessage()));
         }
+    }
+
+    /**
+     * 智能组卷模块
+     */
+    public void generatePaperManual() {
+        render("choose_questions.html");
+    }
+
+    /**
+     * 智能组卷模块，返回 Ret 形式的 msg
+     */
+    public void generatePaperAuto() {
+        renderJson(srv.generatePaperAuto());
     }
 }
