@@ -60,7 +60,7 @@ public class ArticleAdminController extends BaseController {
 	public void add() {
 		// render("add_edit.html");
 		// 改用独立于后台 layout 的页面
-		render("add8.html");
+		render("add_edit_full.html");
 	}
 	
 	/**
