@@ -26,14 +26,27 @@ public class QuestionAdminController extends BaseController {
         // pn 为分页号 pageNumber
         int pn = getInt("pn", 1);
         String keyword = get("keyword");
+        String select = get("select");
+        Page<Question> page;
 
-        Page<Question> page = StrKit.isBlank(keyword)
-                ? srv.paginate(pn)
-                : srv.search(keyword, pn);
+        if(StrKit.isBlank(keyword)&&StrKit.isBlank(select)){
+            page=srv.paginate(pn);
+        }
+        else{
+            if(!StrKit.isBlank(keyword)){
+                page=srv.search(keyword, pn);
+            }
+            else{
+                page=srv.select(select, pn);
+            }
+        }
 
         // 保持住 keyword 变量，便于输出到搜索框的 value 中
+
         keepPara("keyword");
+        keepPara("select");
         set("page", page);
+
         render("index.html");
     }
 
