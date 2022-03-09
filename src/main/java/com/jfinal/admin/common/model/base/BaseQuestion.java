@@ -17,14 +17,6 @@ public abstract class BaseQuestion<M extends BaseQuestion<M>> extends Model<M> i
 		return getInt("id");
 	}
 	
-	public void setQno(java.lang.String Qno) {
-		set("Qno", Qno);
-	}
-	
-	public java.lang.String getQno() {
-		return getStr("Qno");
-	}
-	
 	public void setCourseName(java.lang.String courseName) {
 		set("course_name", courseName);
 	}

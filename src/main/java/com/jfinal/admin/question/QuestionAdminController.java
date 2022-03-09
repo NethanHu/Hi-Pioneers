@@ -92,8 +92,6 @@ public class QuestionAdminController extends BaseController {
         render("edit_choice.html");
     }
 
-
-
     /**
      * 更新
      */
@@ -111,7 +109,7 @@ public class QuestionAdminController extends BaseController {
     }
 
     /**
-     * 预览文章
+     * 预览题目
      */
     public void preview() {
         set("question", srv.getById(getInt("id")));
