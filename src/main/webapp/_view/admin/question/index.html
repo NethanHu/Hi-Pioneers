@@ -19,18 +19,18 @@
 
 
         <form id="select-form" onsubmit="return search2();" action="/admin/question/">
-        <select id="select">
+        <select id="select" >
             <option ></option>
-            <option value="一般选择题">一般选择题</option>
+            <option  value="一般选择题">一般选择题</option>
         </select>
-        <button   class="btn btn-success btn-sm" >
-            <i class="fa fa-upload mr-1"></i> 选择
-        </button>
+<button>分类
+</button>
         </form>
     </div>
-
+    <form id="sort-form" onsubmit="return sort();" action="/admin/question/">
     <!-- 表格容器 -->
     <div id="table-box" class="table-box">
+
 
         <table class="table table-hover">
 
@@ -38,12 +38,12 @@
             <tr>
                 <th>ID</th>
                 <th>问题</th>
-                <th>类型</th>
-                <th>最后更新时间</th>
+                <th id="sort_type">type<button id="btn_type" value="type" onclick="getBtnVal(this.id)">筛选</button></th>
+                <th>创建时间</th>
                 <th>发布</th>
-
                 <th class="operation">操作</th>
             </tr>
+
             </thead>
 
             <tbody>
@@ -79,9 +79,14 @@
     ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
     #set(append = keyword ? '&keyword=' + keyword : '')
     #@adminPaginate(page, "/admin/question?pn=")
-
+    </form>
 </div>
+
 <script>
+    var sort_type;
+function getBtnVal(btn_id){
+    sort_type=document.getElementById(btn_id).value;
+}
     function search() {
         var url = $('#search-form').attr('action');
         var keyword = $('#search-keyword').val();
@@ -123,6 +128,28 @@
                      }
                  }
              });
+        // 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
+        return false;
+    }
+    function sort() {
+        var url = $('#sort-form').attr('action');
+        var type = sort_type;
+
+        kit.loading({msg:'正在搜索, 请稍候 .....'});
+        $.ajax({url: url, data: {type: type},
+            type: 'POST', cache: false, dataType: 'html',
+            success: function(ret) {
+                kit.closeLoading();
+
+                // 如果返回 json 格式数据，则 msg 输出，例如后端验证参数失败会返回 json
+                if (kit.isJsonRet(ret)) {
+                    kit.msg(kit.strToJson(ret), {time:3900, closeBtn:2});
+                } else {
+                    $('#content-box').html(ret);
+                    $('#search-keyword').select();
+                }
+            }
+        });
         // 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
         return false;
     }
