@@ -27,10 +27,13 @@ public class QuestionAdminService {
      * 搜索
      */
     public Page<Question> search(String key, int pageNumber) {
-        String sql = "select * from question where question like concat('%', #para(0), '%') order by update_time desc";
+        String sql = "select * from question where id like concat('%', #para(0), '%') order by update_time desc";
         return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
     }
-
+    public Page<Question> select(String key, int pageNumber) {
+        String sql = "select * from question where type like concat('%', #para(0), '%') order by update_time desc";
+        return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
+    }
 
     private Ret validate(Question question) {
         if (question == null) {
