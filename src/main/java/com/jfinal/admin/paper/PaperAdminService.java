@@ -2,8 +2,10 @@ package com.jfinal.admin.paper;
 
 import com.jfinal.admin.common.kit.FileKit;
 import com.jfinal.admin.common.model.Paper;
+import com.jfinal.admin.common.model.Question;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
+import com.jfinal.kit.StrKit;
 import com.jfinal.kit.TimeKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
@@ -27,6 +29,8 @@ public class PaperAdminService {
     String relativePath = "/paper/";
 
     String baseDownloadPath = "/upload/paper";
+
+    private Question dao2 = new Question().dao();
 
     /**
      * 上传文件
@@ -156,18 +160,41 @@ public class PaperAdminService {
     }
 
     /**
-     * 手动组卷功能
-     */
-    public Ret generatePaperManual() {
-        int n = 222;
-        return Ret.ok("msg", "今天订单总数为 : " + n);
-    }
-
-    /**
      * 智能组卷功能
      */
     public Ret generatePaperAuto() {
         int n = 111;
         return Ret.ok("msg", "今天订单总数为 : " + n);
+    }
+
+    /**
+     * 根据题目类型来检索题库，返回对应所需的题目
+     */
+    public Page<Question> searchForQuestion(String course, String type, String level, int pageNumber) {
+        String sql = "select * from question where ";
+
+        if (StrKit.isBlank(course) & StrKit.isBlank(type) & StrKit.isBlank(level)) {
+            sql = "select * from question";
+        }
+
+        if (!StrKit.isBlank(course)) {
+            if(StrKit.isBlank(type) & StrKit.isBlank(level)){
+                sql += "course_name = '" + course + "'";
+            } else{
+                sql += "course_name = '" + course + "' and ";
+            }
+        };
+        if (!StrKit.isBlank(type)) {
+            if(!StrKit.isBlank(level)){
+            sql += "type = '" + type + "' and ";}
+            else{
+                sql += "type = '" + type + "'";
+            }
+        };
+        if (!StrKit.isBlank(level)) {
+            sql += "level = '" + level + "'";
+        };
+
+        return dao2.templateByString(sql, course).paginate(pageNumber, pageSize);
     }
 }

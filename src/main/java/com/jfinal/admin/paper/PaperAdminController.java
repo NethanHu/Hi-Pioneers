@@ -3,10 +3,12 @@ package com.jfinal.admin.paper;
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.model.Paper;
+import com.jfinal.admin.common.model.Question;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.kit.Ret;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
@@ -82,16 +84,23 @@ public class PaperAdminController extends BaseController {
     }
 
     /**
-     * 智能组卷模块
-     */
-    public void generatePaperManual() {
-        render("choose_questions.html");
-    }
-
-    /**
      * 智能组卷模块，返回 Ret 形式的 msg
      */
     public void generatePaperAuto() {
         renderJson(srv.generatePaperAuto());
+    }
+
+    public void search() {
+        int pn = getInt("pn", 1);
+        String course = get("course");
+        String level = get("level");
+        String type = get("type");
+        Page<Question> page;
+
+        page=srv.searchForQuestion(course,type,level,pn);
+
+        set("page", page);
+
+        render("choose_questions.html");
     }
 }
