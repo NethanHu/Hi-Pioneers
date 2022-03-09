@@ -4,6 +4,7 @@ import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
+import com.jfinal.admin.question.QuestionAdminService;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -22,7 +23,7 @@ public class PaperAdminController extends BaseController {
 
     @Inject
     PaperAdminService srv;
-
+    QuestionAdminService srv2;
     /**
      * 首页
      */
@@ -96,8 +97,11 @@ public class PaperAdminController extends BaseController {
         String level = get("level");
         String type = get("type");
         Page<Question> page;
-
+        if(StrKit.isBlank(course)&&StrKit.isBlank(level)&&StrKit.isBlank(type)){
+            page=srv.paginate2(pn);
+        }else{
         page=srv.searchForQuestion(course,type,level,pn);
+        }
 
         set("page", page);
 

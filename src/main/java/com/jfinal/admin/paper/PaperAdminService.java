@@ -143,7 +143,9 @@ public class PaperAdminService {
     public Page<Paper> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
-
+    public Page<Question> paginate2(int pageNumber) {
+        return dao2.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
+    }
     /**
      * 删除
      */
