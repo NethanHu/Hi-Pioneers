@@ -31,7 +31,7 @@
                 <th>问题</th>
                 <th>科目</th>
                 <th>类型</th>
-                <th>最后更新时间</th>
+                <th>难度</th>
                 <th class="operation">操作</th>
             </tr>
 
@@ -47,8 +47,11 @@
                 <td style="height: 21px; text-overflow: ellipsis">#(x.question)</td>
                 <td>#(x.course_name)</td>
                 <td>#(x.type)</td>
-                <td>#date(x.update_time)</td>
-                <td></td>
+                <td>#(x.level)</td>
+                <td class="operation">
+                    <input type="checkbox">
+<!--                    TO DO: checkbox 策略有小问题，即翻页之后上一页所有选中的 checkbox 不会显示被选中-->
+                </td>
             </tr>
             #end
             </tbody>
