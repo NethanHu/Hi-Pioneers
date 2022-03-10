@@ -1,26 +1,24 @@
-<!-- 弹出层 title -->
-<div class="layui-layer-title" style="cursor: move;">
-    手动组卷
-</div>
-
-<!-- 弹出层主体内容 -->
+<!-- 主界面 -->
+<div class="main">
+<!-- 主体内容 -->
 <form id="search" action="/admin/paper/search" onsubmit="return searchQuestions()">
-    <div class="open-box" style="padding: 30px 30px 15px 30px;">
-    <select id="question_course">
+    <div class="toolbar">
+        <label>选择题目的条件：</label>
+        <select id="question_course">
+            <option value="">----|选择科目|--</option>
+        </select>
 
-    </select>
+        <select id="question_type">
+            <option value="">----|选择类型|--</option>
+        </select>
 
-    <select id="question_type">
+        <select id="question_level">
+            <option value="">----|选择难度|--</option>
+        </select>
 
-    </select>
-
-    <select id="question_level">
-
-    </select>
-
-    <button class="btn btn-success btn-sm" >
-        <i class="fa fa-filter"></i> 检索题库
-    </button>
+        <button class="btn btn-success btn-sm">
+            <i class="fa fa-filter"></i> 检索题库
+        </button>
     </div>
     <div id="table-box" class="table-box">
 
@@ -31,8 +29,9 @@
             <tr>
                 <th>ID</th>
                 <th>问题</th>
-                <th >type</th>
-                <th>创建时间</th>
+                <th>科目</th>
+                <th>类型</th>
+                <th>最后更新时间</th>
                 <th class="operation">操作</th>
             </tr>
 
@@ -41,12 +40,15 @@
             <tbody>
             #for (x : page.getList())
 
+<!--            TO DO: 把过长的题目采取 overflow: hidden 的策略-->
+<!--            目前尚未完成，行内 CSS 样式没有效果-->
             <tr>
                 <td>#(x.id)</td>
-                <td>#(x.question)</td>
+                <td style="height: 21px; text-overflow: ellipsis">#(x.question)</td>
+                <td>#(x.course_name)</td>
                 <td>#(x.type)</td>
                 <td>#date(x.update_time)</td>
-
+                <td></td>
             </tr>
             #end
             </tbody>
@@ -57,6 +59,7 @@
     #set(append = keyword ? '&keyword=' + keyword : '')
     #@adminPaginate(page, "/admin/paper/search?pn=")
 </form>
+</div>
 
 <!-- 弹出层 button -->
 <div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">

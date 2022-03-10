@@ -23,7 +23,7 @@ public class PaperAdminController extends BaseController {
 
     @Inject
     PaperAdminService srv;
-    QuestionAdminService srv2;
+
     /**
      * 首页
      */
@@ -91,20 +91,23 @@ public class PaperAdminController extends BaseController {
         renderJson(srv.generatePaperAuto());
     }
 
+    /**
+     * 手动组卷模块，会跳出题库中的题目以供选择
+     */
     public void search() {
         int pn = getInt("pn", 1);
         String course = get("course");
         String level = get("level");
         String type = get("type");
         Page<Question> page;
-        if(StrKit.isBlank(course)&&StrKit.isBlank(level)&&StrKit.isBlank(type)){
-            page=srv.paginate2(pn);
-        }else{
-        page=srv.searchForQuestion(course,type,level,pn);
+
+        if(StrKit.isBlank(course) & StrKit.isBlank(level) & StrKit.isBlank(type)){
+            page = srv.Qpaginate(pn);
+        } else {
+            page = srv.searchForQuestion(course, type, level, pn);
         }
 
         set("page", page);
-
         render("choose_questions.html");
     }
 }

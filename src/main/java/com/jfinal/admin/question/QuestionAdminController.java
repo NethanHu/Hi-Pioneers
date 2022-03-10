@@ -30,18 +30,16 @@ public class QuestionAdminController extends BaseController {
         String type = get("type");
         Page<Question> page;
 
-        if(StrKit.isBlank(keyword)&&StrKit.isBlank(select)&&StrKit.isBlank(type)){
-            page=srv.paginate(pn);
+        if(StrKit.isBlank(keyword) & StrKit.isBlank(select) & StrKit.isBlank(type)){
+            page = srv.paginate(pn);
         }
         else{
             if(!StrKit.isBlank(keyword)){
-                page=srv.search(keyword, pn);
-            }
-            else if(!StrKit.isBlank(select)){
-                page=srv.select(select, pn);
-            }
-            else{
-                page=srv.sort(type, pn);
+                page = srv.search(keyword, pn);
+            } else if (!StrKit.isBlank(select)){
+                page = srv.select(select, pn);
+            } else {
+                page = srv.sort(type, pn);
             }
         }
 

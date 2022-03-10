@@ -30,7 +30,6 @@ public class PaperAdminService {
 
     String baseDownloadPath = "/upload/paper";
 
-    private Question dao2 = new Question().dao();
 
     /**
      * 上传文件
@@ -135,7 +134,9 @@ public class PaperAdminService {
     // -----------------------------------------------------------------------------
 
     private static int pageSize = 15;
+
     private Paper dao = new Paper().dao();
+    private Question Qdao = new Question().dao(); // 在 Paper 模块中引入 Question 的数据库
 
     /**
      * 分页
@@ -143,9 +144,11 @@ public class PaperAdminService {
     public Page<Paper> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
-    public Page<Question> paginate2(int pageNumber) {
-        return dao2.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
+    // 引入范型为 Question 的分页机制，因为要显示题库以供选择
+    public Page<Question> Qpaginate(int pageNumber) {
+        return Qdao.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
     }
+
     /**
      * 删除
      */
@@ -170,7 +173,8 @@ public class PaperAdminService {
     }
 
     /**
-     * 根据题目类型来检索题库，返回对应所需的题目
+     * 根据题目类型来检索题库，返回对应符合要求的题目
+     * 这里由于 if 判断过多，TO DO: 日后可以加以抽象提取一个方法来组合 sql 语句
      */
     public Page<Question> searchForQuestion(String course, String type, String level, int pageNumber) {
         String sql = "select * from question where ";
@@ -197,6 +201,6 @@ public class PaperAdminService {
             sql += "level = '" + level + "'";
         };
 
-        return dao2.templateByString(sql, course).paginate(pageNumber, pageSize);
+        return Qdao.templateByString(sql, new Object()).paginate(pageNumber, pageSize);
     }
 }
