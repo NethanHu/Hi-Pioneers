@@ -39,7 +39,9 @@ public class PaperAdminController extends BaseController {
     public void add() {
         render("add.html");
     }
-
+    public void createPaper() {
+        render("create_paper.html");
+    }
     /**
      * 删除
      */

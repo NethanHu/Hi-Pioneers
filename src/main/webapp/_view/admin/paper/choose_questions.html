@@ -44,13 +44,12 @@
 <!--            目前尚未完成，行内 CSS 样式没有效果-->
             <tr>
                 <td>#(x.id)</td>
-                <td style="height: 21px; text-overflow: ellipsis">#(x.question)</td>
+                <td style="height: 21px; text-overflow: ellipsis" id="question_#(x.id)">#(x.question)</td>
                 <td>#(x.course_name)</td>
                 <td>#(x.type)</td>
                 <td>#(x.level)</td>
                 <td class="operation">
-                    <input type="checkbox">
-<!--                    TO DO: checkbox 策略有小问题，即翻页之后上一页所有选中的 checkbox 不会显示被选中-->
+                    <button type="checkbox" id="#(x.id)" onclick="choose(this.id)">选择</button>
                 </td>
             </tr>
             #end
@@ -68,13 +67,21 @@
 <div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
 
 </div>
+<div id="create_paper" class="panel">
+    <!-- 加载动画 -->
+    <i class="fa fa-spinner fa-pulse fa-2x" style="padding:20px;"></i>
+</div>
 
 <script src="/assets/js/paper-kit.js"></script>
+
+
 <!-- 弹出层 js 脚本 -->
 <script>
     $(function() {
         // 在页面加载的时候就自己填充 <select> 中的 <option> 元素
         fillAllSelectOptions();
+
+        kit.fill('/admin/paper/createPaper', null, '#create_paper');
     });
 
     var question_course_select = document.getElementById('question_course');
@@ -90,11 +97,11 @@
 
     function searchQuestions() {
         // TO DO: 在这里完成检索题库的方法
-        var url = $('#search').attr('action');
+        let url = $('#search').attr('action');
 
-        var course = $('#question_course option:selected').val();
-        var type = $('#question_type option:selected').val();
-        var level = $('#question_level option:selected').val();
+        let course = $('#question_course option:selected').val();
+        let type = $('#question_type option:selected').val();
+        let level = $('#question_level option:selected').val();
 
         kit.loading({msg:'正在搜索, 请稍候 .....'});
         $.ajax({url: url, data: {course : course, type : type, level : level},
@@ -115,4 +122,11 @@
         return false;
     }
 
+    function choose(btn_id){
+        let btn = document.getElementById(btn_id);
+        btn.setAttribute("disabled", "disabled");
+        let question_content = document.getElementById("question_" + btn_id).innerHTML;
+        let question_obj = new AddedQuestion(btn_id, question_content)
+        console.log(question_obj);
+    }
 </script>

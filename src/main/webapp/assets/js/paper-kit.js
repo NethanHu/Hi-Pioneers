@@ -17,3 +17,18 @@ function fillSelectOptions(question_character, target_select_element) {
         target_select_element.appendChild(option_node);
     }
 }
+
+
+var chosen_questions = [];
+
+/**
+ * 构造器，用于创建一个已添加进备选框的题目的对象，用于加入到 chosen_questions 数组中
+ *
+ * @param question_id : string
+ * @param question_content : string
+ * @constructor
+ */
+function AddedQuestion(question_id, question_content) {
+    this.id = question_id;
+    this.content = question_content;
+}

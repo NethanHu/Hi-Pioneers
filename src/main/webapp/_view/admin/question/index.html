@@ -77,6 +77,7 @@
     <!-- 分页 -->
     ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
     #set(append = keyword ? '&keyword=' + keyword : '')
+        #set(append = select ? '&select=' + select : '')
     #@adminPaginate(page, "/admin/question?pn=")
     </form>
 </div>
