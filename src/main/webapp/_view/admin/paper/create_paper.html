@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-hahaha
-</body>
-</html>
+<!-- 主界面 -->
+<div class="main">
+<!--    选中的题目预览功能-->
+    <div id="table-box" class="table-box">
+<!--        题目表格-->
+        <table class="table table-hover" >
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>问题</th>
+                    <th class="operation">操作</th>
+                </tr>
+            </thead>
+
+            <tbody id="chosen_question_list">
+                <tr>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<!--引入 paper-kit.js 依赖-->
+<!--<script src="/assets/js/paper-kit.js"></script>-->
+
+<script>
+    $(function () {
+        fillQuestionList();
+    });
+
+    function fillQuestionList() {
+
+        for (let i = 0; i < chosen_questions.length; i++) {
+            let id = chosen_questions[i].id;
+            let content = chosen_questions[i].content;
+
+            let node_tr = document.createElement('tr');
+            let node_td_id = document.createElement('td');
+            let node_td_question = document.createElement('td');
+
+            node_td_id.innerHTML = id;
+            node_td_question.innerHTML = `<div>${content}</div>`;
+
+            node_tr.appendChild(node_td_id);
+            node_tr.appendChild(node_td_question);
+        }
+    }
+
+
+
+</script>

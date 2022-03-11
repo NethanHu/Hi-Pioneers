@@ -19,7 +19,8 @@ function fillSelectOptions(question_character, target_select_element) {
 }
 
 
-var chosen_questions = [];
+const chosen_questions = [];
+var question_index = 0;
 
 /**
  * 构造器，用于创建一个需要添加进备选框的题目的对象，用于加入到 chosen_questions 数组中，以便于在新 fill 的备选框 html

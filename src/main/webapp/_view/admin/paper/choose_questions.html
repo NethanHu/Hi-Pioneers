@@ -22,7 +22,6 @@
     </div>
     <div id="table-box" class="table-box">
 
-
         <table class="table table-hover" >
 
             <thead>
@@ -65,9 +64,9 @@
 <div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
 
 </div>
+
 <div id="create_paper" class="panel">
-    <!-- 加载动画 -->
-    <i class="fa fa-spinner fa-pulse fa-2x" style="padding:20px;"></i>
+
 </div>
 
 <script src="/assets/js/paper-kit.js"></script>
@@ -79,7 +78,6 @@
         // 在页面加载的时候就自己填充 <select> 中的 <option> 元素
         fillAllSelectOptions();
 
-        kit.fill('/admin/paper/createPaper', null, '#create_paper');
     });
 
     var question_course_select = document.getElementById('question_course');
@@ -120,11 +118,18 @@
         return false;
     }
 
+    // 绑定的点击事件，用来向 chosen_questions 数组填充，且刷新备选框的 html
     function choose(btn_id){
-        let btn = document.getElementById("btn_"+btn_id);
+        // 第一事件
+        let btn = document.getElementById("btn_" + btn_id);
         btn.setAttribute("disabled", "disabled");
+
+        // 第二事件
         let question_content = document.getElementById("question_" + btn_id).innerHTML;
-        let question_obj = new AddedQuestion(btn_id, question_content)
-        console.log(question_obj);
+        chosen_questions[question_index] = new AddedQuestion(btn_id, question_content);
+        question_index++;
+
+        //第三事件
+        kit.fill('/admin/paper/createPaper', null, '#create_paper');
     }
 </script>
