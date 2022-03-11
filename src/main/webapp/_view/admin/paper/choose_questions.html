@@ -23,7 +23,7 @@
     <div id="table-box" class="table-box">
 
 
-        <table class="table table-hover">
+        <table class="table table-hover" >
 
             <thead>
             <tr>
@@ -40,11 +40,9 @@
             <tbody>
             #for (x : page.getList())
 
-<!--            TO DO: 把过长的题目采取 overflow: hidden 的策略-->
-<!--            目前尚未完成，行内 CSS 样式没有效果-->
             <tr>
                 <td>#(x.id)</td>
-                <td style="height: 21px; text-overflow: ellipsis" id="question_#(x.id)">#(x.question)</td>
+                <td><div style="height: 21px; overflow: hidden; text-overflow: ellipsis" id="question_#(x.id)">#(x.question)</div></td>
                 <td>#(x.course_name)</td>
                 <td>#(x.type)</td>
                 <td>#(x.level)</td>

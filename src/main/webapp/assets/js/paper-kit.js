@@ -22,7 +22,8 @@ function fillSelectOptions(question_character, target_select_element) {
 var chosen_questions = [];
 
 /**
- * 构造器，用于创建一个已添加进备选框的题目的对象，用于加入到 chosen_questions 数组中
+ * 构造器，用于创建一个需要添加进备选框的题目的对象，用于加入到 chosen_questions 数组中，以便于在新 fill 的备选框 html
+ * 中查看到已选择的题目
  *
  * @param question_id : string
  * @param question_content : string
