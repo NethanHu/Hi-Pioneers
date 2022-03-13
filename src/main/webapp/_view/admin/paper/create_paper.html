@@ -33,20 +33,16 @@
     });
 
     function fillQuestionList() {
-
+        var list_node = document.getElementById("chosen_question_list");
         for (let i = 0; i < chosen_questions.length; i++) {
             let id = chosen_questions[i].id;
             let content = chosen_questions[i].content;
 
             let node_tr = document.createElement('tr');
-            let node_td_id = document.createElement('td');
-            let node_td_question = document.createElement('td');
 
-            node_td_id.innerHTML = id;
-            node_td_question.innerHTML = `<div>${content}</div>`;
+            node_tr.innerHTML = "<th>"+id+"</th>"+"<th>"+content+"</th>";
+            list_node.appendChild(node_tr);
 
-            node_tr.appendChild(node_td_id);
-            node_tr.appendChild(node_td_question);
         }
     }
 
