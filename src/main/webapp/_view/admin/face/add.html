@@ -1,0 +1,75 @@
+<!--
+   弹出层 html、css、js 封装在此同一个模板文件中，模块化管理
+ -->
+
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+	上传图片
+</div>
+
+<!-- 弹出层主体内容 -->
+<div class="open-box" style="padding: 30px 30px 15px 30px;">
+	<form id="open-form" enctype="multipart/form-data" action="/admin/image/upload" onsubmit="return false;" method="POST">
+		
+		<div class="custom-file">
+			### 注意必须要有 name 属性，否则无法上传
+			<input type="file" name="upload" class="custom-file-input">
+			<label class="custom-file-label">选择图片</label>
+		</div>
+		
+	</form>
+</div>
+
+<!-- 弹出层 button -->
+<div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
+	<a class="layui-layer-btn0">上传</a>
+	<a class="layui-layer-btn1">取消</a>
+</div>
+
+
+<!-- 弹出层 js 脚本 -->
+<script>
+	
+	$(function() {
+		$('.custom-file-input').on('change', showSelectedFileName);
+		
+		// 绑定提交按钮事件
+		$(".layui-layer-btn0").on("click", submitImage);
+	});
+	
+	/**
+	 * 显示选中文件
+	 */
+	function showSelectedFileName() {
+		var fileName = $(this).val();
+		$('.custom-file-label').html(fileName);
+	}
+	
+	/**
+	 * 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+	 */
+	function submitImage() {
+		$("#open-form").ajaxSubmit({
+			dataType: 'json', type: 'POST',
+			beforeSerialize: function($form, options) {
+				kit.loading({msg: '正在上传图片, 请稍候 .....'});
+			},
+			success: function(ret) {
+				kit.closeLoading();		// 关闭 loading 层
+				
+				// 上传成功格式：{"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
+				// 上传失败格式：{"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
+				if (ret.uploaded != 0) {
+					layer.closeAll();	// 提交成功关闭 open 弹出层
+					kit.fill('/admin/image', null, '#content-box');
+					kit.ok('上传成功');
+				} else {
+					kit.fail('上传失败: ' + ret.error.message);
+				}
+			}
+		});
+	}
+</script>
+
+
+
