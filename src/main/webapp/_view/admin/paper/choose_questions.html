@@ -75,9 +75,12 @@
 <!-- 弹出层 js 脚本 -->
 <script>
     $(function() {
+       
         // 在页面加载的时候就自己填充 <select> 中的 <option> 元素
         fillAllSelectOptions();
+
         kit.fill('/admin/paper/createPaper', null, '#create_paper');
+        banChooseButton();
     });
 
     var question_course_select = document.getElementById('question_course');

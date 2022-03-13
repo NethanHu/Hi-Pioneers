@@ -27,6 +27,12 @@
 <!--引入 paper-kit.js 依赖-->
 <!--<script src="/assets/js/paper-kit.js"></script>-->
 
+<style>
+    button {
+
+    }
+</style>
+
 <script>
     $(function () {
         fillQuestionList();
@@ -37,15 +43,12 @@
         for (let i = 0; i < chosen_questions.length; i++) {
             let id = chosen_questions[i].id;
             let content = chosen_questions[i].content;
-
             let node_tr = document.createElement('tr');
 
-            node_tr.innerHTML = "<th>"+id+"</th>"+"<th>"+content+"</th>";
+            node_tr.innerHTML = `<td>${id}</td><td>${content}</td><td><button id="${id}" onclick="deleteChosenQuestion(this.id)">删除</button></td>`;
             list_node.appendChild(node_tr);
 
         }
     }
-
-
 
 </script>
