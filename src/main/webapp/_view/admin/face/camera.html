@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一、</title>
+</head>
+<body>
+<video id="video" playsinline=""></video>
+<input type="button" class="layui-btn layui-btn-primary" value="打开摄像头" id="openCamera"/>
+<select class="select" id="videoDevice"></select>
+<script src="/assets/js/camera.js" type="text/javascript"></script>
+<script type="text/javascript">
+    const ca = new Camera();
+    const videoSetting = {width: 480, height: 360};
+    const video = document.querySelector('#video');
+    const videoDevice = document.querySelector('#videoDevice');
+    ca.listCamera(videoDevice).then(() => {
+        openCamera(video, videoDevice.value, videoSetting);
+        videoDevice.onchange = () => {
+            openCamera(video, videoDevice.value, videoSetting);
+        };
+        document.querySelector('#openCamera').style.display = 'none';
+    }).catch((err) => {
+        console.log(err);
+        console.log('没有可使用的视频设备');
+    });
+    const openCamera = (video, deviceId, videoSetting) => {
+        ca.openCamera(video, deviceId, videoSetting)
+            .then((msg) => {
+                // 打开摄像头成功
+                // 将视频铺满全屏(简单处理)
+                let videoWidth = video.offsetWidth;
+                let videoHeight = video.offsetHeight;
+                if (window.innerWidth < window.innerHeight) {
+                    // 竖屏
+                    if (videoHeight < window.innerHeight) {
+                        video.setAttribute('height', window.innerHeight.toString() + 'px');
+                    }
+
+                } else {
+                    // 横屏
+                    if (videoWidth < window.innerWidth) {
+                        video.setAttribute('width', window.innerWidth.toString() + 'px');
+                    }
+
+                }
+
+            })
+            .catch((err) => {
+                alert('打开视频设备失败');
+            });
+    };
+
+</script>
+</body>
+</html>
