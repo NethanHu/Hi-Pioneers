@@ -85,6 +85,18 @@ public class PaperAdminService {
     }
 
     /**
+     * 创建
+     */
+    public Ret save(int accountId, Paper paper) {
+
+        paper.setAccountId(accountId);
+        paper.setState(paper.STATE_UNPUBLISHED);	// 默认未发布
+        paper.setUpdateTime(new Date());
+        paper.save();
+        return Ret.ok("msg", "创建成功");
+    }
+
+    /**
      * 目前使用 File.renameTo(targetFileName) 的方式保存到目标文件，
      * 如果 linux 下不支持，或者将来在 linux 下要跨磁盘保存，则需要
      * 改成 copy 文件内容的方式并删除原来文件的方式来保存

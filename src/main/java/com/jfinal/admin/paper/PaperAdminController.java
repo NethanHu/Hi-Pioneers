@@ -87,6 +87,13 @@ public class PaperAdminController extends BaseController {
             renderJson(srv.createUploadFailRet("上传异常，请告知管理员：" + e.getMessage()));
         }
     }
+    /**
+     * 保存
+     */
+    public void save() {
+        Ret ret = srv.save(getLoginAccountId(), getBean(Paper.class));
+        renderJson(ret);
+    }
 
     /**
      * 智能组卷模块，返回 Ret 形式的 msg

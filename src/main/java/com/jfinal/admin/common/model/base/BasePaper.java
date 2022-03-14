@@ -97,5 +97,13 @@ public abstract class BasePaper<M extends BasePaper<M>> extends Model<M> impleme
 		return getInt("Length");
 	}
 	
+	public void setState(java.lang.Integer state) {
+		set("state", state);
+	}
+	
+	public java.lang.Integer getState() {
+		return getInt("state");
+	}
+	
 }
 
