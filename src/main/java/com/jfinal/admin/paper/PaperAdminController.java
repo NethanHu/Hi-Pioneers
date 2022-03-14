@@ -39,10 +39,13 @@ public class PaperAdminController extends BaseController {
     public void add() {
         render("add.html");
     }
+
+    /**
+     * fill 注入的考题备选框
+     */
     public void createPaper() {
         render("create_paper.html");
     }
-
 
     /**
      * 删除
@@ -56,6 +59,14 @@ public class PaperAdminController extends BaseController {
      */
     public void download() {
 
+    }
+
+    /**
+     * 考题预览功能
+     */
+    public void preview() {
+        set("Paper", srv.getById(getInt("id")));
+        render("preview.html");
     }
 
     /**

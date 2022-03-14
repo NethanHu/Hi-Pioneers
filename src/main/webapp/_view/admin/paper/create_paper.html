@@ -1,13 +1,12 @@
 <!-- 主界面 -->
 <div class="main">
 <!--    选中的题目预览功能-->
-    <form id="open-form" action="/admin/paper/save" method="POST"
-          onsubmit="return false;">
+    <form id="paper-form" action="/admin/paper/save" method="POST" onsubmit="return false;">
 
-        <input type="hidden" name="Paper.id" >
+        <input class="form-control" autocomplete="off" type="text" id="input_show_name" name="paper.showName">
 
-    <div id="table-box" class="table-box">
 <!--        题目表格-->
+    <div class="table-box">
         <table class="table table-hover" >
 
             <thead>
@@ -26,6 +25,7 @@
 
         </table>
     </div>
+
         <button id="paper-btn" class="btn btn-success btn-sm pl-2 pr-3" onclick="submitPaper()">
             创建
         </button>
@@ -34,7 +34,7 @@
 </div>
 
 <!--引入 paper-kit.js 依赖-->
-<!--<script src="/assets/js/paper-kit.js"></script>-->
+<script src="/assets/js/paper-kit.js"></script>
 
 <style>
     button {
@@ -44,24 +44,24 @@
 
 <script>
     $(function () {
+        // 每次刷新时自动在表格中加载备选框内容
         fillQuestionList();
 
+        // 设置第一个 input 为输入焦点
+        $("#paper-form input[type='text']:first").focus();
 
         // 绑定 esc 键关键弹出层
         kit.bindEscKeydown();
     });
 
     function submitPaper() {
-        getPaperContent(); // 题目选项和正确答案将通过该方法上传进数据库
+        getPaperContent(); // 题目将通过该方法上传进数据库
+        // setShowName(); // 将试卷标题传入数据库
 
         // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
-        $("#open-form").ajaxSubmit({
+        $("#paper-form").ajaxSubmit({
                 dataType: 'json', type: 'POST',
-                beforeSerialize: function($form, options) {
-                    // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
 
-                    kit.loading({msg: '正在保存, 请稍候 .....'});
-                },
                 success: function(ret) {
                     kit.closeLoading();		// 关闭 loading 层
                     kit.msg(ret);
@@ -75,6 +75,7 @@
             }
         );
     }
+
     function fillQuestionList() {
         var list_node = document.getElementById("chosen_question_list");
         for (let i = 0; i < chosen_questions.length; i++) {
@@ -87,12 +88,14 @@
 
         }
     }
-    function getPaperContent() { // 得到题目内容、选项和正确答案上传到数据库
+
+    function getPaperContent() { // 得到题目上传到数据库
         var paper_content = document.getElementById('paper_content');
-        var final_content="";
+        var final_content = "";
         for (let i = 0; i < chosen_questions.length; i++) {
-            final_content = final_content +'~~~'+chosen_questions[i].id;
+            final_content = final_content + '~~~' + chosen_questions[i].id;
         }
-        paper_content.setAttribute('value',final_content);
+        paper_content.setAttribute('value', final_content);
     }
+
 </script>

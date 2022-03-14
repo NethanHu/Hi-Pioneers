@@ -44,7 +44,7 @@
 			#for (x : page.getList())
 				<tr>
 					<td>#(x.id)</td>
-					<td>#(x.showName)</td>
+					<td><a href="/admin/paper/preview?id=#(x.id)">#(x.showName)</a></td>
 					<td>#date(x.update_time)</td>
 					
 					<td class="operation">

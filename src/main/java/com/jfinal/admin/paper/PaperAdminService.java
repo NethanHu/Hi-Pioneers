@@ -84,11 +84,16 @@ public class PaperAdminService {
         return accountId + "_" + time + extName;
     }
 
+    private String buildSavePaperName(int accountId) {
+        String time = TimeKit.format(LocalDateTime.now(), "yyyyMMddHHmmss");
+        return accountId + "_" + time + ".pdf"; // pdf 只是可选名，与实际的储存格式没有实际关系
+    }
+
     /**
      * 创建
      */
     public Ret save(int accountId, Paper paper) {
-
+        paper.setFileName(buildSavePaperName(accountId));
         paper.setAccountId(accountId);
         paper.setState(paper.STATE_UNPUBLISHED);	// 默认未发布
         paper.setUpdateTime(new Date());
@@ -174,6 +179,13 @@ public class PaperAdminService {
         } catch (Exception e) {
             return Ret.fail("msg", "删除失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 获取 id
+     */
+    public Paper getById(int id) {
+        return dao.findById(id);
     }
 
     /**

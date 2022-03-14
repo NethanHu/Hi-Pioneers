@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="always">
+
+    <meta name="keywords" content="jfinal admin">
+    <meta name="description" content="jfinal admin">
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+
+    <style>
+        /* html 是根元素
+         * rem（font size of the root element）是相对于 html 元素的字体大小单位
+         * 在不指定时多数浏览器的默认值为 16px
+         */
+
+        body, html {
+            font-size: 17px;
+            background-color: #F2F2F2;
+        }
+        .container {
+            /* 常见的设备网页宽度为：1920px 1600px 1440px 1280px 1140px 960px 768px 640px 320px */
+            /* min-width: 1140px; */
+            /* max-width: 768px; */
+            max-width: 960px;
+
+            margin: 15px auto;
+            padding: 25px 60px;
+            background-color: #FFF;
+            border-radius: 5px;
+
+        }
+        .article-title {
+            font-size: 24px;
+            font-weight: 400;
+            color: #333;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-top: 40px;
+        }
+        .article-content p {
+            margin: 16px 0;
+        }
+        .article-content h2 {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 22px 0 18px 0;
+        }
+        .article-content h3 {
+            font-size: 22px;
+            font-weight: 400;
+            margin: 22px 0 16px 0;
+        }
+
+        /* 在这里修改选项和答案的 span 的CSS样式 */
+        #option_content span {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 根容器 -->
+<div class="container">
+
+    <!-- 主体内容 -->
+    <div class="article-box">
+
+        <h1 class="article-title">
+            试卷第#(Paper.id)号
+        </h1>
+
+        <div class="article-content">
+            #(Paper.content)
+        </div>
+
+<!--        <div class="article-content" style="display: none" id="option_content">-->
+<!--            ### 在这里会自动填充来自数据库的题目选项-->
+<!--        </div>-->
+
+<!--        <div class="article-content" id="answer_content">-->
+<!--            ### 在这里会自动填充来自数据库的答案-->
+<!--        </div>-->
+    </div>
+
+</div>
+
+<script src="/assets/lib/jquery/jquery-3.5.1.min.js"></script>
+<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+<script src="/assets/lib/layer/layer.js"></script>
+<script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/js/question-kit.js"></script>
+
+
+<script>
+    $(function() {
+
+    });
+</script>
+</body>
+</html>

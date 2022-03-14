@@ -31,7 +31,6 @@ public class _MappingKit {
 		arp.addMapping("mistake", "id", Mistake.class);
 		arp.addMapping("permission", "id", Permission.class);
 		arp.addMapping("question", "id", Question.class);
-		arp.addMapping("question_choice", "id", QuestionChoice.class);
 		arp.addMapping("role", "id", Role.class);
 		arp.addMapping("session", "id", Session.class);
 		arp.addMapping("teaching", "id", Teaching.class);
