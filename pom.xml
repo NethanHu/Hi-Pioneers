@@ -165,6 +165,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- opencv 4.5.2 外部依赖项 -->
+		<dependency>
+			<groupId>opencv-452</groupId>
+			<artifactId>opnecv-452</artifactId>
+			<version>4.5.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/opencv-452.jar</systemPath> <!-- 项目src目录下的resource文件夹下 -->
+		</dependency>
 
 	</dependencies>
 	
