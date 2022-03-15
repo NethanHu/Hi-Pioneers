@@ -4,7 +4,6 @@ import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
-import com.jfinal.admin.question.QuestionAdminService;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -14,6 +13,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
+
 
 /**
  * 文件管理控制层
