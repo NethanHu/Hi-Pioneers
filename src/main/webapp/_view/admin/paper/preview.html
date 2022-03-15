@@ -70,25 +70,23 @@
 <body>
 <!-- 根容器 -->
 <div class="container">
-
+    <input type="hidden" id="question_id_array" value="#(Paper.content)">
     <!-- 主体内容 -->
     <div class="article-box">
 
         <h1 class="article-title">
-            试卷第#(Paper.id)号
+            #(Paper.showName)
         </h1>
 
-        <div class="article-content">
-            #(Paper.content)
+        #for (x : page.getList())
+        <div>
+            <p>#(x.question)</p>
+            <div>#(x.option)</div>
         </div>
+        #end
 
-<!--        <div class="article-content" style="display: none" id="option_content">-->
-<!--            ### 在这里会自动填充来自数据库的题目选项-->
-<!--        </div>-->
 
-<!--        <div class="article-content" id="answer_content">-->
-<!--            ### 在这里会自动填充来自数据库的答案-->
-<!--        </div>-->
+
     </div>
 
 </div>
@@ -99,13 +97,33 @@
 <script src="/assets/lib/jquery_form/jquery.form.js"></script>
 <script src="/assets/lib/layer/layer.js"></script>
 <script src="/assets/js/jfinal-kit.js"></script>
-<script src="/assets/js/question-kit.js"></script>
+<script src="/assets/js/paper-kit.js"></script>
 
 
 <script>
     $(function() {
-
+        fillPaperContent();
     });
+
+    // var question_id_array = document.getElementById('question_id_array').value;
+    // var question_array = transContentToArray(question_id_array);
+    // var paper_question_list = document.getElementById('paper_question_list');
+    //
+    // function fillPaperContent () {
+    //     for (let i = 1; i <= question_array.index; i++) {
+    //         let question_node = document.createElement('div');
+    //         question_node.innerHTML = `
+    //     <div class="article-content">
+    //         ${question_array.indexed_array[i]}
+    //     </div>
+    //
+    //     <div class="article-content" >
+    //
+    //     </div>`;
+    //         paper_question_list.appendChild(question_node);
+    //     }
+    // }
+
 </script>
 </body>
 </html>

@@ -85,3 +85,19 @@ function objIndexOf(question_id) {
         }
     }
 }
+
+/**
+ * 传入 Paper.content 中的字符串，返回试卷中所出现题目 id 的数组
+ *
+ * @param DBString : string
+ * @returns {{index: number, indexed_array: *}}
+ */
+function transContentToArray(DBString) {
+    let trans_array = DBString.split("~~~");
+    let array_length = trans_array.length;
+
+    return {
+        indexed_array : trans_array,
+        index : array_length - 1
+    }
+}

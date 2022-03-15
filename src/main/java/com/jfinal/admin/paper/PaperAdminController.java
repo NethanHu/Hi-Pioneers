@@ -4,6 +4,7 @@ import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
+import com.jfinal.admin.question.QuestionAdminService;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -64,9 +65,16 @@ public class PaperAdminController extends BaseController {
      * 考题预览功能
      */
     public void preview() {
-        set("Paper", srv.getById(getInt("id")));
+        Paper paper = srv.getById(getInt("id"));
+        String paperContent = paper.getContent();
+        String[] questionId = paperContent.split("~~~");
+        // 把 page 作为后端向前端输送数据的容器，把数据装入 page，在前端用类似 page.getList() 方法获取后端数据
+        Page<Question> page = srv.showQuestion(questionId);;
+        set("Paper", srv.getById(getInt("id"))).set("page", page);
+
         render("preview.html");
     }
+
 
     /**
      * 上传文件

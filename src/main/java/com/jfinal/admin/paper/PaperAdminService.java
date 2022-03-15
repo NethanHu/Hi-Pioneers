@@ -155,6 +155,7 @@ public class PaperAdminService {
     private Paper dao = new Paper().dao();
     private Question Qdao = new Question().dao(); // 在 Paper 模块中引入 Question 的数据库
 
+
     /**
      * 分页
      */
@@ -166,6 +167,23 @@ public class PaperAdminService {
         return Qdao.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
     }
 
+    /**
+     * 把试卷中涉及的题目数组传入，生成查询 sql 的语句
+     *
+     * @param id : String[]
+     * @return Page<Question> : Question
+     */
+    public Page<Question> showQuestion(String[] id) {
+        String sql = "select * from question where ";
+        for (int i = 1; i < id.length ; i++) {
+            if(i == 1){
+                sql = sql + "id = " + id[i];
+            } else {
+                sql = sql + " or id = " + id[i];
+            }
+        }
+        return Qdao.templateByString(sql, id[0]).paginate(1, pageSize);
+    }
     /**
      * 删除
      */
@@ -187,6 +205,14 @@ public class PaperAdminService {
     public Paper getById(int id) {
         return dao.findById(id);
     }
+
+    /**
+     * 测试使用
+     */
+    public Question getQuestionById(int id) {
+        return Qdao.findById(id);
+    }
+
 
     /**
      * 智能组卷功能
