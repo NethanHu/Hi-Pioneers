@@ -164,7 +164,7 @@ pre {
     overflow: hidden;
     
     /* 左侧最底层的背景色 */
-    background-color: rgb(192, 19, 19);
+    background-color: rgba(0, 0, 238);
 
     -webkit-font-smoothing: antialiased;	/* chrome、safari */
 	-moz-osx-font-smoothing: grayscale;	/* firefox */
