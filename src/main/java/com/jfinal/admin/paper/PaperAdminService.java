@@ -12,7 +12,6 @@ import com.jfinal.upload.UploadFile;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 试卷管理业务层
@@ -153,7 +152,7 @@ public class PaperAdminService {
     private static int pageSize = 15;
 
     private Paper dao = new Paper().dao();
-    private Question Qdao = new Question().dao(); // 在 Paper 模块中引入 Question 的数据库
+    private Question Qdao = new Question().dao(); // 在 Paper 模块中引入 Question 的数据库查询功能
 
 
     /**
@@ -184,6 +183,7 @@ public class PaperAdminService {
         }
         return Qdao.templateByString(sql, id[0]).paginate(1, pageSize);
     }
+
     /**
      * 删除
      */

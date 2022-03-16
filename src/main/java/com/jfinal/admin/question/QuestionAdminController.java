@@ -1,9 +1,7 @@
 package com.jfinal.admin.question;
 
 import com.jfinal.admin.common.BaseController;
-import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.model.Question;
-import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.kit.Ret;
@@ -30,11 +28,10 @@ public class QuestionAdminController extends BaseController {
         String type = get("type");
         Page<Question> page;
 
-        if(StrKit.isBlank(keyword) & StrKit.isBlank(select) & StrKit.isBlank(type)){
+        if (StrKit.isBlank(keyword) & StrKit.isBlank(select) & StrKit.isBlank(type)){
             page = srv.paginate(pn);
-        }
-        else{
-            if(!StrKit.isBlank(keyword)){
+        } else {
+            if (!StrKit.isBlank(keyword)){
                 page = srv.search(keyword, pn);
             } else if (!StrKit.isBlank(select)){
                 page = srv.select(select, pn);

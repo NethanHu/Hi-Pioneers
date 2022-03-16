@@ -66,15 +66,14 @@ public class PaperAdminController extends BaseController {
      */
     public void preview() {
         Paper paper = srv.getById(getInt("id"));
-        String paperContent = paper.getContent();
-        String[] questionId = paperContent.split("~~~");
+        String[] questionId = paper.getContent().split("~~~");
+
         // 把 page 作为后端向前端输送数据的容器，把数据装入 page，在前端用类似 page.getList() 方法获取后端数据
         Page<Question> page = srv.showQuestion(questionId);;
         set("Paper", srv.getById(getInt("id"))).set("page", page);
 
         render("preview.html");
     }
-
 
     /**
      * 上传文件
@@ -105,6 +104,7 @@ public class PaperAdminController extends BaseController {
             renderJson(srv.createUploadFailRet("上传异常，请告知管理员：" + e.getMessage()));
         }
     }
+
     /**
      * 保存
      */
