@@ -164,7 +164,7 @@ pre {
     overflow: hidden;
     
     /* 左侧最底层的背景色 */
-    background-color: rgba(0, 0, 238);
+    background-color: #007bff;
 
     -webkit-font-smoothing: antialiased;	/* chrome、safari */
 	-moz-osx-font-smoothing: grayscale;	/* firefox */
@@ -263,16 +263,18 @@ pre {
 	position: relative;
 	
 	/* font-size: 14px; */
-	font-size: 15px;
+	font-size: 16px;
 	
-	color: #d6d7d9;
+	color: black;
 	padding-left: 20px;
 	
 	/* border-left: #404040 3px solid; */
 	/* 左侧竖条在菜单未选中时与菜单背景色一致 */
-	border-left: #353d44 3px solid;
-	
+	border-left: #ffc107 3px solid;
 	letter-spacing: 1px;
+	background-color:white;
+	border-bottom: black 2px solid;
+;
 }
 .menu-icon {
 	margin-right: 6px;
@@ -290,19 +292,33 @@ pre {
 }
 
 .left-menu a.active {
-    color: #fff;
-	background-color: #2c3138;
-    border-left: #20a53a 3px solid;
+	color: black;
+	/* background-color: #2c3138; */
+	border-left-color: white;
+	font-size: 17px;
+	font-weight: bold;
 }
 
-.left-main-menu:hover,
+.left-main-menu:hover{
+	color: black;
+
+	/* background-color: #2c3138!important; */
+	/* border-left: #20a53a 2px solid!important; */
+
+	background-color: whitesmoke !important;
+	border-left: red 3px solid!important;
+
+}
+
+
+
 .left-sub-menu a:hover {
 	color: #fff;
 	
 	/* background-color: #2c3138!important; */
 	/* border-left: #20a53a 2px solid!important; */
 	
-	background-color: #f02d2d !important;
+	background-color: coral !important;
 	border-left: #f02d95 3px solid!important;
 }
 /* 主菜单右侧箭头旋转 180 度 */
@@ -312,27 +328,23 @@ pre {
 }
 
 .left-sub-menu {
-	/* color: #d6d7d9; */
+	 color: #d6d7d9;
 	color: #bbb;
-	/* background-color: #2c3138; */
+	background-color: #2c3138;
 }
 .left-sub-menu a {
 	line-height: 40px;
-	
 	/* margin-bottom: 1px; */
-	
 	display: block;
 	position: relative;
 	padding-left: 46px;
-	
 	/* border-left: #404040 3px solid; */
-	/* 左侧竖条在菜单未选中时与菜单背景色一致 */
-	border-left: #353d44 3px solid;
-	
+	border-left: red 2px solid;
 	/* color: #ffffffb3; */
 	/* color: #bbb; */
-	color: #c1c6c8;
+	color: black;
 	font-size: 14px;
+	background-color: #b4e2e7;
 }
 
 /* 左侧 "系统管理" 菜单的图标添加一个 hover 动画 */
