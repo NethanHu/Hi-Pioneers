@@ -23,7 +23,7 @@ public class PaperAdminController extends BaseController {
 
     @Inject
     PaperAdminService srv;
-
+    QuestionAdminService Qsrv;
     /**
      * 首页
      */
@@ -117,7 +117,7 @@ public class PaperAdminController extends BaseController {
      * 智能组卷模块，返回 Ret 形式的 msg
      */
     public void generatePaperAuto() {
-        renderJson(srv.generatePaperAuto());
+        render("paper_options.html");
     }
 
     /**
@@ -138,5 +138,30 @@ public class PaperAdminController extends BaseController {
 
         set("page", page);
         render("choose_questions.html");
+    }
+
+    public void generate() {
+        int index = Integer.parseInt(get("index"));
+        String unit = get("unit");
+        String course = get("course");
+        String min_level = get("min_level");
+        String max_level = get("max_level");
+        String[][] type = new String[index][1];
+        for (int i = 0; i < index ; i++) {
+            String type_name = get("type["+i+"][name]");
+            String type_number = get("type["+i+"][number]");
+            type[i][0]= type_name;
+            type[i][1]=type_number;
+        }
+        Page<Question> page;
+        page = Qsrv.selectBy(unit,course,type,min_level,max_level);
+
+
+
+        // 保持住 keyword 变量，便于输出到搜索框的 value 中
+
+
+
+        render("index.html");
     }
 }
