@@ -153,12 +153,6 @@ public class PaperAdminController extends BaseController {
             type[i][0]= type_name;
             type[i][1]=type_number;
         }
-        Page<Question> page;
-        page = Qsrv.selectBy(unit,course,type,min_level,max_level);
-
-
-
-        // 保持住 keyword 变量，便于输出到搜索框的 value 中
 
 
 
