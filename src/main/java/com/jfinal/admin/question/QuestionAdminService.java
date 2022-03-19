@@ -106,7 +106,5 @@ public class QuestionAdminService {
         dao.deleteById(id);
         return Ret.ok("msg", "删除成功");
     }
-    public Page<Question> selectBy(String unit, String course , String[][] type , String min_level , String max_level) {
 
-    }
 }

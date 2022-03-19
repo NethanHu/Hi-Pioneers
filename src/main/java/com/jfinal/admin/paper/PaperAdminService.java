@@ -7,11 +7,13 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.kit.StrKit;
 import com.jfinal.kit.TimeKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 试卷管理业务层
@@ -99,7 +101,15 @@ public class PaperAdminService {
         paper.save();
         return Ret.ok("msg", "创建成功");
     }
-
+    public Ret autosave(String content,int accountId, Paper paper) {
+        paper.setContent(content);
+        paper.setFileName(buildSavePaperName(accountId));
+        paper.setAccountId(accountId);
+        paper.setState(paper.STATE_UNPUBLISHED);	// 默认未发布
+        paper.setUpdateTime(new Date());
+        paper.save();
+        return Ret.ok("msg", "创建成功");
+    }
     /**
      * 目前使用 File.renameTo(targetFileName) 的方式保存到目标文件，
      * 如果 linux 下不支持，或者将来在 linux 下要跨磁盘保存，则需要
@@ -252,5 +262,43 @@ public class PaperAdminService {
         };
 
         return Qdao.templateByString(sql, new Object()).paginate(pageNumber, pageSize);
+    }
+    public List<Question> selectBy(String unit, String course , String[][] type , String min_level , String max_level) {
+        String sql ="";
+        for (int i = 0; i < type.length; i++) {
+            if (i>0){
+                sql = sql + "union" + "(select question.id from question where type ='"+type[i][0]+"' ";
+                if(!StrKit.isBlank(unit)){
+                    sql = sql + " and unit = '"+unit+"' ";
+                }
+                if(!StrKit.isBlank(course)){
+                    sql = sql + " and course_name = '"+course+"' ";
+                }
+                if(!StrKit.isBlank(min_level)){
+                    sql = sql + " and level >= "+min_level+" ";
+                }
+                if(!StrKit.isBlank(max_level)){
+                    sql = sql + " and level <= "+max_level+" ";
+                }
+                sql = sql + "limit "+type[i][1]+")";
+            }
+            else {
+                sql = "(select question.id from question where type ='"+type[i][0]+"' ";
+                if(!StrKit.isBlank(unit)){
+                    sql = sql + " and unit = '"+unit+"' ";
+                }
+                if(!StrKit.isBlank(course)){
+                    sql = sql + " and course_name = '"+course+"' ";
+                }
+                if(!StrKit.isBlank(min_level)){
+                    sql = sql + " and level >= "+min_level+" ";
+                }
+                if(!StrKit.isBlank(max_level)){
+                    sql = sql + " and level <= "+max_level+" ";
+                }
+                sql = sql + "limit "+type[i][1]+")";
+            }
+        }
+        return Qdao.find(sql);
     }
 }

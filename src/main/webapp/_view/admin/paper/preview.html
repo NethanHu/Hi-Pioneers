@@ -70,7 +70,7 @@
 <body>
 <!-- 根容器 -->
 <div class="container">
-    <input type="hidden" id="question_content" value="#(page.getList().size())">
+    <input type="hidden" id="question_content" value="#(page.getList().toArray()[0].toString())">
 
     <!-- 主体内容 -->
     <div class="article-box">
@@ -129,8 +129,10 @@
         setChoice();
         setBlank();
         setAnswer();
-    });
 
+    });
+    var test = document.getElementById("question_content").value;
+    console.log(test);
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('question_content').value);
 
