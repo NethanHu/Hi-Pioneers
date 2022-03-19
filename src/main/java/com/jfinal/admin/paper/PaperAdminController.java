@@ -15,8 +15,6 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
 
-import java.util.List;
-
 /**
  * 文件管理控制层
  */
@@ -143,34 +141,21 @@ public class PaperAdminController extends BaseController {
     }
 
     public void generate() {
-        int index = Integer.parseInt(get("index"))-1;
+        int index = Integer.parseInt(get("index"));
         String unit = get("unit");
         String course = get("course");
         String min_level = get("min_level");
         String max_level = get("max_level");
-        String[][] type = new String[index][2];
+        String[][] type = new String[index][1];
         for (int i = 0; i < index ; i++) {
             String type_name = get("type["+i+"][name]");
             String type_number = get("type["+i+"][number]");
             type[i][0]= type_name;
             type[i][1]=type_number;
         }
-        List<Question> newlist;
-
-        newlist = srv.selectBy(unit,course,type,min_level,max_level);
-
-        String paper_content ="";
-        for (int i = 0; i < newlist.size(); i++) {
-            Question question = newlist.get(i);
-            paper_content = paper_content+"~~~"+question.getStr("id");
-        }
-
-        Ret ret = srv.autosave(paper_content,getLoginAccountId(), getBean(Paper.class));
-        renderJson(ret);
-
-        // 保持住 keyword 变量，便于输出到搜索框的 value 中
 
 
-        index();
+
+        render("index.html");
     }
 }

@@ -45,6 +45,7 @@
             font-size: 16px;
             line-height: 1.8;
             margin-top: 40px;
+            width: 1000px;
         }
         .article-content p {
             margin: 16px 0;
@@ -80,8 +81,7 @@
         </h1>
 
     <div id="choice">
-        #for (x : page.getList())
-            #if ("一般选择题".equals(x.type))
+
         <div class="article-content">
             <div id="choice_index_#(page.getList().indexOf(x) + 1)"></div>
             <div>#(x.question)</div>
