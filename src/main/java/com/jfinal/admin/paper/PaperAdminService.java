@@ -218,13 +218,6 @@ public class PaperAdminService {
         return dao.findById(id);
     }
 
-    /**
-     * 测试使用
-     */
-    public Question getQuestionById(int id) {
-        return Qdao.findById(id);
-    }
-
 
     /**
      * 智能组卷功能

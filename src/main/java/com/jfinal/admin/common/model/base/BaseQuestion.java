@@ -25,12 +25,12 @@ public abstract class BaseQuestion<M extends BaseQuestion<M>> extends Model<M> i
 		return getStr("course_name");
 	}
 	
-	public void setUnit(java.lang.Integer unit) {
+	public void setUnit(java.lang.String unit) {
 		set("unit", unit);
 	}
 	
-	public java.lang.Integer getUnit() {
-		return getInt("unit");
+	public java.lang.String getUnit() {
+		return getStr("unit");
 	}
 	
 	public void setType(java.lang.String type) {
