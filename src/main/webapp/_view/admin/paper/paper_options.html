@@ -3,6 +3,7 @@
 <!-- 弹出层主体内容 -->
 <div class="open-box" style="padding: 30px 30px 15px 30px;">
     <form id="open-form" enctype="multipart/form-data" action="/admin/paper/generate" onsubmit="return generatePaper();" method="POST">
+        <input type="text" id="paper_name">
         <div>
             <span>选择考试范围（留空则为全选）</span>
             <label>课程：</label>
@@ -75,6 +76,7 @@
 <script>
 
     $(function() {
+        $("#open-form input[type='text']:first").focus();
         // 绑定提交按钮事件
         $(".layui-layer-btn0").on("click", generatePaper);
     });
@@ -94,6 +96,7 @@
         let unit = $('#unit_select option:selected ').val();
         let min_level = $('#min_level_select option:selected ').val();
         let max_level = $('#max_level_select option:selected ').val();
+
 
         for (let i = 0; i < choice_index-1; i++) {
             let type_name = document.getElementById("type_select_"+(i+1));

@@ -71,7 +71,7 @@
 <body>
 <!-- 根容器 -->
 <div class="container">
-    <input type="hidden" id="question_content" value="#(page.getList().toArray()[0].toString())">
+    <input type="hidden" id="question_content" value="#(page.getList().size())">
 
     <!-- 主体内容 -->
     <div class="article-box">
@@ -81,7 +81,8 @@
         </h1>
 
     <div id="choice">
-
+        #for (x : page.getList())
+            #if("一般选择题".equals(x.type))
         <div class="article-content">
             <div id="choice_index_#(page.getList().indexOf(x) + 1)"></div>
             <div>#(x.question)</div>
@@ -94,10 +95,10 @@
     <div id="blank">
         #for (x : page.getList())
             #if("填空题".equals(x.type))
-            <div class="article-content">
+        <div class="article-content">
             <div id="blank_index_#(page.getList().indexOf(x) + 1)"></div>
             <div>#(x.question)</div>
-            </div>
+        </div>
             #end
         #end
     </div>
@@ -131,8 +132,7 @@
         setAnswer();
 
     });
-    var test = document.getElementById("question_content").value;
-    console.log(test);
+
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('question_content').value);
 
