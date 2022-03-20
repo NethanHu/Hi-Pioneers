@@ -1,0 +1,65 @@
+<!-- 主界面 -->
+<div class="main">
+	
+	<!-- 工具栏 -->
+	<!-- 左侧上传 -->
+	<div class="toolbar">
+		<button fill="{area:'420px', offset:'139px'}" url="/admin/exam/add" class="btn btn-success btn-sm">
+			<i class="fa fa-upload mr-1"></i> 生成考试
+		</button>
+
+		<!-- 右侧搜索 -->
+		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
+		<form action='/admin/exam' onsubmit="return admin.search();" id="search-form" class="search-box">
+			<input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
+			<i class="fa fa-search" ></i>
+		</form>
+	</div>
+	
+	<!-- 表格容器 -->
+	<div id="table-box" class="table-box">
+		
+		<table class="table table-hover">
+			
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>名称</th>
+					<th>创建时间</th>
+					<th class="operation">操作</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			#for (x : page.getList())
+				<tr>
+					<td>#(x.id)</td>
+					<td><a href="/admin/paper/preview?id=#(x.id)">#(x.showName)</a></td>
+					<td>#date(x.update_time)</td>
+					
+					<td class="operation">
+						### 这里用 url 代替 href 是为了防止意外删除数据
+						<a confirm="确定删除 #escape(x.name) ？" ok-remove="tr" url="/admin/paper/delete?id=#(x.id)">删除</a>
+					</td>
+<!--					<td class="operation">-->
+<!--						### 下载模块-->
+<!--						<a>下载</a>-->
+					</td>
+				</tr>
+			#end
+			</tbody>
+			
+		</table>
+	</div>
+	
+	<!-- 分页 -->
+	### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+	#set(append = keyword ? '&keyword=' + keyword : '')
+	#@adminPaginate(page, "/admin/paper?pn=")
+	
+</div>
+
+
+
+
+

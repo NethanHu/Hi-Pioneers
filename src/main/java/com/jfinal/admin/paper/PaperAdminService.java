@@ -101,7 +101,9 @@ public class PaperAdminService {
         paper.save();
         return Ret.ok("msg", "创建成功");
     }
-    public Ret autosave(String content,int accountId, Paper paper) {
+
+    public Ret autosave(String name,String content,int accountId, Paper paper) {
+        paper.setShowName(name);
         paper.setContent(content);
         paper.setFileName(buildSavePaperName(accountId));
         paper.setAccountId(accountId);
@@ -263,6 +265,7 @@ public class PaperAdminService {
 
         return Qdao.templateByString(sql, new Object()).paginate(pageNumber, pageSize);
     }
+
     public List<Question> selectBy(String unit, String course , String[][] type , String min_level , String max_level) {
         String sql ="";
         for (int i = 0; i < type.length; i++) {

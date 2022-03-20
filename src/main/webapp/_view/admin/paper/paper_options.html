@@ -96,7 +96,7 @@
         let unit = $('#unit_select option:selected ').val();
         let min_level = $('#min_level_select option:selected ').val();
         let max_level = $('#max_level_select option:selected ').val();
-
+        let name = document.getElementById("paper_name").value;
 
         for (let i = 0; i < choice_index-1; i++) {
             let type_name = document.getElementById("type_select_"+(i+1));
@@ -106,7 +106,7 @@
             let type_number = document.getElementById("type_number_"+(i+1)).value;
             type[i]=new AddType(name,type_number);
         }
-        $.ajax({url: url, data: {course:course , unit:unit , min_level:min_level , max_level:max_level , type:type , index:choice_index},
+        $.ajax({url: url, data: {course:course , unit:unit , min_level:min_level , max_level:max_level , type:type , index:choice_index , name:name},
             type: 'POST', cache: false, dataType: 'html',
             success: function(ret) {
                 kit.closeLoading();
