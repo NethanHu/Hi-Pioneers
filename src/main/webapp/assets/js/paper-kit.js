@@ -24,6 +24,7 @@ function fillSelectOptions(question_character, target_select_element) {
 /**
  * 控制 fill 注入的 choose_question 和 create_paper 两个 html，将备选框题目数据同步
  */
+
 const chosen_questions = [];
 var question_index = 0;
 

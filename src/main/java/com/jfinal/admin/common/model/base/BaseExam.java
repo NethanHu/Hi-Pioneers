@@ -57,12 +57,12 @@ public abstract class BaseExam<M extends BaseExam<M>> extends Model<M> implement
 		return getInt("paper_id");
 	}
 	
-	public void setState(java.lang.Boolean state) {
+	public void setState(java.lang.Integer state) {
 		set("state", state);
 	}
 	
-	public java.lang.Boolean getState() {
-		return get("state");
+	public java.lang.Integer getState() {
+		return getInt("state");
 	}
 	
 	public void setExamDescription(java.lang.String examDescription) {
@@ -79,6 +79,14 @@ public abstract class BaseExam<M extends BaseExam<M>> extends Model<M> implement
 	
 	public java.lang.Integer getAccountId() {
 		return getInt("account_id");
+	}
+	
+	public void setUpdateTime(java.util.Date updateTime) {
+		set("update_time", updateTime);
+	}
+	
+	public java.util.Date getUpdateTime() {
+		return getDate("update_time");
 	}
 	
 }

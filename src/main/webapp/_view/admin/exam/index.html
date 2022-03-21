@@ -4,8 +4,8 @@
 	<!-- 工具栏 -->
 	<!-- 左侧上传 -->
 	<div class="toolbar">
-		<button fill="{area:'420px', offset:'139px'}" url="/admin/exam/add" class="btn btn-success btn-sm">
-			<i class="fa fa-upload mr-1"></i> 生成考试
+		<button fill url="/admin/exam/choosePaper" class="btn btn-success btn-sm">
+			<i class="fa fa-file-text"></i> 生成考试
 		</button>
 
 		<!-- 右侧搜索 -->
@@ -23,9 +23,9 @@
 			
 			<thead>
 				<tr>
-					<th>id</th>
 					<th>名称</th>
-					<th>创建时间</th>
+					<th>开始时间</th>
+					<th>考试时间</th>
 					<th class="operation">操作</th>
 				</tr>
 			</thead>
@@ -33,17 +33,12 @@
 			<tbody>
 			#for (x : page.getList())
 				<tr>
-					<td>#(x.id)</td>
-					<td><a href="/admin/paper/preview?id=#(x.id)">#(x.showName)</a></td>
-					<td>#date(x.update_time)</td>
-					
+					<td><a href="/admin/exam/preview?id=#(x.id)">#(x.exam_name)</a></td>
+					<td>#date(x.start_time)</td>
+					<td>#date(x.last_time, "HH:mm:ss")</td>
 					<td class="operation">
 						### 这里用 url 代替 href 是为了防止意外删除数据
-						<a confirm="确定删除 #escape(x.name) ？" ok-remove="tr" url="/admin/paper/delete?id=#(x.id)">删除</a>
-					</td>
-<!--					<td class="operation">-->
-<!--						### 下载模块-->
-<!--						<a>下载</a>-->
+						<a confirm="确定删除 #escape(x.name) ？" ok-remove="tr" url="/admin/exam/delete?id=#(x.id)">删除</a>
 					</td>
 				</tr>
 			#end
@@ -54,8 +49,9 @@
 	
 	<!-- 分页 -->
 	### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+
 	#set(append = keyword ? '&keyword=' + keyword : '')
-	#@adminPaginate(page, "/admin/paper?pn=")
+	#@adminPaginate(page, "/admin/exam?pn=")
 	
 </div>
 

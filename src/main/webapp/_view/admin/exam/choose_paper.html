@@ -1,0 +1,87 @@
+<!-- 主界面 -->
+<div class="main">
+    <div class="toolbar">
+        <!-- 右侧搜索 -->
+        ### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
+        <form action='/admin/exam/' onsubmit="return admin.search();" id="search-form" class="search-box">
+            <input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
+            <i class="fa fa-search" ></i>
+        </form>
+    </div>
+
+<!-- 主体内容 -->
+    <div id="table-box" class="table-box">
+        <table class="table table-hover" >
+
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>名称</th>
+                <th class="operation">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            #for (x : page.getList())
+            <tr>
+                <td>#(x.id)</td>
+                <td><a href="/admin/paper/preview?id=#(x.id)">#(x.showName)</a></td>
+                <td class="operation">
+                    <button id="btn_#(x.id)" onclick="choose('#(x.id)')">选择</button>
+                </td>
+            </tr>
+            #end
+            </tbody>
+
+        </table>
+    </div>
+    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+    #set(append = keyword ? '&keyword=' + keyword : '')
+    #@adminPaginate(page, "/admin/exam/choosePaper?pn=")
+</div>
+
+
+<script src="/assets/js/paper-kit.js"></script>
+
+
+<!-- 弹出层 js 脚本 -->
+<script>
+    $(function() {
+        banChooseButton();
+    });
+
+    function search() {
+        let url = $('#search-form').attr('action');
+        let keyword = $('#search-keyword').val();
+
+        kit.loading({msg:'正在搜索, 请稍候 .....'});
+        $.ajax({url: url, data: {keyword: keyword},
+            type: 'POST', cache: false, dataType: 'html',
+            success: function(ret) {
+                kit.closeLoading();
+
+                // 如果返回 json 格式数据，则 msg 输出，例如后端验证参数失败会返回 json
+                if (kit.isJsonRet(ret)) {
+                    kit.msg(kit.strToJson(ret), {time:3900, closeBtn:2});
+                } else {
+                    $('#content-box').html(ret);
+                    $('#search-keyword').select();
+                }
+            }
+        });
+        // 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
+        return false;
+    }
+
+    // 绑定的点击事件，用来向 chosen_questions 数组填充，且刷新备选框的 html
+    function choose(btn_id){
+        // 第一事件
+        let btn = document.getElementById("btn_" + btn_id);
+        btn.setAttribute("disabled", "disabled");
+
+        // 第二事件
+        let question_content = document.getElementById("question_" + btn_id).innerHTML;
+        chosen_questions[question_index] = new AddedQuestion(btn_id, question_content);
+        question_index++;
+    }
+</script>

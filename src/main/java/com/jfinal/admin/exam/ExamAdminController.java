@@ -1,21 +1,11 @@
 package com.jfinal.admin.exam;
 
 import com.jfinal.admin.common.BaseController;
-import com.jfinal.admin.common.LayoutInterceptor;
+import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
-import com.jfinal.admin.common.model.Question;
-import com.jfinal.admin.paper.PaperAdminService;
-import com.jfinal.admin.question.QuestionAdminService;
-import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
-import com.jfinal.kit.Ret;
-import com.jfinal.kit.StrKit;
-import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.upload.ExceededSizeException;
-import com.jfinal.upload.UploadFile;
-import java.util.List;
 
 /**
  * 考试管理控制层
@@ -26,4 +16,32 @@ public class ExamAdminController extends BaseController {
     @Inject
     ExamAdminService srv;
 
+    /**
+     * 首页
+     */
+    public void index() {
+        Page<Exam> page = srv.paginate(getInt("pn", 1));
+        set("page", page);
+        render("index.html");
+    }
+
+    /**
+     * 删除
+     */
+    public void delete() {
+        renderJson(srv.deleteById(getInt("id")));
+    }
+
+    /**
+     * 选择需要发布的考试模块，会跳出数据库 Paper 中的试卷以供选择
+     */
+    public void choosePaper() {
+        int pn = getInt("pn", 1);
+
+        // 可以添加一些筛选模块在这里
+        Page<Paper> page = srv.Ppaginate(pn);
+
+        set("page", page);
+        render("choose_paper.html");
+    }
 }

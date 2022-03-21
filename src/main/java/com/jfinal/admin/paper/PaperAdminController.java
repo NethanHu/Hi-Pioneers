@@ -26,6 +26,7 @@ public class PaperAdminController extends BaseController {
     @Inject
     PaperAdminService srv;
     QuestionAdminService Qsrv;
+
     /**
      * 首页
      */
@@ -170,8 +171,5 @@ public class PaperAdminController extends BaseController {
         renderJson(ret);
 
         // 保持住 keyword 变量，便于输出到搜索框的 value 中
-
-
-
     }
 }

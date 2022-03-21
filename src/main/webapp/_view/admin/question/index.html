@@ -84,9 +84,11 @@
 
 <script>
     var sort_type;
-function getBtnVal(btn_id){
-    sort_type=document.getElementById(btn_id).value;
-}
+
+    function getBtnVal(btn_id){
+        sort_type=document.getElementById(btn_id).value;
+    }
+
     function search() {
         var url = $('#search-form').attr('action');
         var keyword = $('#search-keyword').val();
@@ -109,28 +111,7 @@ function getBtnVal(btn_id){
         // 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
         return false;
     }
-         function search2() {
-             var url = $('#select-form').attr('action');
-             var select = $('#select option:selected').val();
 
-             kit.loading({msg:'正在搜索, 请稍候 .....'});
-             $.ajax({url: url, data: {select: select},
-                 type: 'POST', cache: false, dataType: 'html',
-                 success: function(ret) {
-                     kit.closeLoading();
-
-                     // 如果返回 json 格式数据，则 msg 输出，例如后端验证参数失败会返回 json
-                     if (kit.isJsonRet(ret)) {
-                         kit.msg(kit.strToJson(ret), {time:3900, closeBtn:2});
-                     } else {
-                         $('#content-box').html(ret);
-                         $('#search-keyword').select();
-                     }
-                 }
-             });
-        // 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
-        return false;
-    }
     function sort() {
         var url = $('#sort-form').attr('action');
         var type = sort_type;
@@ -153,12 +134,5 @@ function getBtnVal(btn_id){
         // 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
         return false;
     }
-    // function choose(){
-    //      var select = document.getElementById("select");
-    //      var select_index = select.selectedIndex;
-    //
-    //
-    // }
-
 
 </script>
