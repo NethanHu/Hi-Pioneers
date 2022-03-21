@@ -3,6 +3,7 @@ package com.jfinal.admin.exam;
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
+import com.jfinal.admin.common.model.Question;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.plugin.activerecord.Page;
@@ -39,9 +40,20 @@ public class ExamAdminController extends BaseController {
         int pn = getInt("pn", 1);
 
         // 可以添加一些筛选模块在这里
+
         Page<Paper> page = srv.Ppaginate(pn);
 
         set("page", page);
         render("choose_paper.html");
     }
+
+    public void setPaperPara() {
+        int pn = getInt("pn", 1);
+        Paper paper = srv.PgetById(getInt("id"));
+        String[] questionId = paper.getContent().split("~~~");
+        Page<Question> page = srv.Qpaginate(questionId);
+        set("Paper", srv.getById(getInt("id"))).set("page", page);
+        render("edit_exam_paper.html");
+    }
+
 }

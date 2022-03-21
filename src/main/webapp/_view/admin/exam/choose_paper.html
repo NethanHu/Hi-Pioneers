@@ -10,6 +10,7 @@
     </div>
 
 <!-- 主体内容 -->
+    <form ></form>
     <div id="table-box" class="table-box">
         <table class="table table-hover" >
 
@@ -27,7 +28,7 @@
                 <td>#(x.id)</td>
                 <td><a href="/admin/paper/preview?id=#(x.id)">#(x.showName)</a></td>
                 <td class="operation">
-                    <button id="btn_#(x.id)" onclick="choose('#(x.id)')">选择</button>
+                    <a  href="/admin/exam/setPaperPara?id=#(x.id)" id="btn_#(x.id)" >选择</a>
                 </td>
             </tr>
             #end
@@ -39,6 +40,9 @@
     #set(append = keyword ? '&keyword=' + keyword : '')
     #@adminPaginate(page, "/admin/exam/choosePaper?pn=")
 </div>
+<div id="edit-exam" class="panel">
+
+</div>
 
 
 <script src="/assets/js/paper-kit.js"></script>
@@ -47,7 +51,9 @@
 <!-- 弹出层 js 脚本 -->
 <script>
     $(function() {
+
         banChooseButton();
+
     });
 
     function search() {
@@ -79,9 +85,7 @@
         let btn = document.getElementById("btn_" + btn_id);
         btn.setAttribute("disabled", "disabled");
 
-        // 第二事件
-        let question_content = document.getElementById("question_" + btn_id).innerHTML;
-        chosen_questions[question_index] = new AddedQuestion(btn_id, question_content);
-        question_index++;
+
+
     }
 </script>

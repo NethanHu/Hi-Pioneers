@@ -260,7 +260,7 @@ public class PaperAdminService {
     }
 
     public List<Question> selectBy(String unit, String course , String[][] type , String min_level , String max_level) {
-        String sql ="";
+        String sql = "";
         for (int i = 0; i < type.length; i++) {
             if (i>0){
                 sql = sql + "union" + "(select question.id from question where type ='"+type[i][0]+"' ";

@@ -1,0 +1,93 @@
+<!-- 主界面 -->
+<div class="main">
+<!-- 主体内容 -->
+    <div id="table-box" class="table-box">
+
+        <table class="table table-hover" >
+
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>问题</th>
+                <th>类型</th>
+                <th>难度</th>
+                <th class="operation">分值</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            #for (x : page.getList())
+            <tr>
+                #if("一般选择题".equals(x.type))
+                <td id="choice_index_#(page.getList().indexOf(x) + 1)">#(page.getList().indexOf(x) + 1)</td>
+                <td><div style="height: 21px; overflow: hidden; text-overflow: ellipsis">#(x.question)</div></td>
+                <td>#(x.type)</td>
+                <td>#(x.level)</td>
+                <td class="operation">
+                    <input type="text">
+                </td>
+                #end
+            </tr>
+            #end
+
+            #for (x : page.getList())
+            <tr>
+                #if("填空题".equals(x.type))
+                <td id="blank_index_#(page.getList().indexOf(x) + 1)">#(page.getList().indexOf(x) + 1)</td>
+                <td><div style="height: 21px; overflow: hidden; text-overflow: ellipsis">#(x.question)</div></td>
+                <td>#(x.type)</td>
+                <td>#(x.level)</td>
+                <td class="operation">
+                    <input type="text">
+                </td>
+                #end
+            </tr>
+            #end
+
+            #for (x : page.getList())
+            <tr>
+                #if("简答题".equals(x.type))
+                <td id="answer_index_#(page.getList().indexOf(x) + 1)">#(page.getList().indexOf(x) + 1)</td>
+                <td><div style="height: 21px; overflow: hidden; text-overflow: ellipsis">#(x.question)</div></td>
+                <td>#(x.type)</td>
+                <td>#(x.level)</td>
+                <td class="operation">
+                    <input type="text">
+                </td>
+                #end
+            </tr>
+            #end
+
+            </tbody>
+
+        </table>
+    </div>
+    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+    #set(append = keyword ? '&keyword=' + keyword : '')
+    #@adminPaginate(page, "/admin/paper/search?pn=")
+</div>
+
+<!-- 弹出层 button -->
+<div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
+
+</div>
+
+<div id="create_paper" class="panel">
+
+</div>
+
+<script src="/assets/js/paper-kit.js"></script>
+
+
+<!-- 弹出层 js 脚本 -->
+<script>
+    $(function() {
+
+    });
+
+
+
+
+
+</script>
