@@ -96,3 +96,15 @@ function transDBSingleAnswer(DBString) {
     return final_answer;
 }
 
+function transDBAnswer(DBString) {
+    var trans_array = DBString.split("~~~");
+    var array_length = trans_array.length;
+    var final_answer = "";
+
+    for (let i = 1; i < array_length; i++) {
+
+            final_answer += trans_array[i]+" ";
+
+    }
+    return final_answer;
+}

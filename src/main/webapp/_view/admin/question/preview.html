@@ -74,6 +74,7 @@
 <div class="container">
     <input type="hidden" value="#(question.option)" id="question_option">
     <input type="hidden" value="#(question.answer)" id="question_answer">
+    <input type="hidden" value="#(question.type)" id="question_type">
 
     <!-- 主体内容 -->
     <div class="article-box">
@@ -112,15 +113,19 @@
 
 <script>
     $(function() {
-        var question_option = document.getElementById('question_option').getAttribute('value');
-        var question_answer = document.getElementById('question_answer').getAttribute('value');
-        var option_content = document.getElementById('option_content');
-        var answer_content = document.getElementById('answer_content');
 
 
+        if (question_type == '一般选择题'){
         fillOptionContent(question_option, option_content);
+        }
         fillAnswerContent(question_answer, answer_content);
     });
+
+    var question_type = document.getElementById('question_type').getAttribute('value');
+    var question_option = document.getElementById('question_option').getAttribute('value');
+    var question_answer = document.getElementById('question_answer').getAttribute('value');
+    var option_content = document.getElementById('option_content');
+    var answer_content = document.getElementById('answer_content');
 
     function fillOptionContent(question_option, option_content) {
         var node = document.createElement('span');
@@ -136,10 +141,22 @@
         }
     }
 
-    function fillAnswerContent(question_answer, option_content) {
-        var node = document.createElement('span');
-        node.innerHTML = transDBSingleAnswer(question_answer);
-        option_content.appendChild(node);
+    function fillAnswerContent(question_answer, answer_content) {
+        if (question_type == '一般选择题') {
+            var node = document.createElement('span');
+            node.innerHTML = transDBSingleAnswer(question_answer);
+            answer_content.appendChild(node);
+        }
+        else if (question_type == '填空题'){
+            var node = document.createElement('span');
+            node.innerHTML = transDBAnswer(question_answer);
+            answer_content.appendChild(node);
+        }
+        else {
+            var node = document.createElement('span');
+            node.innerHTML = question_answer;
+            answer_content.appendChild(node);
+        }
     }
 </script>
 </body>
