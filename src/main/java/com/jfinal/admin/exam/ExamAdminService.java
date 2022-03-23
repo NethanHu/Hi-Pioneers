@@ -90,12 +90,10 @@ public class ExamAdminService {
     /**
      * 将试卷信息储存到数据库
      */
-    public Ret save(String exam_name, int paper_id, int account_id, Timestamp start_time, Time last_time, Exam exam) {
-        exam.setExamName(exam_name);
+    public Ret save( int paper_id, int account_id, Exam exam) {
+
         exam.setPaperId(paper_id);
         exam.setAccountId(account_id);
-        exam.setStartTime(start_time);
-        exam.setLastTime(last_time);
         exam.setState(exam.STATE_UNPUBLISHED); // 默认未发布
         exam.setUpdateTime(new Date());
 

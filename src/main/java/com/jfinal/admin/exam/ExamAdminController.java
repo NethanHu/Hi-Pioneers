@@ -1,11 +1,13 @@
 package com.jfinal.admin.exam;
 
 import com.jfinal.admin.common.BaseController;
+import com.jfinal.admin.common.model.Article;
 import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -25,7 +27,14 @@ public class ExamAdminController extends BaseController {
         set("page", page);
         render("index.html");
     }
-
+    /**
+     * 保存
+     */
+    public void save() {
+        int paper_id = getInt("paper_id");
+        Ret ret = srv.save(paper_id,getLoginAccountId(), getBean(Exam.class));
+        renderJson(ret);
+    }
     /**
      * 删除
      */
@@ -52,7 +61,7 @@ public class ExamAdminController extends BaseController {
         Paper paper = srv.PgetById(getInt("id"));
         String[] questionId = paper.getContent().split("~~~");
         Page<Question> page = srv.Qpaginate(questionId);
-        set("Paper", srv.getById(getInt("id"))).set("page", page);
+        set("paper", paper).set("page", page);
         render("edit_exam_paper.html");
     }
 

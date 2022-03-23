@@ -37,7 +37,9 @@
             <tr>
                 <th>ID</th>
                 <th><div style="height: 21px; overflow: hidden; text-overflow: ellipsis"></div>问题</th>
-                <th id="sort_type">类型<button id="btn_type" value="type" onclick="getBtnVal(this.id)">筛选</button></th>
+                <th id="sort_type">类型
+<!--                    <button id="btn_type" value="type" onclick="getBtnVal(this.id)">筛选</button>-->
+                </th>
                 <th>最后更新时间</th>
                 <th>发布</th>
                 <th class="operation">操作</th>
@@ -76,8 +78,13 @@
 
     <!-- 分页 -->
     ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
-    #set(append = keyword ? '&keyword=' + keyword : '')
-        #set(append = select ? '&select=' + select : '')
+        #if(keyword)
+        #set(append ='&keyword=' + keyword )
+        #else
+        #set(append='&select=' + select )
+        #end
+
+
     #@adminPaginate(page, "/admin/question?pn=")
     </form>
 </div>

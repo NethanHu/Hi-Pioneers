@@ -89,5 +89,13 @@ public abstract class BaseExam<M extends BaseExam<M>> extends Model<M> implement
 		return getDate("update_time");
 	}
 	
+	public void setQuestionScores(java.lang.String questionScores) {
+		set("question_scores", questionScores);
+	}
+	
+	public java.lang.String getQuestionScores() {
+		return getStr("question_scores");
+	}
+	
 }
 
