@@ -64,41 +64,27 @@
       <input type="hidden" name="question.id" value="#(question.id)">
       #end
 
-
       <div class="form-group">
-        <input type="hidden" name="question.type" value="一般选择题">
-          请输入题目哦：
+        <input type="hidden" name="question.type" value="证明题">
+        请输入题目哦：
       </div>
 
       <div class="form-group">
         ### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
         <textarea id="editor1" name="question.question">#escape(question.question ??)</textarea>
       </div>
-
-      <ul id="question_list">
-        <li>
-          <div class="form-group">
-<!--              在这个区域内，点击一次"添加选项"就会appendChild来增加选项-->
-          </div>
-        </li>
-      </ul>
-        <input type="hidden" name='question.option' id="content_question_option" value="">
-        <input type="hidden" name='question.answer' id="content_question_answer" value="">
-
-
-      <button class="btn btn-success btn-sm" onclick="addOption()">
-        <i class="fa fa-plus-square"></i>&nbsp;添加选项
-      </button>
-        <button class="btn btn-success btn-sm" id="del_button" onclick="deleteOption()" style="display: none">
-            <i class="fa fa-minus-square"></i>&nbsp;移除选项
-        </button>
+      <div>
+        请输入题目答案：
+      </div>
+      <div class="form-group">
+        <textarea id="editor2" name="question.answer">#escape(question.answer ??)</textarea>
+      </div>
 
       <div class="form-group text-center">
         <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
           <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更新')
         </button>
       </div>
-
 
     </form>
   </div>
@@ -112,17 +98,15 @@
 <script src="/assets/lib/jquery_form/jquery.form.js"></script>
 <script src="/assets/lib/layer/layer.js"></script>
 <script src="/assets/js/jfinal-kit.js"></script>
-<script src="/assets/js/question-kit.js"></script>
-
 
 <!-- 添加 ckeditor 组件依赖 -->
 <script src="/assets/lib/ckeditor/ckeditor.js"></script>
 
 <script>
-
   $(function() {
     // 初始化 ckeditor
     CKEDITOR.replace('editor1', {height: '250px'});
+    CKEDITOR.replace('editor2', {height: '350px'});
 
     // 设置第一个 input 为输入焦点
     $("#open-form input[type='text']:first").focus();
@@ -136,9 +120,7 @@
 
 
   function submitQuestion() {
-    getFullElements(); // 题目选项和正确答案将通过该方法上传进数据库
-
-    // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
+    // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
     $("#open-form").ajaxSubmit({
       dataType: 'json', type: 'POST',
       beforeSerialize: function($form, options) {
@@ -158,45 +140,7 @@
           }, 2100);
         }
       }
-    }
-    );
-  }
-
-  var question_list = document.getElementById('question_list');
-  var del_button = document.getElementById('del_button');
-  var choice_index = 1;
-  function dsiplayDelButton() {
-      if (choice_index == 1) {
-          del_button.setAttribute('style', 'display: none');
-      } else {
-          del_button.removeAttribute('style');
-      }
-  }
-
-  function addOption() {
-    var node = document.createElement('li');
-    node.innerHTML = "          <div class=\"form-group\">\n" +
-            "            <input type=\"checkbox\" id=\"choice_" + choice_index + "\">\n" +
-            "           <input autocomplete=\"off\" id=\"choice_input_" + choice_index + "\" class=\"form-control\" type=\"text\" placeholder=\"请输入选项\">\n" +
-            "          </div>";
-    question_list.appendChild(node);
-    choice_index++;
-    dsiplayDelButton();
-  }
-
-  function getFullElements() { // 得到题目内容、选项和正确答案上传到数据库
-      var content_question_option = document.getElementById('content_question_option');
-      var content_question_answer = document.getElementById('content_question_answer');
-      var obj = combineChoiceContent(choice_index, 'choice_input_', 'choice_'); // 返回 option 和 answer 属性
-      content_question_option.setAttribute('value', obj.full_option);
-      content_question_answer.setAttribute('value', obj.full_answer);
-  }
-
-  function deleteOption() {
-      var node = document.getElementsByTagName("li");
-      document.getElementById('question_list').removeChild(node[node.length-1]);
-      choice_index--;
-      dsiplayDelButton();
+    });
   }
 </script>
 </body>

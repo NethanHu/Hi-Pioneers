@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="always">
+
+    <meta name="keywords" content="Chaoxing">
+    <meta name="description" content="Chaoxing">
+
+    <title>修改题目</title>
+
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+
+    <style>
+        /* html 是根元素
+         * rem（font size of the root element）是相对于 html 元素的字体大小单位
+         * 在不指定时多数浏览器的默认值为 16px
+        */
+        body, html {
+            font-size: 17px;
+            background-color: #F2F2F2;
+        }
+        .container {
+            margin: 15px auto;
+            padding: 20px 40px 1px 40px;
+            background-color: #FFF;
+            border-radius: 5px;
+        }
+        .breadcrumb {
+            padding-left: 0.75rem;
+        }
+        .breadcrumb li.breadcrumb-item {
+            color: #555;
+        }
+        .form-group {
+            margin-top: 22px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 根容器 -->
+<div class="container">
+
+    <!-- 主体内容 -->
+    <div class="article-box">
+
+        <!--    <nav>-->
+        <!--      <ol class="breadcrumb">-->
+        <!--        <li class="breadcrumb-item active">文章管理</li>-->
+        <!--        <li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>-->
+        <!--      </ol>-->
+        <!--    </nav>-->
+
+        <form id="open-form" action="/admin/question/update" method="POST"
+              onsubmit="return false;">
+            #if( ! isAdd )
+            <input type="hidden" name="question.id" value="#(question.id)">
+            #end
+            <input type="hidden"  value="#(question.option)" id="initial_option">
+            <input type="hidden"  value="#(question.answer)" id="initial_answer">
+
+            <div class="form-group">
+                <input type="hidden" name="question.type" value="填空题">
+                请输入题目哦：
+            </div>
+
+            <div class="form-group">
+                ### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
+                <textarea id="editor1" name="question.question">#escape(question.question ??)</textarea>
+            </div>
+
+            <ul id="question_list">
+                <li>
+                    <div class="form-group">
+                        <!--              在这个区域内，点击一次"添加选项"就会appendChildL来增加选项-->
+                    </div>
+                </li>
+            </ul>
+            <input type="hidden" name='question.option' id="content_question_option" value="">
+            <input type="hidden" name='question.answer' id="content_question_answer" value="">
+
+
+            <button class="btn btn-success btn-sm" onclick="addOption()">
+                <i class="fa fa-plus-square"></i>&nbsp;添加选项
+            </button>
+            <button class="btn btn-success btn-sm" id="del_button" onclick="deleteOption()" style="display: none">
+                <i class="fa fa-minus-square"></i>&nbsp;移除选项
+            </button>
+
+            <div class="form-group text-center">
+                <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
+                    <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更新')
+                </button>
+            </div>
+
+
+        </form>
+    </div>
+
+</div>
+
+
+<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
+<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+<script src="/assets/lib/layer/layer.js"></script>
+<script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/js/question-kit.js"></script>
+
+
+<!-- 添加 ckeditor 组件依赖 -->
+<script src="/assets/lib/ckeditor/ckeditor.js"></script>
+
+<script>
+
+    $(function() {
+        // 初始化 ckeditor
+        CKEDITOR.replace('editor1', {height: '250px'});
+
+        // 设置第一个 input 为输入焦点
+        $("#open-form input[type='text']:first").focus();
+
+        // 绑定提交按钮事件
+        $("#submit-btn").on("click", submitQuestion);
+
+        // 绑定 esc 键关键弹出层
+        kit.bindEscKeydown();
+
+        // 当进入修改页面时就决定 delButton 是否能显示出来
+        dsiplayDelButton();
+    });
+
+
+    function submitQuestion() {
+        getFullElements(); // 题目选项和正确答案将通过该方法上传进数据库
+
+        // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
+        $("#open-form").ajaxSubmit({
+                dataType: 'json', type: 'POST',
+                beforeSerialize: function($form, options) {
+                    // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+                    for (instance in CKEDITOR.instances) {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+                    kit.loading({msg: '正在保存, 请稍候 .....'});
+                },
+                success: function(ret) {
+                    kit.closeLoading();		// 关闭 loading 层
+                    kit.msg(ret);
+
+                    if (ret.state == "ok") {
+                        setTimeout(function() {
+                            location.href = "/admin/question?pn=#(pn ? pn : 1)";
+                        }, 2100);
+                    }
+                }
+            }
+        );
+    }
+    var question_list = document.getElementById('question_list');
+    var del_button = document.getElementById('del_button');
+    var initial_option = document.getElementById('initial_option').getAttribute('value');
+    var initial_answer = document.getElementById('initial_answer').getAttribute('value');
+    var option_array = initial_option.split("~~~");
+    var array_length = option_array.length;
+    var answer_array = initial_answer.split("~~~");
+    var choice_index = array_length;
+
+    for (let i = 1; i < array_length; i++) {
+        var node = document.createElement('li');
+        node.innerHTML = "          <div class=\"form-group\">\n" +
+            "            <input type=\"checkbox\" id=\"choice_" + i + "\">\n" +
+            "           <input autocomplete=\"off\" id=\"choice_input_" + i + "\" class=\"form-control\" type=\"text\" >\n" +
+            "          </div>";
+        question_list.appendChild(node);
+    }
+
+    for (let i = 1; i < array_length; i++) {
+        document.getElementById("choice_input_" + i).value = option_array[i];
+    }
+
+    for (let i = 1; i < array_length; i++) {
+        var answer = document.getElementById("choice_" + i);
+        if(answer_array[i] == "true"){
+            answer.checked = true;
+        }
+    }
+
+    function dsiplayDelButton() {
+        if (choice_index == 1) {
+            del_button.setAttribute('style', 'display: none');
+        } else {
+            del_button.removeAttribute('style');
+        }
+    }
+
+    function addOption() {
+        var node = document.createElement('li');
+        node.innerHTML = "          <div class=\"form-group\">\n" +
+            "            <input type=\"checkbox\" id=\"choice_" + choice_index + "\">\n" +
+            "           <input autocomplete=\"off\" id=\"choice_input_" + choice_index + "\" class=\"form-control\" type=\"text\" placeholder=\"请输入选项\">\n" +
+            "          </div>";
+        question_list.appendChild(node);
+        choice_index++;
+        dsiplayDelButton();
+    }
+
+    function deleteOption() {
+        var node = document.getElementsByTagName("li");
+        document.getElementById('question_list').removeChild(node[node.length-1]);
+        choice_index--;
+        dsiplayDelButton();
+    }
+
+    function getFullElements() { // 得到题目内容、选项和正确答案上传到数据库
+        var content_question_option = document.getElementById('content_question_option');
+        var content_question_answer = document.getElementById('content_question_answer');
+        var obj = combineChoiceContent(choice_index, 'choice_input_', 'choice_'); // 返回 option 和 answer 属性
+        content_question_option.setAttribute('value', obj.full_option);
+        content_question_answer.setAttribute('value', obj.full_answer);
+    }
+</script>
+</body>
+</html>

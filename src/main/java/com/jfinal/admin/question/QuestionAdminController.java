@@ -80,7 +80,9 @@ public class QuestionAdminController extends BaseController {
     public void add_edit_full_blank() {
         render("add_edit_full_blank.html");
     }
-
+    public void add_edit_full_proof() {
+        render("add_edit_full_proof.html");
+    }
 
     /**
      * 保存
@@ -96,11 +98,17 @@ public class QuestionAdminController extends BaseController {
      * 注意：使用独立于后台 layout 的页面 add_edit_full.html 时，需要清除掉 LayoutInterceptor 拦截器
      */
     public void edit() {
-        set("question", srv.getById(getInt("id")));
+        Question question = srv.getById((getInt("id")));
+        set("question", question);
         // render("add_edit.html");
         // 改用独立于后台 layout 的页面
-        keepPara("pn");					// 将页号参数 pn 传递到页面使用
-        render("edit_choice.html");
+        keepPara("pn");	 // 将页号参数 pn 传递到页面使用
+        switch (question.getType()) {
+            case "一般选择题" : render("edit_choice.html"); break;
+            case "简答题" : render("edit_answer.html"); break;
+            case "填空题" : render("edit_blank.html"); break;
+            case "证明题" : render("edit_proof.html"); break;
+        }
     }
 
     /**

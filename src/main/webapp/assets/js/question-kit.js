@@ -102,9 +102,8 @@ function transDBAnswer(DBString) {
     var final_answer = "";
 
     for (let i = 1; i < array_length; i++) {
-
-            final_answer += trans_array[i]+" ";
-
+        final_answer += trans_array[i] + "&nbsp;&nbsp;&nbsp;&nbsp; ";
     }
+
     return final_answer;
 }
