@@ -24,6 +24,7 @@
 			<thead>
 				<tr>
 					<th>名称</th>
+					<th>试卷号</th>
 					<th>开始时间</th>
 					<th>考试时间</th>
 					<th class="operation">操作</th>
@@ -33,7 +34,8 @@
 			<tbody>
 			#for (x : page.getList())
 				<tr>
-					<td><a href="/admin/exam/preview?id=#(x.id)">#(x.exam_name)</a></td>
+					<td><a href="/admin/paper/preview?id=#(x.paper_id)">#(x.exam_name)</a></td>
+					<td>#(x.paper_id)</td>
 					<td>#date(x.start_time)</td>
 					<td>#date(x.last_time, "HH:mm:ss")</td>
 					<td class="operation">

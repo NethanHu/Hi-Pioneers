@@ -58,6 +58,9 @@ public class AppConfig extends JFinalConfig {
 
 		// 配置的 baseDonwnloadPath 值将指向目录 src/main/webapp/files
 		me.setBaseDownloadPath("files");
+
+		// 配置 UTF-8 的编码
+		me.setEncoding("UTF8");
 	}
 	
 	public void configRoute(Routes me) {

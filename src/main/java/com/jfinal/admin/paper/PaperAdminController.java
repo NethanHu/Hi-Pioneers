@@ -24,7 +24,7 @@ import com.spire.pdf.htmlconverter.qt.Size;
 /**
  * 文件管理控制层
  */
-@Path(value = "/admin/paper",viewPath = "/admin/paper")
+@Path(value = "/admin/paper", viewPath = "/admin/paper")
 public class PaperAdminController extends BaseController {
 
     @Inject
@@ -64,14 +64,14 @@ public class PaperAdminController extends BaseController {
      * 下载功能
      */
     public void download() {
-        String path = getSession().getServletContext().getRealPath("files");
-        File file = new File(path+"/document.doc");
-        if (file.exists()){
-        renderFile(file);}
-        else {
-            renderJson();
-        }
-
+//        String path = getSession().getServletContext().getRealPath("files");
+//        File file = new File(path + "/document.doc");
+//        if (file.exists()) {
+//            renderFile(file);
+//        } else {
+//            renderJson();
+//        }
+        renderFile("/papers/doc.pdf");
     }
 
     /**
@@ -82,7 +82,8 @@ public class PaperAdminController extends BaseController {
         String[] questionId = paper.getContent().split("~~~");
 
         // 把 page 作为后端向前端输送数据的容器，把数据装入 page，在前端用类似 page.getList() 方法获取后端数据
-        Page<Question> page = srv.showQuestion(questionId);;
+        Page<Question> page = srv.showQuestion(questionId);
+        ;
         set("Paper", srv.getById(getInt("id"))).set("page", page);
 
         render("preview.html");
@@ -90,25 +91,23 @@ public class PaperAdminController extends BaseController {
 
     /**
      * 上传文件
-     *
+     * <p>
      * 注意：
-     *    需要清除 LayoutInterceptor 拦截器，否则会被 render(_admin_layout.html);
-     *    因为上传文件并没有被成功识别为 ajax 请求，详情请见 LayoutInterceptor
+     * 需要清除 LayoutInterceptor 拦截器，否则会被 render(_admin_layout.html);
+     * 因为上传文件并没有被成功识别为 ajax 请求，详情请见 LayoutInterceptor
      */
     @Clear(LayoutInterceptor.class)
     public void upload() {
         UploadFile uf = null;
         try {
-            getFiles(srv.tempUploadPath, srv.fileMaxSize);	// 将上传文件保存到临时目录，并指定最大的上传大小
-            uf = getFile();									// 获取已上传文件
-            Ret ret = srv.upload(getLoginAccountId(), uf);	// 调用上传业务
+            getFiles(srv.tempUploadPath, srv.fileMaxSize);    // 将上传文件保存到临时目录，并指定最大的上传大小
+            uf = getFile();                                    // 获取已上传文件
+            Ret ret = srv.upload(getLoginAccountId(), uf);    // 调用上传业务
             renderJson(ret);
-        }
-        catch (ExceededSizeException ex) {
+        } catch (ExceededSizeException ex) {
             // 上传型异常发生时，已上传文件会自动删除，无需处理
             renderJson(srv.createUploadFailRet("文件大小超出限制，最大允许尺寸为 : " + (srv.fileMaxSize / (1024 * 1024)) + "MB"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.getLog(getClass()).error(e.getMessage(), e);
             if (uf != null) {
                 // 非上传型异常发生时，已上传文件需主动删除，以免浪费存储空间
@@ -151,7 +150,7 @@ public class PaperAdminController extends BaseController {
         String type = get("type");
         Page<Question> page;
 
-        if(StrKit.isBlank(course) & StrKit.isBlank(level) & StrKit.isBlank(type)){
+        if (StrKit.isBlank(course) & StrKit.isBlank(level) & StrKit.isBlank(type)) {
             page = srv.Qpaginate(pn);
         } else {
             page = srv.searchForQuestion(course, type, level, pn);
@@ -165,30 +164,30 @@ public class PaperAdminController extends BaseController {
      * 智能组卷部分，通过传入的参数，从数据库中选择符合要求的题目
      */
     public void generate() {
-        int index = Integer.parseInt(get("index"))-1;
+        int index = Integer.parseInt(get("index")) - 1;
         String name = get("name");
         String unit = get("unit");
         String course = get("course");
         String min_level = get("min_level");
         String max_level = get("max_level");
         String[][] type = new String[index][2];
-        for (int i = 0; i < index ; i++) {
-            String type_name = get("type["+i+"][name]");
-            String type_number = get("type["+i+"][number]");
-            type[i][0]= type_name;
-            type[i][1]=type_number;
+        for (int i = 0; i < index; i++) {
+            String type_name = get("type[" + i + "][name]");
+            String type_number = get("type[" + i + "][number]");
+            type[i][0] = type_name;
+            type[i][1] = type_number;
         }
         List<Question> newlist;
 
-        newlist = srv.selectBy(unit,course,type,min_level,max_level);
+        newlist = srv.selectBy(unit, course, type, min_level, max_level);
 
-        String paper_content ="";
+        String paper_content = "";
         for (int i = 0; i < newlist.size(); i++) {
             Question question = newlist.get(i);
-            paper_content = paper_content+"~~~"+question.getStr("id");
+            paper_content = paper_content + "~~~" + question.getStr("id");
         }
 
-        Ret ret = srv.autosave(name,paper_content,getLoginAccountId(), getBean(Paper.class));
+        Ret ret = srv.autosave(name, paper_content, getLoginAccountId(), getBean(Paper.class));
         renderJson(ret);
 
         // 保持住 keyword 变量，便于输出到搜索框的 value 中
