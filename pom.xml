@@ -172,15 +172,17 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- opencv 4.5.2 外部依赖项 -->
+		<!-- 在项目内部resources中的 opencv 4.5.2 依赖项 -->
 		<dependency>
 			<groupId>opencv-452</groupId>
 			<artifactId>opnecv-452</artifactId>
 			<version>4.5.2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/src/main/resources/opencv-452.jar</systemPath> <!-- 项目src目录下的resource文件夹下 -->
+			<!-- 项目src目录下的main/resources文件夹下 -->
+			<systemPath>${basedir}/src/main/resources/opencv-452.jar</systemPath>
 		</dependency>
 
+		<!-- 冰蓝科技的 spire.pdf.free, 用于将HTML的文件转换为PDF以供下载 -->
 		<dependency>
 			<groupId>e-iceblue</groupId>
 			<artifactId>spire.pdf.free</artifactId>

@@ -13,7 +13,13 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
+
+import java.io.File;
 import java.util.List;
+
+import com.spire.pdf.graphics.PdfMargins;
+import com.spire.pdf.htmlconverter.qt.HtmlConverter;
+import com.spire.pdf.htmlconverter.qt.Size;
 
 /**
  * 文件管理控制层
@@ -58,6 +64,9 @@ public class PaperAdminController extends BaseController {
      * 下载功能
      */
     public void download() {
+String path = getSession().getServletContext().getRealPath("files");
+File file = new File(path+"/doc.pdf");
+        renderFile(file);
 
     }
 

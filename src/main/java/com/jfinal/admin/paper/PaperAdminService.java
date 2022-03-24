@@ -228,15 +228,6 @@ public class PaperAdminService {
         return dao.findById(id);
     }
 
-
-    /**
-     * 智能组卷功能
-     */
-    public Ret generatePaperAuto() {
-        int n = 111;
-        return Ret.ok("msg", "今天订单总数为 : " + n);
-    }
-
     /**
      * 根据题目类型来检索题库，返回对应符合要求的题目
      * 这里由于 if 判断过多，TO DO: 日后可以加以抽象提取一个方法来组合 sql 语句

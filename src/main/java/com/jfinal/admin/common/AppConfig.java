@@ -55,6 +55,9 @@ public class AppConfig extends JFinalConfig {
 		
 		// 不对父类进行注入，提升注入性能
 		me.setInjectSuperClass(false);
+
+		// 配置的 baseDonwnloadPath 值将指向目录 src/main/webapp/files
+		me.setBaseDownloadPath("files");
 	}
 	
 	public void configRoute(Routes me) {
