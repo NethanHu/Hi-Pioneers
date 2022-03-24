@@ -212,6 +212,16 @@ public class PaperAdminService {
     }
 
     /**
+     * 发布
+     */
+    public Ret publish(int id, boolean checked) {
+        int state = checked ? Question.STATE_PUBLISHED : Question.STATE_UNPUBLISHED;
+        String sql = "update Paper set state = ? where id = ?";
+        Db.update(sql, state, id);
+        return Ret.ok();
+    }
+
+    /**
      * 获取 id
      */
     public Paper getById(int id) {

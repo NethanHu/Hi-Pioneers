@@ -4,7 +4,6 @@ import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
-import com.jfinal.admin.question.QuestionAdminService;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -14,7 +13,6 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
-
 import java.util.List;
 
 /**
@@ -25,7 +23,6 @@ public class PaperAdminController extends BaseController {
 
     @Inject
     PaperAdminService srv;
-    QuestionAdminService Qsrv;
 
     /**
      * 首页
@@ -117,6 +114,14 @@ public class PaperAdminController extends BaseController {
     }
 
     /**
+     * 支持 switch 开关的发布功能
+     */
+    public void publish() {
+        Ret ret = srv.publish(getInt("id"), getBoolean("checked"));
+        renderJson(ret);
+    }
+
+    /**
      * 智能组卷模块，返回 Ret 形式的 msg
      */
     public void generatePaperAuto() {
@@ -143,6 +148,9 @@ public class PaperAdminController extends BaseController {
         render("choose_questions.html");
     }
 
+    /**
+     * 智能组卷部分，通过传入的参数，从数据库中选择符合要求的题目
+     */
     public void generate() {
         int index = Integer.parseInt(get("index"))-1;
         String name = get("name");
