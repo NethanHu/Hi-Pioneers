@@ -1,8 +1,12 @@
 <div class="main">
 
 <!-- 弹出层主体内容 -->
-<div class="open-box" style="padding: 30px 30px 15px 30px;">
-    <form id="open-form" enctype="multipart/form-data" action="/admin/paper/generate" onsubmit="return generatePaper();" method="POST">
+<div class="open-box" >
+    <h3>智能组卷</h3>
+
+    <div class="box-option">
+        <p>请输入试卷名称 :</p>
+        <form id="open-form" enctype="multipart/form-data" action="/admin/paper/generate" onsubmit="return generatePaper();" method="POST">
         <input type="text" id="paper_name">
         <div>
             <span>选择考试范围（留空则为全选）</span>
@@ -52,12 +56,12 @@
 
             </ul>
 
-        <button type="button" onclick="addOption()">
-            <i class="fa fa-plus-square"></i>&nbsp;添加类型
-        </button>
-        <button  type="button" id="del_button" onclick="deleteOption()" style="display: none">
-            <i class="fa fa-minus-square"></i>&nbsp;移除类型
-        </button>
+            <button type="button" style="margin-top: 20px" onclick="addOption()">
+                <i class="fa fa-plus-square"></i>&nbsp;添加类型
+            </button>
+            <button  type="button" id="del_button" onclick="deleteOption()" style="display: none">
+                <i class="fa fa-minus-square"></i>&nbsp;移除类型
+            </button>
 
         </div>
 
@@ -66,7 +70,7 @@
             <a href="index.html" class="layui-layer-btn0">开始组卷</a>
         </div>
 
-    </form>
+    </form></div>
 </div>
 </div>
 

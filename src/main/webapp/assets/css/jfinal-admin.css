@@ -142,7 +142,7 @@ pre {
 	min-height: 99.9%;
 	position: relative;
 	padding: 0;
-	
+
 	/* bootstrap container-fluid 部分样式 */
 	width: 100%;
 	margin-right: auto;
@@ -150,6 +150,7 @@ pre {
 	
 	/* 灰色 #F0F0F0 #F2F2F2 #EEEEEE #E2E2E2 #DDDDDD #D2D2D2 #C2C2C2 */
 	background-color: #F2F2F2;
+
 }
 .left-box {
 
@@ -191,6 +192,9 @@ pre {
 	line-height: 35px;
 	background-color: white;
 	font-size: 14px;
+
+
+
 }
 .footer-box a {
 	font-family: Tahoma, Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -369,7 +373,17 @@ body .layui-layer-btn a {
 	font-size: 14px;
 }
 body .layui-layer-btn a.layui-layer-btn0 {
-	background-color: #20a53a;
+	background: #9796f0;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #007bff, #b4e2e7);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #007bff, #b4e2e7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	border-radius: 28px;
+	text-shadow: 3px 2px 1px #9daef5;
+	-webkit-box-shadow: 6px 5px 24px #666666;
+	-moz-box-shadow: 6px 5px 24px #666666;
+	box-shadow: 6px 5px 24px #666666;
+	font-family: Arial;
+	color: #fafafa;
+	text-decoration: none;
 }
 body .layui-layer-btn a.layui-layer-btn0:hover {
 	color: #fff;
@@ -481,9 +495,11 @@ body .layui-layer-btn a.layui-layer-btn0:hover {
 }
 .main {
 	position: relative;
-	background-color: white;
 	padding: 15px;
 	margin: 15px 0;
+	height: 80%;
+
+
 }
 .toolbar {
 	position: relative;
@@ -585,7 +601,16 @@ nav .page-total-row {
 /* open 弹出层主体容器 */
 .open-box {
 	/* padding: 1.5rem 1.5rem 0 1.5rem; */
-	padding: 30px 30px 0 30px;
+	width: 100%;
+
+	height: 100px;
+
+	padding-left: 15%;
+	padding-top: 5%;
+
+	background-clip:content-box;/*居中的关键*/
+
+
 }
 /* ckeditor 工具栏的最大化按钮放置在最右侧 */
 .form-group {
@@ -756,6 +781,36 @@ nav .page-total-row {
 	word-spacing: 15px;
 
 }
+#type_number_list{
+	display:flex;
+	flex-direction: column;
+	max-height: 600px;
+}
+#type_number_list li {
+	padding-top :3%;
+	min-height: 20px;
+}
+
+.open-box h3 {
+    padding-top: 5px;
+	padding-bottom: 10px
+
+}
+.open-box p {
+	padding-top: 5px;
+	padding-bottom: 15px
+}
+#open-form {
+	padding-top: 5px;
+}
+.box-option div {
+	padding-top:15px;
+	letter-spacing:2px
+}
+#paper_name{
+	outline-color: black ;
+}
+
 
 
 
