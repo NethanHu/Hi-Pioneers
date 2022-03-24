@@ -64,9 +64,13 @@ public class PaperAdminController extends BaseController {
      * 下载功能
      */
     public void download() {
-String path = getSession().getServletContext().getRealPath("files");
-File file = new File(path+"/doc.pdf");
-        renderFile(file);
+        String path = getSession().getServletContext().getRealPath("files");
+        File file = new File(path+"/document.doc");
+        if (file.exists()){
+        renderFile(file);}
+        else {
+            renderJson();
+        }
 
     }
 
