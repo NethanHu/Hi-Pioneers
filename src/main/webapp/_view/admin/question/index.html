@@ -80,8 +80,10 @@
     ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
         #if(keyword)
         #set(append ='&keyword=' + keyword )
-        #else
+        #elseif(select)
         #set(append='&select=' + select )
+        #else
+        #set(append='')
         #end
 
 

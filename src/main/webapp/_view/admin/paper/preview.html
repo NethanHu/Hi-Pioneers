@@ -22,6 +22,7 @@
             font-size: 17px;
             background-color: #F2F2F2;
         }
+
         .container {
             /* 常见的设备网页宽度为：1920px 1600px 1440px 1280px 1140px 960px 768px 640px 320px */
             /* min-width: 1140px; */
@@ -34,6 +35,7 @@
             border-radius: 5px;
 
         }
+
         .article-title {
             font-size: 24px;
             font-weight: 400;
@@ -41,20 +43,24 @@
             margin-top: 15px;
             text-align: center;
         }
+
         .article-content {
             font-size: 16px;
             line-height: 1.8;
             margin-top: 40px;
             width: 1000px;
         }
+
         .article-content p {
             margin: 16px 0;
         }
+
         .article-content h2 {
             font-size: 24px;
             font-weight: 500;
             margin: 22px 0 18px 0;
         }
+
         .article-content h3 {
             font-size: 22px;
             font-weight: 400;
@@ -80,38 +86,48 @@
             #(Paper.showName)
         </h1>
 
-    <div id="choice">
-        #for (x : page.getList())
-            #if("一般选择题".equals(x.type))
-        <div class="article-content">
-            <div id="choice_index_#(page.getList().indexOf(x) + 1)"></div>
-            <div>#(x.question)</div>
-            <div id="option_content_#(page.getList().indexOf(x) + 1)">#(x.option)</div>
-        </div>
-            #end
-        #end
-    </div>
-
-    <div id="blank">
-        #for (x : page.getList())
-            #if("填空题".equals(x.type))
-        <div class="article-content">
-            <div id="blank_index_#(page.getList().indexOf(x) + 1)"></div>
-            <div>#(x.question)</div>
-        </div>
-            #end
-        #end
-    </div>
-    <div id="answer">
+        <div id="choice">
             #for (x : page.getList())
-                #if("简答题".equals(x.type))
+            #if("一般选择题".equals(x.type))
+            <div class="article-content">
+                <div id="choice_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div>#(x.question)</div>
+                <div id="option_content_#(page.getList().indexOf(x) + 1)">#(x.option)</div>
+            </div>
+            #end
+            #end
+        </div>
+
+        <div id="blank">
+            #for (x : page.getList())
+            #if("填空题".equals(x.type))
+            <div class="article-content">
+                <div id="blank_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div>#(x.question)</div>
+            </div>
+            #end
+            #end
+        </div>
+        <div id="answer">
+            #for (x : page.getList())
+            #if("简答题".equals(x.type))
             <div class="article-content">
                 <div id="answer_index_#(page.getList().indexOf(x) + 1)"></div>
                 <div>#(x.question)</div>
             </div>
-                #end
             #end
-    </div>
+            #end
+        </div>
+        <div id="proof">
+            #for (x : page.getList())
+            #if("证明题".equals(x.type))
+            <div class="article-content">
+                <div id="proof_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div>#(x.question)</div>
+            </div>
+            #end
+            #end
+        </div>
     </div>
 
 </div>
@@ -126,11 +142,11 @@
 <script src="/assets/js/question-kit.js"></script>
 
 <script>
-    $(function() {
+    $(function () {
         setChoice();
         setBlank();
         setAnswer();
-
+        setProof();
     });
 
     var question_index = 1;
@@ -157,12 +173,13 @@
             option_content.appendChild(option_node);
             isExit++;
         }
-        if(isExit!=0){
-            choice.innerHTML="选择题"+choice.innerHTML;
+        if (isExit != 0) {
+            choice.innerHTML = "选择题" + choice.innerHTML;
         }
     }
+
     function setBlank() {
-        let isExit=0;
+        let isExit = 0;
         let blank = document.getElementById("blank");
         // 初始化填空题
         for (let i = 1; i <= question_list_length; i++) {
@@ -175,10 +192,11 @@
             question_index++;
             isExit++;
         }
-        if(isExit!=0){
+        if (isExit != 0) {
             blank.innerHTML = "填空题" + blank.innerHTML;
         }
     }
+
     function setAnswer() {
         let isExit = 0;
         let answer = document.getElementById("answer");
@@ -193,11 +211,29 @@
             question_index++;
             isExit++;
         }
-        if(isExit != 0){
+        if (isExit != 0) {
             answer.innerHTML = "简答题" + answer.innerHTML;
         }
     }
 
+    function setProof() {
+        let isExit = 0;
+        let proof = document.getElementById("proof");
+        // 初始化证明题题
+        for (let i = 1; i <= question_list_length; i++) {
+            let proof_index = document.getElementById('proof_index_' + i);
+            if (proof_index == null) {
+                continue;
+            }
+
+            proof_index.innerText = question_index;
+            question_index++;
+            isExit++;
+        }
+        if (isExit != 0) {
+            proof.innerHTML = "证明题" + proof.innerHTML;
+        }
+    }
 </script>
 </body>
 </html>

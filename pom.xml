@@ -20,6 +20,7 @@
 	
 	<!-- 使用阿里 maven 库 -->
 	<repositories>
+
 		<repository>
 			<id>ali-maven</id>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
@@ -32,6 +33,12 @@
 				<checksumPolicy>fail</checksumPolicy>
 			</snapshots>
 		</repository>
+
+		<repository>
+			<id>com.e-iceblue</id>
+			<url>https://repo.e-iceblue.cn/repository/maven-public/</url>
+		</repository>
+
 	</repositories>
 
 	<dependencies>
@@ -172,6 +179,12 @@
 			<version>4.5.2</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/src/main/resources/opencv-452.jar</systemPath> <!-- 项目src目录下的resource文件夹下 -->
+		</dependency>
+
+		<dependency>
+			<groupId>e-iceblue</groupId>
+			<artifactId>spire.pdf.free</artifactId>
+			<version>3.9.0</version>
 		</dependency>
 
 	</dependencies>

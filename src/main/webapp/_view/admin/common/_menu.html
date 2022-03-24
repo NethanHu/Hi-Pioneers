@@ -31,7 +31,7 @@
 	
 	<!-- 内容管理 -->
 	### 演示 role 指令 "大粒度" 控制菜单，在后台管理中调整账号的角色时，这里的控制会自动生效
-	#role("内容管理员")
+	#role("内容管理员", "老师")
 	<div class="left-main-menu">
 		<!-- fa-file-text-o fa-file-o fa-file-text fa-edit -->
 		<i class="menu-icon fa fa-file-text-o"></i>
@@ -39,8 +39,10 @@
 		<i class="menu-arrow fa #(fa_angle)"></i>
 	</div>
 		<div class="left-sub-menu" #(sub_menu_state)>
+			#role("内容管理员")
 			<a href="/admin/article">文章管理</a>
 			<a href="/admin/image">图片管理</a>
+			#end
 			<a href="/admin/question">题库管理</a>
 			<a href="/admin/paper">试卷管理</a>
 			<a href="/admin/exam">考试管理</a>
