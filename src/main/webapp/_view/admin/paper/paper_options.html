@@ -2,11 +2,12 @@
 
 <!-- 弹出层主体内容 -->
 <div class="open-box" >
-    <h3>智能组卷</h3>
+
 
     <div class="box-option">
-        <p>请输入试卷名称 :</p>
+        <h3>智能组卷</h3>
         <form id="open-form" enctype="multipart/form-data" action="/admin/paper/generate" onsubmit="return generatePaper();" method="POST">
+            <p>请输入试卷名称 :</p>
         <input type="text" id="paper_name">
         <div>
             <span>选择考试课程（留空则为全选）</span>
