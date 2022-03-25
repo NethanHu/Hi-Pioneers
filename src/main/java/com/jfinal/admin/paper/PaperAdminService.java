@@ -29,7 +29,7 @@ public class PaperAdminService {
     // 相对路径
     String relativePath = "/paper/";
 
-    String baseDownloadPath = "/upload/paper";
+    String baseDownloadPath = "/files/papers";
 
 
     /**

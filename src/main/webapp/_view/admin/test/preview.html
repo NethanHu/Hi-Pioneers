@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="always">
+
+    <meta name="keywords" content="jfinal admin">
+    <meta name="description" content="jfinal admin">
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+
+    <style>
+        /* html 是根元素
+         * rem（font size of the root element）是相对于 html 元素的字体大小单位
+         * 在不指定时多数浏览器的默认值为 16px
+         */
+
+        body, html {
+            font-size: 17px;
+            background-color: #F2F2F2;
+        }
+
+        .container {
+            /* 常见的设备网页宽度为：1920px 1600px 1440px 1280px 1140px 960px 768px 640px 320px */
+            /* min-width: 1140px; */
+            /* max-width: 768px; */
+            max-width: 960px;
+
+            margin: 15px auto;
+            padding: 25px 60px;
+            background-color: #FFF;
+            border-radius: 5px;
+
+        }
+
+        .article-title {
+            font-size: 24px;
+            font-weight: 400;
+            color: #333;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-top: 40px;
+            width: 1000px;
+        }
+
+        .article-content p {
+            margin: 16px 0;
+        }
+
+        .article-content h2 {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 22px 0 18px 0;
+        }
+
+        .article-content h3 {
+            font-size: 22px;
+            font-weight: 400;
+            margin: 22px 0 16px 0;
+        }
+
+        /* 在这里修改选项和答案的 span 的CSS样式 */
+        #option_content span {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 根容器 -->
+<div class="container">
+    <input type="hidden" id="question_content" value="#(page.getList().size())">
+
+    <!-- 主体内容 -->
+    <div class="article-box">
+
+        <h1 class="article-title">
+            #(exam.exam_name)
+        </h1>
+        <div>
+            <div>学科：#(exam.course_name)</div>
+            <div>考试时间:#(exam.last_time)</div>
+            <div>#(exam.exam_description)</div>
+        </div>
+        <div id="choice">
+            #for (x : page.getList())
+            #if("一般选择题".equals(x.type))
+            <div class="article-content">
+                <div id="choice_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div id="choice_question_#(page.getList().indexOf(x) + 1)">#(x.question)</div>
+                <div id="option_content_#(page.getList().indexOf(x) + 1)">#(x.option)</div>
+            </div>
+            #end
+            #end
+        </div>
+
+        <div id="blank">
+            #for (x : page.getList())
+            #if("填空题".equals(x.type))
+            <div class="article-content">
+                <div id="blank_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div id="blank_question_#(page.getList().indexOf(x) + 1)">#(x.question)</div>
+            </div>
+            #end
+            #end
+        </div>
+        <div id="answer">
+            #for (x : page.getList())
+            #if("简答题".equals(x.type))
+            <div class="article-content">
+                <div id="answer_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div id="answer_question_#(page.getList().indexOf(x) + 1)">#(x.question)</div>
+            </div>
+            #end
+            #end
+        </div>
+        <div id="proof">
+            #for (x : page.getList())
+            #if("证明题".equals(x.type))
+            <div class="article-content">
+                <div id="proof_index_#(page.getList().indexOf(x) + 1)"></div>
+                <div id="proof_question_#(page.getList().indexOf(x) + 1)">#(x.question)</div>
+            </div>
+            #end
+            #end
+        </div>
+        <input type="hidden" id="score" value="#(exam.question_scores)">
+    </div>
+
+</div>
+
+<script src="/assets/lib/jquery/jquery-3.5.1.min.js"></script>
+<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+<script src="/assets/lib/layer/layer.js"></script>
+<script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/js/paper-kit.js"></script>
+<script src="/assets/js/question-kit.js"></script>
+
+<script>
+    $(function () {
+        setChoice();
+        setBlank();
+        setAnswer();
+        setProof();
+        setScores();
+    });
+
+    var question_index = 1;
+    var question_list_length = parseInt(document.getElementById('question_content').value);
+
+    function setScores() {
+        let scores = document.getElementById("score").value;
+        let score_array = scores.split("~~~");
+        let score_index = score_array.length;
+
+        for (let i = 1; i <= score_index; i++) {
+            let score = document.getElementById('choice_question_' + i);
+            if (score == null) {
+                continue;
+            }
+            score.innerHTML = score.innerHTML + "(" + score_array[i] + "分)";
+
+        }
+        for (let i = 1; i <= score_index; i++) {
+            let score = document.getElementById('blank_question_' + i);
+            if (score == null) {
+                continue;
+            }
+            score.innerHTML = score.innerHTML + "(" + score_array[i] + "分)";
+
+        }
+        for (let i = 1; i <= score_index; i++) {
+            let score = document.getElementById('answer_question_' + i);
+            if (score == null) {
+                continue;
+            }
+            score.innerHTML = score.innerHTML + "(" + score_array[i] + "分)";
+
+        }
+
+      for (let i = 1; i <= score_index; i++) {
+        let score = document.getElementById('proof_question_' + i);
+        if (score == null) {
+          continue;
+        }
+        score.innerHTML = score.innerHTML + "(" + score_array[i] + "分)";
+
+      }
+    }
+
+    function setChoice() {
+        let isExit = 0;
+        let choice = document.getElementById("choice");
+        // 初始化选择题
+        for (let i = 1; i <= question_list_length; i++) {
+            let option_content = document.getElementById('option_content_' + i);
+            if (option_content == null) {
+                continue;
+            }
+            let choice_index = document.getElementById("choice_index_" + i);
+            choice_index.innerText = question_index;
+            question_index++;
+            let options_obj = transDBSingleString(option_content.innerHTML, 'ABCD');
+            let option_node = document.createElement('div');
+            option_content.innerHTML = '';
+            for (let i = 1; i <= options_obj.index; i++) {
+                option_node.innerHTML += options_obj.indexed_array[i] + ' ';
+            }
+            option_content.appendChild(option_node);
+            isExit++;
+        }
+        if (isExit != 0) {
+            choice.innerHTML = "选择题" + choice.innerHTML;
+        }
+    }
+
+    function setBlank() {
+        let isExit = 0;
+        let blank = document.getElementById("blank");
+        // 初始化填空题
+        for (let i = 1; i <= question_list_length; i++) {
+            let blank_index = document.getElementById('blank_index_' + i);
+            if (blank_index == null) {
+                continue;
+            }
+
+            blank_index.innerText = question_index;
+            question_index++;
+            isExit++;
+        }
+        if (isExit != 0) {
+            blank.innerHTML = "填空题" + blank.innerHTML;
+        }
+    }
+
+    function setAnswer() {
+        let isExit = 0;
+        let answer = document.getElementById("answer");
+        // 初始化简答题
+        for (let i = 1; i <= question_list_length; i++) {
+            let answer_index = document.getElementById('answer_index_' + i);
+            if (answer_index == null) {
+                continue;
+            }
+
+            answer_index.innerText = question_index;
+            question_index++;
+            isExit++;
+        }
+        if (isExit != 0) {
+            answer.innerHTML = "简答题" + answer.innerHTML;
+        }
+    }
+
+    function setProof() {
+        let isExit = 0;
+        let proof = document.getElementById("proof");
+        // 初始化证明题题
+        for (let i = 1; i <= question_list_length; i++) {
+            let proof_index = document.getElementById('proof_index_' + i);
+            if (proof_index == null) {
+                continue;
+            }
+
+            proof_index.innerText = question_index;
+            question_index++;
+            isExit++;
+        }
+        if (isExit != 0) {
+            proof.innerHTML = "证明题" + proof.innerHTML;
+        }
+    }
+</script>
+</body>
+</html>

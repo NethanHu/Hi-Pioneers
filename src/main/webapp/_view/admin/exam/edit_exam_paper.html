@@ -157,15 +157,14 @@
             }
         });
     }
-    function setIndex() {
-        for (let i = 1; i <=question_list_length ; i++) {
-            let option_content = document.getElementById('choice_index_' + i);
-            if (option_content == null) {
-                continue;
-            }
-            option_content.innerHTML = question_index;
-            question_index++;
+    function setIndex() { for (let i = 1; i <=question_list_length ; i++) {
+        let option_content = document.getElementById('choice_index_' + i);
+        if (option_content == null) {
+            continue;
         }
+        option_content.innerHTML = question_index;
+        question_index++;
+    }
         for (let i = 1; i <=question_list_length ; i++) {
             let option_content = document.getElementById('blank_index_' + i);
             if (option_content == null) {
@@ -182,6 +181,7 @@
             option_content.innerText = question_index;
             question_index++;
         }
+
     }
 
 
