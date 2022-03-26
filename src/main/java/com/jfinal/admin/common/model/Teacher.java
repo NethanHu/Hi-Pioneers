@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseTeacher;
  */
 @SuppressWarnings("serial")
 public class Teacher extends BaseTeacher<Teacher> {
-	
+
 }
 

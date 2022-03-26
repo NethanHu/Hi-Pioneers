@@ -7,5 +7,5 @@ import com.jfinal.admin.common.model.base.BasePermission;
  */
 @SuppressWarnings("serial")
 public class Permission extends BasePermission<Permission> {
-	
+
 }

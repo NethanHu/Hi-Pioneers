@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseScore;
  */
 @SuppressWarnings("serial")
 public class Score extends BaseScore<Score> {
-	
+
 }
 

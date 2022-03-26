@@ -1,11 +1,8 @@
 package com.jfinal.admin.common.kit;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import com.jfinal.log.Log;
+
+import java.util.concurrent.*;
 
 /**
  * 调度工具类
@@ -15,100 +12,105 @@ import com.jfinal.log.Log;
  */
 public class ScheduledKit {
 
-	private static ScheduledExecutorService executor = null;
-	
-	private ScheduledKit() {}
-	
-	/**
-	 * 初始化
-	 * 
-	 * @param corePoolSize the number of threads to keep in the pool, even if they are idle
-	 */
-	public synchronized static void init(int corePoolSize) {
-		if (executor == null) {
-			executor = Executors.newScheduledThreadPool(corePoolSize);
-		} else {
-			Log.getLog(ScheduledKit.class).warn(ScheduledKit.class.getName() + " 已经初始化");
-		}
-	}
-	
-	/**
-	 * 传递 ScheduledExecutorService 对象进行初始化，从而完全掌控线程池参数
-	 */
-	public synchronized static void init(ScheduledExecutorService executor) {
-		if (ScheduledKit.executor == null) {
-			ScheduledKit.executor = executor;
-		} else {
-			Log.getLog(ScheduledKit.class).warn(ScheduledKit.class.getName() + " 已经初始化");
-		}
-	}
-	
-	public static ScheduledExecutorService getExecutor() {
-		if (executor == null) {
-			init(5);
-		}
-		return executor;
-	}
-	
-	/**
-	 * 以固定延迟执行任务
-	 * @param task 被执行的任务
-	 * @param initialDelay 第一次启动前的延迟
-	 * @param delay 上次任务 "完成" 时间与本次任务 "开始" 时间的间隔
-	 * @param unit 时间单位
-	 */
-	public static ScheduledFuture<?> scheduleWithFixedDelay(Runnable task, long initialDelay, long delay, TimeUnit unit) {
-		return getExecutor().scheduleWithFixedDelay(task, initialDelay, delay, unit);
-	}
-	
-	/**
-	 * 以固定频率执行任务
-	 * @param task 被执行的任务
-	 * @param initialDelay 第一次启动前的延迟
-	 * @param period 上次任务 "开始" 时间与本次任务 "开始" 时间的间隔，如果任务执行时长超出 period 值，则在任务执行完成后立即调度任务执行
-	 * @param unit 时间单位
-	 */
-	public static ScheduledFuture<?> scheduleAtFixedRate(Runnable task, long initialDelay, long period, TimeUnit unit) {
-		return getExecutor().scheduleAtFixedRate(task, initialDelay, period, unit);
-	}
-	
-	/**
-     * 创建一次性调度，在给定的 delay 时间后调度
-     * @param task 被执行任务
-     * @param delay 从现在开始的延迟时间
-     * @param unit 时间单位
+    private static ScheduledExecutorService executor = null;
+
+    private ScheduledKit() {
+    }
+
+    /**
+     * 初始化
+     *
+     * @param corePoolSize the number of threads to keep in the pool, even if they are idle
      */
-	public static ScheduledFuture<?> schedule(Runnable task, long delay, TimeUnit unit) {
-		return getExecutor().schedule(task, delay, unit);
-	}
-	
-	/**
-     * 创建一次性调度，在给定的 delay 时间后调度
-     * @param task 被执行任务
-     * @param delay 从现在开始的延迟时间
-     * @param unit 时间单位
+    public synchronized static void init(int corePoolSize) {
+        if (executor == null) {
+            executor = Executors.newScheduledThreadPool(corePoolSize);
+        } else {
+            Log.getLog(ScheduledKit.class).warn(ScheduledKit.class.getName() + " 已经初始化");
+        }
+    }
+
+    /**
+     * 传递 ScheduledExecutorService 对象进行初始化，从而完全掌控线程池参数
      */
-	public static <V> ScheduledFuture<V> schedule(Callable<V> task, long delay, TimeUnit unit) {
-		return getExecutor().schedule(task, delay, unit);
-	}
-	
-	/**
-	 * 等待正在执行的线程执行完毕以后，关闭线程池
-	 */
-	public static void shutdown() {
-		if (executor != null) {
-			executor.shutdown();
-		}
-	}
-	
-	/**
-	 * 停掉正在执行的线程，关闭线程池
-	 */
-	public static void shutdownNow() {
-		if (executor != null) {
-			executor.shutdownNow();
-		}
-	}
+    public synchronized static void init(ScheduledExecutorService executor) {
+        if (ScheduledKit.executor == null) {
+            ScheduledKit.executor = executor;
+        } else {
+            Log.getLog(ScheduledKit.class).warn(ScheduledKit.class.getName() + " 已经初始化");
+        }
+    }
+
+    public static ScheduledExecutorService getExecutor() {
+        if (executor == null) {
+            init(5);
+        }
+        return executor;
+    }
+
+    /**
+     * 以固定延迟执行任务
+     *
+     * @param task         被执行的任务
+     * @param initialDelay 第一次启动前的延迟
+     * @param delay        上次任务 "完成" 时间与本次任务 "开始" 时间的间隔
+     * @param unit         时间单位
+     */
+    public static ScheduledFuture<?> scheduleWithFixedDelay(Runnable task, long initialDelay, long delay, TimeUnit unit) {
+        return getExecutor().scheduleWithFixedDelay(task, initialDelay, delay, unit);
+    }
+
+    /**
+     * 以固定频率执行任务
+     *
+     * @param task         被执行的任务
+     * @param initialDelay 第一次启动前的延迟
+     * @param period       上次任务 "开始" 时间与本次任务 "开始" 时间的间隔，如果任务执行时长超出 period 值，则在任务执行完成后立即调度任务执行
+     * @param unit         时间单位
+     */
+    public static ScheduledFuture<?> scheduleAtFixedRate(Runnable task, long initialDelay, long period, TimeUnit unit) {
+        return getExecutor().scheduleAtFixedRate(task, initialDelay, period, unit);
+    }
+
+    /**
+     * 创建一次性调度，在给定的 delay 时间后调度
+     *
+     * @param task  被执行任务
+     * @param delay 从现在开始的延迟时间
+     * @param unit  时间单位
+     */
+    public static ScheduledFuture<?> schedule(Runnable task, long delay, TimeUnit unit) {
+        return getExecutor().schedule(task, delay, unit);
+    }
+
+    /**
+     * 创建一次性调度，在给定的 delay 时间后调度
+     *
+     * @param task  被执行任务
+     * @param delay 从现在开始的延迟时间
+     * @param unit  时间单位
+     */
+    public static <V> ScheduledFuture<V> schedule(Callable<V> task, long delay, TimeUnit unit) {
+        return getExecutor().schedule(task, delay, unit);
+    }
+
+    /**
+     * 等待正在执行的线程执行完毕以后，关闭线程池
+     */
+    public static void shutdown() {
+        if (executor != null) {
+            executor.shutdown();
+        }
+    }
+
+    /**
+     * 停掉正在执行的线程，关闭线程池
+     */
+    public static void shutdownNow() {
+        if (executor != null) {
+            executor.shutdownNow();
+        }
+    }
 }
 
 

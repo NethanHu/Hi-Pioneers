@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseAdministrator;
  */
 @SuppressWarnings("serial")
 public class Administrator extends BaseAdministrator<Administrator> {
-	
+
 }
 

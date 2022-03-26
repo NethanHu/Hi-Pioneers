@@ -1,6 +1,6 @@
 /**
  * 本项目采用《JFinal 俱乐部授权协议》，保护知识产权，就是在保护我们自己身处的行业。
- * 
+ * <p>
  * Copyright (c) 2011-2021, jfinal.com
  */
 
@@ -26,36 +26,36 @@ import com.jfinal.template.stat.Scope;
  */
 public class RoleDirective extends Directive {
 
-	static AdminAuthService adminAuthSrv = Aop.get(AdminAuthService.class);
-	
-	public void exec(Env env, Scope scope, Writer writer) {
-		Account account = (Account)scope.getRootData().get(LoginService.LOGIN_ACCOUNT);
-		if (account != null && account.isStateOk()) {
-			// 如果是超级管理员，或者拥有指定的角色则放行
-			if (	adminAuthSrv.isSuperAdmin(account.getId()) ||
-					adminAuthSrv.hasRole(account.getId(), getRoleNameArray(scope))) {
-				stat.exec(env, scope, writer);
-			}
-		}
-	}
+    static AdminAuthService adminAuthSrv = Aop.get(AdminAuthService.class);
 
-	/**
-	 * 从 #role 指令参数中获取角色名称数组
-	 */
-	private String[] getRoleNameArray(Scope scope) {
-		Object[] values = exprList.evalExprList(scope);
-		String[] ret = new String[values.length];
-		for (int i=0; i<values.length; i++) {
-			if (values[i] instanceof String) {
-				ret[i] = (String)values[i];
-			} else {
-				throw new IllegalArgumentException("角色名只能为 String 类型");
-			}
-		}
-		return ret;
-	}
+    public void exec(Env env, Scope scope, Writer writer) {
+        Account account = (Account) scope.getRootData().get(LoginService.LOGIN_ACCOUNT);
+        if (account != null && account.isStateOk()) {
+            // 如果是超级管理员，或者拥有指定的角色则放行
+            if (adminAuthSrv.isSuperAdmin(account.getId()) ||
+                    adminAuthSrv.hasRole(account.getId(), getRoleNameArray(scope))) {
+                stat.exec(env, scope, writer);
+            }
+        }
+    }
 
-	public boolean hasEnd() {
-		return true;
-	}
+    /**
+     * 从 #role 指令参数中获取角色名称数组
+     */
+    private String[] getRoleNameArray(Scope scope) {
+        Object[] values = exprList.evalExprList(scope);
+        String[] ret = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] instanceof String) {
+                ret[i] = (String) values[i];
+            } else {
+                throw new IllegalArgumentException("角色名只能为 String 类型");
+            }
+        }
+        return ret;
+    }
+
+    public boolean hasEnd() {
+        return true;
+    }
 }

@@ -37,6 +37,6 @@ public class FileKit {
     }
 
     public static final boolean notPaperExtName(String fileName) {
-        return ! isPaperExtName(fileName);
+        return !isPaperExtName(fileName);
     }
 }

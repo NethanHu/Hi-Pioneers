@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseFile;
  */
 @SuppressWarnings("serial")
 public class File extends BaseFile<File> {
-	
+
 }
 

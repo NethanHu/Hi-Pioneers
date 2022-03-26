@@ -7,5 +7,5 @@ import com.jfinal.admin.common.model.base.BaseImage;
  */
 @SuppressWarnings("serial")
 public class Image extends BaseImage<Image> {
-	
+
 }

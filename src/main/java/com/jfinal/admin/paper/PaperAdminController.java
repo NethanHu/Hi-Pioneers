@@ -14,12 +14,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
 
-import java.io.File;
 import java.util.List;
-
-import com.spire.pdf.graphics.PdfMargins;
-import com.spire.pdf.htmlconverter.qt.HtmlConverter;
-import com.spire.pdf.htmlconverter.qt.Size;
 
 /**
  * 文件管理控制层
@@ -63,14 +58,8 @@ public class PaperAdminController extends BaseController {
     /**
      * 下载功能
      */
+    @Clear(LayoutInterceptor.class)
     public void download() {
-//        String path = getSession().getServletContext().getRealPath("files");
-//        File file = new File(path + "/document.doc");
-//        if (file.exists()) {
-//            renderFile(file);
-//        } else {
-//            renderJson();
-//        }
         renderFile("/papers/doc.pdf");
     }
 
@@ -91,7 +80,6 @@ public class PaperAdminController extends BaseController {
 
     /**
      * 上传文件
-     * <p>
      * 注意：
      * 需要清除 LayoutInterceptor 拦截器，否则会被 render(_admin_layout.html);
      * 因为上传文件并没有被成功识别为 ajax 请求，详情请见 LayoutInterceptor

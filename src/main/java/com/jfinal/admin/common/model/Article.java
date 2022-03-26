@@ -8,35 +8,35 @@ import com.jfinal.admin.common.model.base.BaseArticle;
  */
 @SuppressWarnings("serial")
 public class Article extends BaseArticle<Article> {
-	
-	public static final int STATE_PUBLISHED = 1;	// 已发布状态
-	public static final int STATE_UNPUBLISHED = 0;	// 未发布状态
-	
-	/**
-	 * 是否已发布
-	 */
-	public boolean isPublished() {
-		return getInt("state") == STATE_PUBLISHED;
-	}
-	
-	/**
-	 * 是否未发布
-	 */
-	public boolean isUnpublished() {
-		return getInt("state") == STATE_UNPUBLISHED;
-	}
-	
-	/**
-	 * 获取简要内容
-	 */
-	public String getBrief() {
-		String ret = getContent();
-		ret = JsoupFilter.getText(ret);
-		if (ret != null && ret.length() > 140) {
-			ret = ret.substring(0, 140) + "...";
-		}
-		return ret;
-	}
+
+    public static final int STATE_PUBLISHED = 1;    // 已发布状态
+    public static final int STATE_UNPUBLISHED = 0;    // 未发布状态
+
+    /**
+     * 是否已发布
+     */
+    public boolean isPublished() {
+        return getInt("state") == STATE_PUBLISHED;
+    }
+
+    /**
+     * 是否未发布
+     */
+    public boolean isUnpublished() {
+        return getInt("state") == STATE_UNPUBLISHED;
+    }
+
+    /**
+     * 获取简要内容
+     */
+    public String getBrief() {
+        String ret = getContent();
+        ret = JsoupFilter.getText(ret);
+        if (ret != null && ret.length() > 140) {
+            ret = ret.substring(0, 140) + "...";
+        }
+        return ret;
+    }
 }
 
 

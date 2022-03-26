@@ -1,6 +1,6 @@
 /**
  * 本项目采用《JFinal 俱乐部授权协议》，保护知识产权，就是在保护我们自己身处的行业。
- * 
+ * <p>
  * Copyright (c) 2011-2021, jfinal.com
  */
 
@@ -30,32 +30,32 @@ import com.jfinal.template.stat.Scope;
  */
 public class PermissionDirective extends Directive {
 
-	static AdminAuthService adminAuthSrv = Aop.get(AdminAuthService.class);
-	
-	public void exec(Env env, Scope scope, Writer writer) {
-		Account account = (Account)scope.getRootData().get(LoginService.LOGIN_ACCOUNT);
-		if (account != null && account.isStateOk()) {
-			// 如果是超级管理员，或者拥有指定的权限则放行
-			if (	adminAuthSrv.isSuperAdmin(account.getId()) ||
-					adminAuthSrv.hasPermission(account.getId(), getPermission(scope))) {
-				stat.exec(env, scope, writer);
-			}
-		}
-	}
+    static AdminAuthService adminAuthSrv = Aop.get(AdminAuthService.class);
 
-	/**
-	 * 从 #permission 指令参数中获取 permission
-	 */
-	private String getPermission(Scope scope) {
-		Object value = exprList.eval(scope);
-		if (value instanceof String) {
-			return (String)value;
-		} else {
-			throw new IllegalArgumentException("权限参数只能为 String 类型");
-		}
-	}
+    public void exec(Env env, Scope scope, Writer writer) {
+        Account account = (Account) scope.getRootData().get(LoginService.LOGIN_ACCOUNT);
+        if (account != null && account.isStateOk()) {
+            // 如果是超级管理员，或者拥有指定的权限则放行
+            if (adminAuthSrv.isSuperAdmin(account.getId()) ||
+                    adminAuthSrv.hasPermission(account.getId(), getPermission(scope))) {
+                stat.exec(env, scope, writer);
+            }
+        }
+    }
 
-	public boolean hasEnd() {
-		return true;
-	}
+    /**
+     * 从 #permission 指令参数中获取 permission
+     */
+    private String getPermission(Scope scope) {
+        Object value = exprList.eval(scope);
+        if (value instanceof String) {
+            return (String) value;
+        } else {
+            throw new IllegalArgumentException("权限参数只能为 String 类型");
+        }
+    }
+
+    public boolean hasEnd() {
+        return true;
+    }
 }

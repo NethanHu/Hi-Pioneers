@@ -7,5 +7,5 @@ import com.jfinal.admin.common.model.base.BaseSession;
  */
 @SuppressWarnings("serial")
 public class Session extends BaseSession<Session> {
-	
+
 }

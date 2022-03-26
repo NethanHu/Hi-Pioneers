@@ -62,7 +62,7 @@ public class QuestionAdminService {
         }
 
         question.setAccountId(accountId);
-        question.setState(question.STATE_UNPUBLISHED);	// 默认未发布
+        question.setState(question.STATE_UNPUBLISHED);    // 默认未发布
         question.setUpdateTime(new Date());
         question.save();
         return Ret.ok("msg", "创建成功");

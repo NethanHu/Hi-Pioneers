@@ -7,8 +7,8 @@ import com.jfinal.admin.common.model.base.BaseQuestion;
  */
 @SuppressWarnings("serial")
 public class Question extends BaseQuestion<Question> {
-    public static final int STATE_PUBLISHED = 1;	// 已发布状态
-    public static final int STATE_UNPUBLISHED = 0;	// 未发布状态
+    public static final int STATE_PUBLISHED = 1;    // 已发布状态
+    public static final int STATE_UNPUBLISHED = 0;    // 未发布状态
 
     /**
      * 是否已发布
@@ -24,6 +24,6 @@ public class Question extends BaseQuestion<Question> {
         return getInt("state") == STATE_UNPUBLISHED;
     }
 
-	
+
 }
 

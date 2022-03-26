@@ -1,7 +1,6 @@
 package com.jfinal.admin.exam;
 
 import com.jfinal.admin.common.BaseController;
-import com.jfinal.admin.common.model.Article;
 import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
@@ -13,7 +12,7 @@ import com.jfinal.plugin.activerecord.Page;
 /**
  * 考试管理控制层
  */
-@Path(value = "/admin/exam",viewPath = "/admin/exam")
+@Path(value = "/admin/exam", viewPath = "/admin/exam")
 public class ExamAdminController extends BaseController {
 
     @Inject
@@ -27,14 +26,16 @@ public class ExamAdminController extends BaseController {
         set("page", page);
         render("index.html");
     }
+
     /**
      * 保存
      */
     public void save() {
         int paper_id = getInt("paper_id");
-        Ret ret = srv.save(paper_id,getLoginAccountId(), getBean(Exam.class));
+        Ret ret = srv.save(paper_id, getLoginAccountId(), getBean(Exam.class));
         renderJson(ret);
     }
+
     /**
      * 删除
      */

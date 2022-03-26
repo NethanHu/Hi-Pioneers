@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseEvaluation;
  */
 @SuppressWarnings("serial")
 public class Evaluation extends BaseEvaluation<Evaluation> {
-	
+
 }
 

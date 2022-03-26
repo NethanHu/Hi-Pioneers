@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseCourseSelection;
  */
 @SuppressWarnings("serial")
 public class CourseSelection extends BaseCourseSelection<CourseSelection> {
-	
+
 }
 

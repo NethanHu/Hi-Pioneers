@@ -4,20 +4,19 @@ import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
-import com.jfinal.admin.exam.ExamAdminService;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.plugin.activerecord.Page;
 
 
-@Path(value = "/admin/test",viewPath = "/admin/test")
+@Path(value = "/admin/test", viewPath = "/admin/test")
 public class TestAdminController extends BaseController {
     @Inject
     TestAdminService srv;
 
-    public void index(){
+    public void index() {
         Page<Exam> page = srv.paginate(getInt("pn", 1));
-        set("page",page);
+        set("page", page);
         render("index.html");
     }
 
@@ -26,11 +25,11 @@ public class TestAdminController extends BaseController {
      */
     public void preview() {
         Exam exam = srv.EgetById(getInt("id"));
-        int paper_id=exam.getPaperId();
+        int paper_id = exam.getPaperId();
         Paper paper = srv.PgetById(paper_id);
         String[] questionId = paper.getContent().split("~~~");
         Page<Question> page = srv.showQuestion(questionId);
-        set("exam",exam).set("paper",paper).set("page",page);
+        set("exam", exam).set("paper", paper).set("page", page);
         render("preview.html");
     }
 }

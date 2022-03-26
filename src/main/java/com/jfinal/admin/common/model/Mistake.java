@@ -7,6 +7,6 @@ import com.jfinal.admin.common.model.base.BaseMistake;
  */
 @SuppressWarnings("serial")
 public class Mistake extends BaseMistake<Mistake> {
-	
+
 }
 

@@ -1,6 +1,6 @@
 /**
  * 本项目采用《JFinal 俱乐部授权协议》，保护知识产权，就是在保护我们自己身处的行业。
- * 
+ * <p>
  * Copyright (c) 2011-2021, jfinal.com
  */
 
@@ -17,5 +17,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface Remark {
-	String value();
+    String value();
 }

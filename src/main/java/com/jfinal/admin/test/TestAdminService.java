@@ -29,22 +29,26 @@ public class TestAdminService {
     public Page<Exam> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from exam where state=1 order by update_time desc");
     }
+
     public Page<Paper> Ppaginate(int pageNumber) {
         return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
+
     /**
      * 获取 id
      */
     public Exam EgetById(int id) {
         return dao.findById(id);
     }
+
     public Paper PgetById(int id) {
         return Pdao.findById(id);
     }
+
     public Page<Question> showQuestion(String[] id) {
         String sql = "select * from question where ";
-        for (int i = 1; i < id.length ; i++) {
-            if(i == 1){
+        for (int i = 1; i < id.length; i++) {
+            if (i == 1) {
                 sql = sql + "id = " + id[i];
             } else {
                 sql = sql + " or id = " + id[i];

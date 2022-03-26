@@ -4,13 +4,9 @@ import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
 import com.jfinal.kit.Ret;
-import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 public class ExamAdminService {
 
@@ -26,13 +22,15 @@ public class ExamAdminService {
     public Page<Exam> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from exam order by update_time desc");
     }
+
     public Page<Paper> Ppaginate(int pageNumber) {
         return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
+
     public Page<Question> Qpaginate(String[] id) {
         String sql = "select * from question where ";
-        for (int i = 1; i < id.length ; i++) {
-            if(i == 1){
+        for (int i = 1; i < id.length; i++) {
+            if (i == 1) {
                 sql = sql + "id = " + id[i];
             } else {
                 sql = sql + " or id = " + id[i];
@@ -44,7 +42,7 @@ public class ExamAdminService {
     /**
      * 获取所选试卷中的题目序号
      */
-    public Paper getPaperContent(String id){
+    public Paper getPaperContent(String id) {
         String sql = "select * from Paper where id = " + id + " limit 1";
         return Pdao.findFirst(sql);
     }
@@ -53,9 +51,9 @@ public class ExamAdminService {
      * 把试卷中涉及的题目数组传入，生成查询 sql 的语句
      */
     public Page<Question> showQuestion(String[] id) {
-        String sql = "select * from question where " ;
-        for (int i = 1; i < id.length ; i++) {
-            if(i == 1){
+        String sql = "select * from question where ";
+        for (int i = 1; i < id.length; i++) {
+            if (i == 1) {
                 sql = sql + "id = " + id[i];
             } else {
                 sql = sql + " or id = " + id[i];
@@ -83,6 +81,7 @@ public class ExamAdminService {
     public Exam getById(int id) {
         return dao.findById(id);
     }
+
     public Paper PgetById(int id) {
         return Pdao.findById(id);
     }
@@ -90,7 +89,7 @@ public class ExamAdminService {
     /**
      * 将试卷信息储存到数据库
      */
-    public Ret save( int paper_id, int account_id, Exam exam) {
+    public Ret save(int paper_id, int account_id, Exam exam) {
 
         exam.setPaperId(paper_id);
         exam.setAccountId(account_id);

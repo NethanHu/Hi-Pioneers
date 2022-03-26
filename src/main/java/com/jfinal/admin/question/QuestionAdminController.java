@@ -28,12 +28,12 @@ public class QuestionAdminController extends BaseController {
         String type = get("type");
         Page<Question> page;
 
-        if (StrKit.isBlank(keyword) & StrKit.isBlank(select) & StrKit.isBlank(type)){
+        if (StrKit.isBlank(keyword) & StrKit.isBlank(select) & StrKit.isBlank(type)) {
             page = srv.paginate(pn);
         } else {
-            if (!StrKit.isBlank(keyword)){
+            if (!StrKit.isBlank(keyword)) {
                 page = srv.search(keyword, pn);
-            } else if (!StrKit.isBlank(select)){
+            } else if (!StrKit.isBlank(select)) {
                 page = srv.select(select, pn);
             } else {
                 page = srv.sort(type, pn);
@@ -66,18 +66,21 @@ public class QuestionAdminController extends BaseController {
 
     /**
      * 调用添加对应题目的页面
-     *
+     * <p>
      * 不用 @Clear(LayoutInterceptor.class)，因为该页面依赖于 Layout.
      */
     public void add_edit_full_choice() {
         render("add_edit_full_choice.html");
     }
+
     public void add_edit_full_answer() {
         render("add_edit_full_answer.html");
     }
+
     public void add_edit_full_blank() {
         render("add_edit_full_blank.html");
     }
+
     public void add_edit_full_proof() {
         render("add_edit_full_proof.html");
     }
@@ -92,18 +95,26 @@ public class QuestionAdminController extends BaseController {
 
     /**
      * 进入修改页面
-     *
+     * <p>
      * 注意：使用独立于后台 layout 的页面 add_edit_full.html 时，需要清除掉 LayoutInterceptor 拦截器
      */
     public void edit() {
         Question question = srv.getById(getInt("id"));
         set("question", question);
-        keepPara("pn");	 // 将页号参数 pn 传递到页面使用
+        keepPara("pn");     // 将页号参数 pn 传递到页面使用
         switch (question.getType()) {
-            case "一般选择题" : render("edit_choice.html"); break;
-            case "简答题" : render("edit_answer.html"); break;
-            case "填空题" : render("edit_blank.html"); break;
-            case "证明题" : render("edit_proof.html"); break;
+            case "一般选择题":
+                render("edit_choice.html");
+                break;
+            case "简答题":
+                render("edit_answer.html");
+                break;
+            case "填空题":
+                render("edit_blank.html");
+                break;
+            case "证明题":
+                render("edit_proof.html");
+                break;
         }
     }
 

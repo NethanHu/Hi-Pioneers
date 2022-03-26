@@ -7,5 +7,5 @@ import com.jfinal.admin.common.model.base.BaseRole;
  */
 @SuppressWarnings("serial")
 public class Role extends BaseRole<Role> {
-	
+
 }

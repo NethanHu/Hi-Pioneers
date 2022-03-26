@@ -1,6 +1,6 @@
 /**
  * 本项目采用《JFinal 俱乐部授权协议》，保护知识产权，就是在保护我们自己身处的行业。
- * 
+ * <p>
  * Copyright (c) 2011-2021, jfinal.com
  */
 
@@ -29,48 +29,48 @@ import com.jfinal.aop.Aop;
  * #end
  */
 public class AdminAuthKit {
-	
-	/**
-	 * 注意这里与控制器和拦截器不同，不能使用 @Inject 注入
-	 * 但可以使用 Aop.get(...) 实现同样的功能，代码稍多点而已
-	 * 
-	 * 不能使用 @Inject 注入的原因是 AdminAuthKit 工具对象
-	 * 的创建并不是由 jfinal 接管的，而 controller、interceptor
-	 * 的创建是由 jfinal 接管的，在接管后会自动进行注入动作
-	 * 
-	 * 所以，这里需要手动 Aop.get(...)
-	 */
-	static AdminAuthService adminAuthSrv = Aop.get(AdminAuthService.class);
 
-	/**
-	 * 当前账号是否拥有某些角色
-	 */
-	public boolean hasRole(String... roleNameArray) {
-		Account account = AdminAuthInterceptor.getThreadLocalAccount();
-		if (account != null && account.isStateOk()) {
-			if (	adminAuthSrv.isSuperAdmin(account.getId()) ||
-					adminAuthSrv.hasRole(account.getId(), roleNameArray)) {
-				return true;
-			}
-		}
+    /**
+     * 注意这里与控制器和拦截器不同，不能使用 @Inject 注入
+     * 但可以使用 Aop.get(...) 实现同样的功能，代码稍多点而已
+     *
+     * 不能使用 @Inject 注入的原因是 AdminAuthKit 工具对象
+     * 的创建并不是由 jfinal 接管的，而 controller、interceptor
+     * 的创建是由 jfinal 接管的，在接管后会自动进行注入动作
+     *
+     * 所以，这里需要手动 Aop.get(...)
+     */
+    static AdminAuthService adminAuthSrv = Aop.get(AdminAuthService.class);
 
-		return false;
-	}
+    /**
+     * 当前账号是否拥有某些角色
+     */
+    public boolean hasRole(String... roleNameArray) {
+        Account account = AdminAuthInterceptor.getThreadLocalAccount();
+        if (account != null && account.isStateOk()) {
+            if (adminAuthSrv.isSuperAdmin(account.getId()) ||
+                    adminAuthSrv.hasRole(account.getId(), roleNameArray)) {
+                return true;
+            }
+        }
 
-	/**
-	 * 是否拥有具体某个权限
-	 */
-	public boolean hasPermission(String actionKey) {
-		Account account = AdminAuthInterceptor.getThreadLocalAccount();
-		if (account != null && account.isStateOk()) {
-			if (	adminAuthSrv.isSuperAdmin(account.getId()) ||
-					adminAuthSrv.hasPermission(account.getId(), actionKey)) {
-				return true;
-			}
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * 是否拥有具体某个权限
+     */
+    public boolean hasPermission(String actionKey) {
+        Account account = AdminAuthInterceptor.getThreadLocalAccount();
+        if (account != null && account.isStateOk()) {
+            if (adminAuthSrv.isSuperAdmin(account.getId()) ||
+                    adminAuthSrv.hasPermission(account.getId(), actionKey)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 

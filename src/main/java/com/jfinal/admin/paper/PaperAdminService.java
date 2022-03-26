@@ -34,20 +34,20 @@ public class PaperAdminService {
 
     /**
      * 上传文件
-     *
+     * <p>
      * ckeditor 文件上传返回值约定：
      * 1：上传成功：
-     *    {"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
-     *    url 可以带域名：http://jfinal.com/upload/image/xxx.jpg
-     *
+     * {"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
+     * url 可以带域名：http://jfinal.com/upload/image/xxx.jpg
+     * <p>
      * 2：上传失败：
-     *    {"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
-     *
+     * {"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
+     * <p>
      * 3：粘贴上传与对话框上传约定一样：
-     *    {"uploaded":1, "fileName":"foo.jpg", "url":"/xxx.jpg"}
-     *
+     * {"uploaded":1, "fileName":"foo.jpg", "url":"/xxx.jpg"}
+     * <p>
      * 4：非图片也可以上传：
-     *    {"uploaded":1, "fileName":"xxx.zip", "url":"/xxx.zip"}
+     * {"uploaded":1, "fileName":"xxx.zip", "url":"/xxx.zip"}
      */
 
     public Ret upload(int AccountId, UploadFile uf) {
@@ -58,7 +58,7 @@ public class PaperAdminService {
 
         String fileName = buildSavePaperName(AccountId, uf);
         String path = relativePath;
-        int length = (int)uf.getFile().length();
+        int length = (int) uf.getFile().length();
         String fullFileName = PathKit.getWebRootPath() + baseUploadPath + path + fileName;
         saveOriginalFileToTargetFile(uf.getFile(), fullFileName);
 
@@ -96,22 +96,23 @@ public class PaperAdminService {
     public Ret save(int accountId, Paper paper) {
         paper.setFileName(buildSavePaperName(accountId));
         paper.setAccountId(accountId);
-        paper.setState(paper.STATE_UNPUBLISHED);	// 默认未发布
+        paper.setState(paper.STATE_UNPUBLISHED);    // 默认未发布
         paper.setUpdateTime(new Date());
         paper.save();
         return Ret.ok("msg", "创建成功");
     }
 
-    public Ret autosave(String name,String content,int accountId, Paper paper) {
+    public Ret autosave(String name, String content, int accountId, Paper paper) {
         paper.setShowName(name);
         paper.setContent(content);
         paper.setFileName(buildSavePaperName(accountId));
         paper.setAccountId(accountId);
-        paper.setState(paper.STATE_UNPUBLISHED);	// 默认未发布
+        paper.setState(paper.STATE_UNPUBLISHED);    // 默认未发布
         paper.setUpdateTime(new Date());
         paper.save();
         return Ret.ok("msg", "创建成功");
     }
+
     /**
      * 目前使用 File.renameTo(targetFileName) 的方式保存到目标文件，
      * 如果 linux 下不支持，或者将来在 linux 下要跨磁盘保存，则需要
@@ -144,7 +145,7 @@ public class PaperAdminService {
 
     /**
      * 创建上传成功返回值。上传成功返回格式：
-     *    {"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
+     * {"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
      */
     private Ret createUploadOkRet(String fileName, String url) {
         return Ret.create("uploaded", 1).set("fileName", fileName).set("url", url);
@@ -152,7 +153,7 @@ public class PaperAdminService {
 
     /**
      * 创建上传失败返回值。上传错误返回格式：
-     *    {"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
+     * {"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
      */
     public Ret createUploadFailRet(String msg) {
         Ret ret = Ret.create("uploaded", 0).set("fileName", "foo.jpg");
@@ -173,6 +174,7 @@ public class PaperAdminService {
     public Page<Paper> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
+
     // 引入范型为 Question 的分页机制，因为要显示题库以供选择
     public Page<Question> Qpaginate(int pageNumber) {
         return Qdao.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
@@ -186,8 +188,8 @@ public class PaperAdminService {
      */
     public Page<Question> showQuestion(String[] id) {
         String sql = "select * from question where ";
-        for (int i = 1; i < id.length ; i++) {
-            if(i == 1){
+        for (int i = 1; i < id.length; i++) {
+            if (i == 1) {
                 sql = sql + "id = " + id[i];
             } else {
                 sql = sql + " or id = " + id[i];
@@ -240,60 +242,62 @@ public class PaperAdminService {
         }
 
         if (!StrKit.isBlank(course)) {
-            if(StrKit.isBlank(type) & StrKit.isBlank(level)){
+            if (StrKit.isBlank(type) & StrKit.isBlank(level)) {
                 sql += "course_name = '" + course + "'";
-            } else{
+            } else {
                 sql += "course_name = '" + course + "' and ";
             }
-        };
+        }
+        ;
         if (!StrKit.isBlank(type)) {
-            if(!StrKit.isBlank(level)){
-            sql += "type = '" + type + "' and ";}
-            else{
+            if (!StrKit.isBlank(level)) {
+                sql += "type = '" + type + "' and ";
+            } else {
                 sql += "type = '" + type + "'";
             }
-        };
+        }
+        ;
         if (!StrKit.isBlank(level)) {
             sql += "level = '" + level + "'";
-        };
+        }
+        ;
 
         return Qdao.templateByString(sql, new Object()).paginate(pageNumber, pageSize);
     }
 
-    public List<Question> selectBy(String unit, String course , String[][] type , String min_level , String max_level) {
+    public List<Question> selectBy(String unit, String course, String[][] type, String min_level, String max_level) {
         String sql = "";
         for (int i = 0; i < type.length; i++) {
-            if (i>0){
-                sql = sql + "union" + "(select question.id from question where type ='"+type[i][0]+"' ";
-                if(!StrKit.isBlank(unit)){
-                    sql = sql + " and unit = '"+unit+"' ";
+            if (i > 0) {
+                sql = sql + "union" + "(select question.id from question where type ='" + type[i][0] + "' ";
+                if (!StrKit.isBlank(unit)) {
+                    sql = sql + " and unit = '" + unit + "' ";
                 }
-                if(!StrKit.isBlank(course)){
-                    sql = sql + " and course_name = '"+course+"' ";
+                if (!StrKit.isBlank(course)) {
+                    sql = sql + " and course_name = '" + course + "' ";
                 }
-                if(!StrKit.isBlank(min_level)){
-                    sql = sql + " and level >= "+min_level+" ";
+                if (!StrKit.isBlank(min_level)) {
+                    sql = sql + " and level >= " + min_level + " ";
                 }
-                if(!StrKit.isBlank(max_level)){
-                    sql = sql + " and level <= "+max_level+" ";
+                if (!StrKit.isBlank(max_level)) {
+                    sql = sql + " and level <= " + max_level + " ";
                 }
-                sql = sql + "limit "+type[i][1]+")";
-            }
-            else {
-                sql = "(select question.id from question where type ='"+type[i][0]+"' ";
-                if(!StrKit.isBlank(unit)){
-                    sql = sql + " and unit = '"+unit+"' ";
+                sql = sql + "limit " + type[i][1] + ")";
+            } else {
+                sql = "(select question.id from question where type ='" + type[i][0] + "' ";
+                if (!StrKit.isBlank(unit)) {
+                    sql = sql + " and unit = '" + unit + "' ";
                 }
-                if(!StrKit.isBlank(course)){
-                    sql = sql + " and course_name = '"+course+"' ";
+                if (!StrKit.isBlank(course)) {
+                    sql = sql + " and course_name = '" + course + "' ";
                 }
-                if(!StrKit.isBlank(min_level)){
-                    sql = sql + " and level >= "+min_level+" ";
+                if (!StrKit.isBlank(min_level)) {
+                    sql = sql + " and level >= " + min_level + " ";
                 }
-                if(!StrKit.isBlank(max_level)){
-                    sql = sql + " and level <= "+max_level+" ";
+                if (!StrKit.isBlank(max_level)) {
+                    sql = sql + " and level <= " + max_level + " ";
                 }
-                sql = sql + "limit "+type[i][1]+")";
+                sql = sql + "limit " + type[i][1] + ")";
             }
         }
         return Qdao.find(sql);
