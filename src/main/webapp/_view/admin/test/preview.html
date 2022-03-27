@@ -94,7 +94,7 @@
             font-size: 16px;
         }
 
-        #blank_input {
+        .blank_input {
             border-bottom: 1px solid black;
         }
 
@@ -206,15 +206,41 @@
             if (choice_answer == null) {
                 continue;
             }
-            let li_node = document.createElement('li');
-            li_node.innerHTML = `
+            // let li_node = document.createElement('li');
+            answers_paper.innerHTML += `<li id="li_${answer_index}">
                 第${answer_index}题:
-                <i class="fa fa-circle-o" id="choice_question_${answer_index}_1" onclick="tranRadioSelect(this, ${answer_index},1)"></i>A
-                <i class="fa fa-circle-o" id="choice_question_${answer_index}_2" onclick="tranRadioSelect(this, ${answer_index},2)"></i>B
-                <i class="fa fa-circle-o" id="choice_question_${answer_index}_3" onclick="tranRadioSelect(this, ${answer_index},3)"></i>C
-                <i class="fa fa-circle-o" id="choice_question_${answer_index}_4" onclick="tranRadioSelect(this, ${answer_index},4)"></i>D
-                `;
-            answers_paper.appendChild(li_node);
+                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_1" onclick="tranRadioSelect(this, ${answer_index},1)"></i>A
+                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_2" onclick="tranRadioSelect(this, ${answer_index},2)"></i>B
+                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_3" onclick="tranRadioSelect(this, ${answer_index},3)"></i>C
+                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_4" onclick="tranRadioSelect(this, ${answer_index},4)"></i>D
+                </li>`;
+            // answers_paper.appendChild(li_node);
+            answer_index++;
+        }
+        for (let i = 1; i <= question_list_length; i++) {
+            let blank_answer = document.getElementById("blank_index_" + i);
+            if (blank_answer == null) {
+                continue;
+            }
+            // let li_node = document.createElement('li');
+            answers_paper.innerHTML += `<li id="li_${answer_index}">
+                第${answer_index}题:
+                <input type="text" style=" border-bottom: 1px solid black;" id="blank_">
+                </li>`;
+            // answers_paper.appendChild(li_node);
+            answer_index++;
+        }
+        for (let i = 1; i <= question_list_length; i++) {
+            let answer_answer = document.getElementById("answer_index_" + i);
+            if (answer_answer == null) {
+                continue;
+            }
+            // let li_node = document.createElement('li');
+            answers_paper.innerHTML += `<li id="li_${answer_index}">
+                第${answer_index}题:
+               <textarea></textarea>
+                </li>`;
+            // answers_paper.appendChild(li_node);
             answer_index++;
         }
     }
@@ -223,7 +249,7 @@
         obj.className == 'fa fa-circle-o' ? obj.className = 'fa fa-dot-circle-o' : obj.className = 'fa fa-circle-o';
         for (let i = 1; i <=4 ; i++) {
             if (index!=i) {
-                let btn_choice = document.getElementById("choice_question_" + id + "_" + i);
+                let btn_choice = document.getElementById("choice_answer_" + id + "_" + i);
                 btn_choice.setAttribute("class",'fa fa-circle-o') ;
             }
         }
