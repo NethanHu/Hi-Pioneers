@@ -24,6 +24,7 @@
             font-size: 17px;
             background-color: #F2F2F2;
         }
+
         .container {
             /* 常见的设备网页宽度为：1920px 1600px 1440px 1280px 1140px 960px 768px 640px 320px */
             /* min-width: 1140px; */
@@ -36,6 +37,7 @@
             border-radius: 5px;
 
         }
+
         .article-title {
             font-size: 24px;
             font-weight: 400;
@@ -43,19 +45,23 @@
             margin-top: 15px;
             text-align: center;
         }
+
         .article-content {
             font-size: 16px;
             line-height: 1.8;
             margin-top: 40px;
         }
+
         .article-content p {
             margin: 16px 0;
         }
+
         .article-content h2 {
             font-size: 24px;
             font-weight: 500;
             margin: 22px 0 18px 0;
         }
+
         .article-content h3 {
             font-size: 22px;
             font-weight: 400;
@@ -114,11 +120,9 @@
 
 
 <script>
-    $(function() {
-
-
-        if (question_type == '一般选择题'){
-        fillOptionContent(question_option, option_content);
+    $(function () {
+        if (question_type == '一般选择题') {
+            fillOptionContent(question_option, option_content);
         }
         fillAnswerContent(question_answer, answer_content);
     });
@@ -148,13 +152,11 @@
             var node = document.createElement('span');
             node.innerHTML = transDBSingleAnswer(question_answer);
             answer_content.appendChild(node);
-        }
-        else if (question_type == '填空题'){
+        } else if (question_type == '填空题') {
             var node = document.createElement('span');
             node.innerHTML = transDBAnswer(question_answer);
             answer_content.appendChild(node);
-        }
-        else {
+        } else {
             var node = document.createElement('span');
             node.innerHTML = question_answer;
             answer_content.appendChild(node);

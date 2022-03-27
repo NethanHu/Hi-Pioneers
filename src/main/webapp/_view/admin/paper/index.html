@@ -56,7 +56,7 @@
 					</td>
 					
 					<td class="operation">
-						<a href="/admin/paper/download" target="_blank">下载</a> |
+						<a href="/admin/paper/download" target="_blank" onclick="">下载</a> |
 						### 这里用 url 代替 href 是为了防止意外删除数据
 						<a confirm="确定删除 #escape(x.name) ？" ok-remove="tr" url="/admin/paper/delete?id=#(x.id)">删除</a>
 					</td>
@@ -73,7 +73,12 @@
 	#@adminPaginate(page, "/admin/paper?pn=")
 	
 </div>
-
+<script>
+	function getFullHTML() {
+		let yuanma = document.getElement.outerHTML;
+		console.log(yuanma)
+	}
+</script>
 
 
 

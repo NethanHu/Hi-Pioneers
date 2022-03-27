@@ -13,6 +13,14 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
+import com.spire.pdf.graphics.PdfMargins;
+import com.spire.pdf.htmlconverter.LoadHtmlType;
+import com.spire.pdf.htmlconverter.qt.HtmlConverter;
+import com.spire.pdf.htmlconverter.qt.Size;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import java.util.List;
 
@@ -60,8 +68,8 @@ public class PaperAdminController extends BaseController {
      */
     @Clear(LayoutInterceptor.class)
     public void download() {
-        renderFile("/papers/doc.pdf");
-    }
+
+    };
 
     /**
      * 考题预览功能

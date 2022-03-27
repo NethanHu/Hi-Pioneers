@@ -33,6 +33,8 @@
             padding: 25px 60px;
             background-color: #FFF;
             border-radius: 5px;
+            position: absolute;
+            left: 15%;
 
         }
 
@@ -71,6 +73,35 @@
         #option_content span {
             font-size: 16px;
         }
+
+        .answer_sheet {
+            position: absolute;
+            right: -50%;
+            width: 45%;
+            background-color: rgba(255, 255, 255, 0.5);
+            height: 80%;
+            border: 0px solid black;
+            min-width: 450px;
+
+        }
+
+        .fillin {
+            display: flex;
+            flex-direction: column;
+            height: 80%;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
+        #blank_input {
+            border-bottom: 1px solid black;
+        }
+
+        #answer_paper {
+            padding: 20px;
+            font-size: 20px;
+        }
     </style>
 </head>
 
@@ -78,7 +109,15 @@
 <!-- 根容器 -->
 <div class="container">
     <input type="hidden" id="question_content" value="#(page.getList().size())">
-
+    <div class="answer_sheet">
+        <div class="article-title">
+            答题卷
+        </div>
+        <div class="fillin">
+            <ul id="answer_paper">
+            </ul>
+        </div>
+    </div>
     <!-- 主体内容 -->
     <div class="article-box">
 
@@ -148,6 +187,7 @@
 
 <script>
     $(function () {
+        setAnswerPaper();
         setChoice();
         setBlank();
         setAnswer();
@@ -157,6 +197,37 @@
 
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('question_content').value);
+    var answer_index = 1;
+
+    function setAnswerPaper() {
+        var answers_paper = document.getElementById("answer_paper");
+        for (let i = 1; i <= question_list_length; i++) {
+            let choice_answer = document.getElementById("choice_index_" + i);
+            if (choice_answer == null) {
+                continue;
+            }
+            let li_node = document.createElement('li');
+            li_node.innerHTML = `
+                第${answer_index}题:
+                <i class="fa fa-circle-o" id="choice_question_${answer_index}_1" onclick="tranRadioSelect(this, ${answer_index},1)"></i>A
+                <i class="fa fa-circle-o" id="choice_question_${answer_index}_2" onclick="tranRadioSelect(this, ${answer_index},2)"></i>B
+                <i class="fa fa-circle-o" id="choice_question_${answer_index}_3" onclick="tranRadioSelect(this, ${answer_index},3)"></i>C
+                <i class="fa fa-circle-o" id="choice_question_${answer_index}_4" onclick="tranRadioSelect(this, ${answer_index},4)"></i>D
+                `;
+            answers_paper.appendChild(li_node);
+            answer_index++;
+        }
+    }
+
+    function tranRadioSelect(obj, id,index) {
+        obj.className == 'fa fa-circle-o' ? obj.className = 'fa fa-dot-circle-o' : obj.className = 'fa fa-circle-o';
+        for (let i = 1; i <=4 ; i++) {
+            if (index!=i) {
+                let btn_choice = document.getElementById("choice_question_" + id + "_" + i);
+                btn_choice.setAttribute("class",'fa fa-circle-o') ;
+            }
+        }
+    }
 
     function setScores() {
         let scores = document.getElementById("score").value;
@@ -188,14 +259,14 @@
 
         }
 
-      for (let i = 1; i <= score_index; i++) {
-        let score = document.getElementById('proof_question_' + i);
-        if (score == null) {
-          continue;
-        }
-        score.innerHTML = score.innerHTML + "(" + score_array[i] + "分)";
+        for (let i = 1; i <= score_index; i++) {
+            let score = document.getElementById('proof_question_' + i);
+            if (score == null) {
+                continue;
+            }
+            score.innerHTML = score.innerHTML + "(" + score_array[i] + "分)";
 
-      }
+        }
     }
 
     function setChoice() {
