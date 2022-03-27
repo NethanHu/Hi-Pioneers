@@ -4,6 +4,7 @@ import com.jfinal.admin.common.model.Exam;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
 import com.jfinal.kit.Ret;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class ExamAdminService {
     /**
      * 分页
      */
+
     public Page<Exam> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from exam order by update_time desc");
     }

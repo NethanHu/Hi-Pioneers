@@ -22,6 +22,7 @@ public class ExamAdminController extends BaseController {
      * 首页
      */
     public void index() {
+
         Page<Exam> page = srv.paginate(getInt("pn", 1));
         set("page", page);
         render("index.html");

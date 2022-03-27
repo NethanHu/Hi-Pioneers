@@ -15,9 +15,20 @@ public class TestAdminController extends BaseController {
     TestAdminService srv;
 
     public void index() {
-        Page<Exam> page = srv.paginate(getInt("pn", 1));
-        set("page", page);
-        render("index.html");
+        int accountId = getLoginAccountId();
+        int roleId = srv.getRoleId(accountId);
+        if(roleId ==4){
+            String StudentNo = srv.getStuNo(accountId);
+            String[] course_name = srv.getStuCourse(StudentNo);
+            Page<Exam> page = srv.studentPaginate(getInt("pn", 1),course_name);
+            set("page" , page);
+            render("index.html");
+        }
+        else {
+            Page<Exam> page = srv.paginate(getInt("pn", 1));
+            set("page", page);
+            render("index.html");
+        }
     }
 
     /**
