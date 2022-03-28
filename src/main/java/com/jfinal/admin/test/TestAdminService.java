@@ -1,9 +1,11 @@
 package com.jfinal.admin.test;
 
 import com.jfinal.admin.common.model.*;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
+import java.util.Date;
 import java.util.List;
 
 public class TestAdminService {
@@ -102,5 +104,15 @@ public class TestAdminService {
             }
         }
         return Qdao.templateByString(sql, id[0]).paginate(1, pageSize);
+    }
+    /**
+     * 创建
+     */
+    public Ret save(int paperid,String StudentId, Score score) {
+        score.setPaperId(paperid);
+        score.setUpdateTime(new Date());
+        score.setStudentId(StudentId);
+        score.save();
+        return Ret.ok("msg", "创建成功");
     }
 }

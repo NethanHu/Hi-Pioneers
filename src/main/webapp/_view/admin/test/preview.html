@@ -109,6 +109,7 @@
 <!-- 根容器 -->
 <div class="container">
     <input type="hidden" id="question_content" value="#(page.getList().size())">
+    <form id="test-form" action="/admin/test/save" method="POST" onsubmit="return false;">
     <div class="answer_sheet">
         <div class="article-title">
             答题卷
@@ -117,7 +118,12 @@
             <ul id="answer_paper">
             </ul>
         </div>
+        <button id="upload_btn" onclick="uploadTest()">提交</button>
+        <input name="paperId" value="#(paper.id)" type="hidden">
+        <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
+        <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
     </div>
+    </form>
     <!-- 主体内容 -->
     <div class="article-box">
 
@@ -192,13 +198,80 @@
         setBlank();
         setAnswer();
         setProof();
-        setScores();
+
+        // 设置第一个 input 为输入焦点
+        $("#test-form input[type='text']:first").focus();
+
+        // 绑定 esc 键关键弹出层
+        kit.bindEscKeydown();
     });
 
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('question_content').value);
     var answer_index = 1;
 
+    function uploadTest() {
+        getObjAnswer();
+        getSubAnswer();
+        // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+        $("#test-form").ajaxSubmit({
+            dataType: 'json', type: 'POST',
+            success: function(ret) {
+                kit.closeLoading();		// 关闭 loading 层
+                kit.msg(ret);
+
+                if (ret.state == "ok") {
+                    setTimeout(function() {
+                        location.href = "/admin/test?pn=#(pn ? pn : 1)";
+                    }, 2100);
+                }
+            }
+        });
+    }
+    function getObjAnswer(){
+        let final_answer = document.getElementById("obj-answer");
+        let answers="";
+        for (let i = 1; i <= question_list_length; i++) {
+            let obj_answer = document.getElementById("choice_"+i);
+            if (obj_answer==null){
+                continue;
+            }
+            for (let j = 1; j <=4 ; j++) {
+                let selection = document.getElementById("choice_"+i+"_"+j);
+                if (selection.className==='fa fa-dot-circle-o'){
+                    if (j==1){
+                        answers=answers+"~~~"+"A";
+                    }
+                    if (j==2){
+                        answers=answers+"~~~"+"B";
+                    }
+                    if (j==3){
+                        answers=answers+"~~~"+"C";
+                    }
+                    if (j==4){
+                        answers=answers+"~~~"+"D";
+                    }
+                }
+            }
+            final_answer.value=answers;
+        }
+    }
+    function getSubAnswer(){
+        let sub_answer = document.getElementById("sub-answer");
+        let subanswers="";
+        for (let i = 0; i <= question_list_length; i++) {
+            let blank_answer = document.getElementById("blank_"+i);
+            let answer_answer = document.getElementById("answer_"+i);
+
+            if (blank_answer!=null){
+                subanswers=subanswers+"~~~"+blank_answer.value;
+            }
+            if (answer_answer!=null){
+                subanswers=subanswers+"~~~"+answer_answer.value;
+            }
+        }
+        sub_answer.value=subanswers;
+    }
     function setAnswerPaper() {
         var answers_paper = document.getElementById("answer_paper");
         for (let i = 1; i <= question_list_length; i++) {
@@ -207,12 +280,12 @@
                 continue;
             }
             // let li_node = document.createElement('li');
-            answers_paper.innerHTML += `<li id="li_${answer_index}">
+            answers_paper.innerHTML += `<li id="choice_${answer_index}">
                 第${answer_index}题:
-                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_1" onclick="tranRadioSelect(this, ${answer_index},1)"></i>A
-                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_2" onclick="tranRadioSelect(this, ${answer_index},2)"></i>B
-                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_3" onclick="tranRadioSelect(this, ${answer_index},3)"></i>C
-                <i class="fa fa-circle-o" id="choice_answer_${answer_index}_4" onclick="tranRadioSelect(this, ${answer_index},4)"></i>D
+                <i class="fa fa-circle-o" id="choice_${answer_index}_1" onclick="tranRadioSelect(this, ${answer_index},1)"></i>A
+                <i class="fa fa-circle-o" id="choice_${answer_index}_2" onclick="tranRadioSelect(this, ${answer_index},2)"></i>B
+                <i class="fa fa-circle-o" id="choice_${answer_index}_3" onclick="tranRadioSelect(this, ${answer_index},3)"></i>C
+                <i class="fa fa-circle-o" id="choice_${answer_index}_4" onclick="tranRadioSelect(this, ${answer_index},4)"></i>D
                 </li>`;
             // answers_paper.appendChild(li_node);
             answer_index++;
@@ -225,7 +298,7 @@
             // let li_node = document.createElement('li');
             answers_paper.innerHTML += `<li id="li_${answer_index}">
                 第${answer_index}题:
-                <input type="text" style=" border-bottom: 1px solid black;" id="blank_">
+                <input type="text" style=" border-bottom: 1px solid black;" id="blank_${answer_index}">
                 </li>`;
             // answers_paper.appendChild(li_node);
             answer_index++;
@@ -238,8 +311,9 @@
             // let li_node = document.createElement('li');
             answers_paper.innerHTML += `<li id="li_${answer_index}">
                 第${answer_index}题:
-               <textarea></textarea>
+               <textarea class="editor" id="answer_${answer_index}"></textarea>
                 </li>`;
+
             // answers_paper.appendChild(li_node);
             answer_index++;
         }
@@ -249,7 +323,7 @@
         obj.className == 'fa fa-circle-o' ? obj.className = 'fa fa-dot-circle-o' : obj.className = 'fa fa-circle-o';
         for (let i = 1; i <=4 ; i++) {
             if (index!=i) {
-                let btn_choice = document.getElementById("choice_answer_" + id + "_" + i);
+                let btn_choice = document.getElementById("choice_" + id + "_" + i);
                 btn_choice.setAttribute("class",'fa fa-circle-o') ;
             }
         }

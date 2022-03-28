@@ -1,11 +1,10 @@
 package com.jfinal.admin.test;
 
 import com.jfinal.admin.common.BaseController;
-import com.jfinal.admin.common.model.Exam;
-import com.jfinal.admin.common.model.Paper;
-import com.jfinal.admin.common.model.Question;
+import com.jfinal.admin.common.model.*;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 
 
@@ -42,5 +41,13 @@ public class TestAdminController extends BaseController {
         Page<Question> page = srv.showQuestion(questionId);
         set("exam", exam).set("paper", paper).set("page", page);
         render("preview.html");
+    }
+    public void save(){
+        String paperId = get("paperId");
+        int paperid = Integer.parseInt(paperId);
+        int accountId = getLoginAccountId();
+        String StudentNo = srv.getStuNo(accountId);
+        Ret ret = srv.save(paperid,StudentNo, getBean(Score.class));
+        renderJson(ret);
     }
 }
