@@ -7,6 +7,7 @@ package com.jfinal.admin.login;
 
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.kit.IpKit;
+import com.jfinal.admin.common.model.Account;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -88,6 +89,23 @@ public class LoginController extends BaseController {
     @Clear
     public void register() {
         render("register.html");
+    }
+    @Clear
+    public void signUp(){
+        String userName = get("userName");
+        String phoneNo = get("phoneNo");
+        if (srv.confirmExist(userName,phoneNo)){
+            String password = get("password");
+            Ret ret = srv.createAccount(getBean(Account.class),userName,password);
+            int accountId = srv.getAccountId(userName);
+            srv.addRole(accountId, 4);
+            renderJson(ret);
+        }
+        else {
+            Ret ret = Ret.fail("msg","查询不到该学籍");
+            renderJson(ret);
+        }
+
     }
 }
 

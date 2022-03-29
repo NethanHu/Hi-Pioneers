@@ -137,7 +137,7 @@ public class AccountAdminService {
      *     http://www.jfinal.com/feedback/4677
      *     https://www.oschina.net/question/260040_46570
      */
-    private void preProccess(Account a) {
+    public void preProccess(Account a) {
         // 只保留必要字段，预防 mass assignment 攻击
         a.keep("id", "userName", "password", "nickName");
 

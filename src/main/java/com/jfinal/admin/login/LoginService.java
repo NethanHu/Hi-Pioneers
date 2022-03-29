@@ -6,6 +6,7 @@
 
 package com.jfinal.admin.login;
 
+import com.jfinal.admin.account.AccountAdminService;
 import com.jfinal.admin.common.model.Account;
 import com.jfinal.admin.common.model.Session;
 import com.jfinal.kit.HashKit;
@@ -28,6 +29,7 @@ public class LoginService {
 
     private Account accountDao = new Account().dao();
     private Session sessionDao = new Session().dao();
+    private AccountAdminService Asrv ;
 
     /**
      * 登录
@@ -166,5 +168,66 @@ public class LoginService {
         password = HashKit.sha256(salt + password);
         System.out.println(salt);
         System.out.println(password);
+    }
+    public boolean confirmExist(String studentNo ,String phoneNo){
+        String sql = "select phoneno from Student where Sno='"+studentNo+"' limit 1";
+        String rightPhoneNo = Db.queryStr(sql);
+        return phoneNo.equals(rightPhoneNo);
+    }
+    public Ret createAccount(Account acc,String UserName,String password){
+        preProccess(acc);
+        acc.setNickName(UserName);
+        acc.setUserName(UserName);
+        acc.setPassword(password);
+        passwordSaltAndHash(acc);
+        acc.setState(Account.STATE_OK);
+        acc.setCreated(new Date());
+        acc.setUpdated(acc.getCreated());
+        acc.setAvatar(Account.AVATAR_NO_AVATAR);    // 注册时设置默认头像
+        acc.save();
+        return Ret.ok("msg", "创建成功");
+    }
+    public void preProccess(Account a) {
+        // 只保留必要字段，预防 mass assignment 攻击
+        a.keep("id", "userName", "password", "nickName");
+
+        // 移除所有空值属性，避免 account.update() 将某些字段置为 null
+        a.removeNullValueAttrs();
+
+        // userName 转换为小写字母（不区分大小写）
+        if (a.getUserName() != null) {
+            a.setUserName(a.getUserName().trim().toLowerCase());
+        }
+
+        // password 去除前后空白
+        if (a.getPassword() != null) {
+            a.setPassword(a.getPassword().trim());
+        }
+
+        // password 去除前后空白
+        if (a.getNickName() != null) {
+            a.setNickName(a.getNickName().trim());
+        }
+    }
+    public void passwordSaltAndHash(Account acc) {
+        if (StrKit.isBlank(acc.getPassword())) {
+            throw new RuntimeException("密码不能为空");
+        }
+
+        String salt = HashKit.generateSaltForSha256();
+        String pwd = acc.getPassword();
+        pwd = HashKit.sha256(salt + pwd);
+
+        acc.setPassword(pwd);
+        acc.setSalt(salt);
+    }
+    public int getAccountId(String studentNo){
+        String sql = "select id from account where userName = '"+studentNo+"' limit 1";
+        return Db.queryInt(sql);
+    }
+    public Ret addRole(int accountId, int roleId) {
+        Record accountRole = new Record().set("accountId", accountId).set("roleId", roleId);
+        Db.save("account_role", accountRole);
+        return Ret.ok("msg", "添加角色成功");
     }
 }

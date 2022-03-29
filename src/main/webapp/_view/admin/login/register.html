@@ -100,19 +100,22 @@
 				超星考试系统注册
 			</div>
 
-			<form onsubmit="return false;">
+			<form id="register-form" onsubmit="return false;" action="/admin/signUp" method="POST">
 				<div class="login-line">
 					<input type="text" name="userName" placeholder="输入学号">
 				</div>
 				<div class="login-line">
-					<input type="password" placeholder="输入密码">
+					<input type="text" name="phoneNo" placeholder="输入手机号">
 				</div>
 				<div class="login-line">
-					<input type="password" name="password" placeholder="确认密码">
+					<input type="password"id="setPassword" placeholder="输入密码">
+				</div>
+				<div class="login-line">
+					<input type="password" name="password" id="confirmPassword" placeholder="确认密码">
 				</div>
 				<div class="login-line">
 					### 当 button 与 input 标签拥有 type="submit" 属性时，支持回车触发提交
-					<input class="login-btn" type="submit" value="注册">
+					<button class="login-btn" id="register-btn" >注册</button>
 				</div>
 			</form>
 
@@ -129,28 +132,56 @@
 	<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/lib/layer/layer.js"></script>
 	<script src="/assets/js/jfinal-kit.js"></script>
-	
+	<script src="/assets/lib/jquery_form/jquery.form.js"></script>
 	<script>
 		$(function() {
 			// 存在 type="submit" 的 input 或 button 时，回车键也能触发以下 click 事件
-			$(".login-btn").on("click", login);
-			$(".login-line input:first").focus();
+			$("#register-btn").on("click", login);
+			$("#register-form input:text first").focus();
+			kit.bindEscKeydown();
 		});
 		
-		/**
-		 * 登录
-		 */
-		function login(event) {
-			var loading = kit.loading({msg: "正在登录，请稍候 .....", offset: '235px'});
-			kit.post("/admin/doLogin", $("form").serialize(), function(ret) {
-				loading.close();		// 关闭 loading 层
-				
-				if (ret.state == "ok") {
-					kit.go(ret.returnUrl);
-				} else {
-					kit.fail(ret.msg, {offset: '235px', time:1500});
-				}
-			});
+
+		// function login(event) {
+		// 	var loading = kit.loading({msg: "正在登录，请稍候 .....", offset: '235px'});
+		// 	kit.post("/admin/doLogin", $("form").serialize(), function(ret) {
+		// 		loading.close();		// 关闭 loading 层
+		//
+		// 		if (ret.state == "ok") {
+		// 			kit.go(ret.returnUrl);
+		// 		} else {
+		// 			kit.fail(ret.msg, {offset: '235px', time:1500});
+		// 		}
+		// 	});
+		// }
+		function login() {
+			let setPassword = document.getElementById("setPassword").value;
+			let confirmPassword = document.getElementById("confirmPassword").value;
+			if (!(setPassword==confirmPassword)){
+				console.log("密码不一致");
+			}
+			else {
+				// 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+				$("#register-form").ajaxSubmit({
+					dataType: 'json', type: 'POST',
+
+					success: function (ret) {
+						kit.closeLoading();		// 关闭 loading 层
+						kit.msg(ret);
+
+						if (ret.state == "ok") {
+							setTimeout(function () {
+								location.href = "/admin";
+							}, 2100);
+						}
+						else {
+							setTimeout(function () {
+								location.href = "/admin";
+							}, 2100);
+						}
+					}
+				});
+			}
 		}
 	</script>
 	
