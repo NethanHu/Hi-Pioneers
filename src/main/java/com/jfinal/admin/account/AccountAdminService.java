@@ -79,6 +79,27 @@ public class AccountAdminService {
         return Ret.ok("msg", "创建成功");
     }
 
+    /**
+     * 批量创建
+     */
+    public Ret batchSave(Account acc, String studentID) {
+        preProccess(acc);
+
+
+
+        // userName 存小写到数据库（不区分大小写）
+        acc.setUserName(studentID);
+        acc.setNickName(studentID);
+        passwordSaltAndHash(acc);
+        acc.setState(Account.STATE_OK);
+        acc.setCreated(new Date());
+        acc.setUpdated(acc.getCreated());
+        acc.setAvatar(Account.AVATAR_NO_AVATAR);    // 注册时设置默认头像
+        acc.save();
+
+        return Ret.ok("msg", "创建成功");
+    }
+
     // 密码加盐 hash
     public void passwordSaltAndHash(Account acc) {
         if (StrKit.isBlank(acc.getPassword())) {
@@ -87,6 +108,19 @@ public class AccountAdminService {
 
         String salt = HashKit.generateSaltForSha256();
         String pwd = acc.getPassword();
+        pwd = HashKit.sha256(salt + pwd);
+
+        acc.setPassword(pwd);
+        acc.setSalt(salt);
+    }
+    // 密码加盐 hash
+    public void passwordSaltAndHash(String password, Account acc) {
+        if (StrKit.isBlank(password)) {
+            throw new RuntimeException("密码不能为空");
+        }
+
+        String salt = HashKit.generateSaltForSha256();
+        String pwd = password;
         pwd = HashKit.sha256(salt + pwd);
 
         acc.setPassword(pwd);

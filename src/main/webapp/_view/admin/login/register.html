@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -51,9 +52,11 @@
 		margin-bottom: 30px;
 		overflow: hidden;
 	}
+
 	.login-line {
 		margin-bottom: 32px;
 	}
+
 	.login-line input {
 		background: transparent;
 		width: 100%;
@@ -64,6 +67,7 @@
 		box-shadow: 0 3px 5px -4px rgba(0,0,0,0.4) inset,-1px 0 3px -2px rgba(0,0,0,0.1) inset;
 		border-radius: 3px;
 	}
+
 	input.login-btn {
 		width: 100%;
 		height: 44px;
@@ -88,36 +92,37 @@
 <body>
 	
 	<div class="root-box container-fluid" style="min-height:100%;">
-		
+
 		<!-- 登录容器 -->
 		<div class="login-box">
-			
+
 			<div class="login-title">
-				超星考试系统登录
+				超星考试系统注册
 			</div>
-			
+
 			<form onsubmit="return false;">
 				<div class="login-line">
-					<input type="text" name="userName" placeholder="账号">
+					<input type="text" name="userName" placeholder="输入学号">
 				</div>
 				<div class="login-line">
-					<input type="password" name="password" placeholder="密码">
+					<input type="password" placeholder="输入密码">
+				</div>
+				<div class="login-line">
+					<input type="password" name="password" placeholder="确认密码">
 				</div>
 				<div class="login-line">
 					### 当 button 与 input 标签拥有 type="submit" 属性时，支持回车触发提交
-					<input class="login-btn" type="submit" value="登录">
+					<input class="login-btn" type="submit" value="注册">
 				</div>
 			</form>
 
-			<a href="/admin/login/register">点我注册</a>
-			
 		</div>
-		
+
 		<!-- 底部容器 -->
 		<div class="footer-box">
 			<a href="http://joint.hdu.edu.cn/" target="_blank">© 2021-2022 Hi-Pioneers All Rights Reserved.</a>
         </div>
-        
+
 	</div>
 	
 	<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>

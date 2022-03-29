@@ -73,6 +73,26 @@ public class AccountAdminController extends BaseController {
     }
 
     /**
+     * 批量保存
+     */
+    public void batchSave() {
+        int number = Integer.parseInt(get("number"));
+        String no = get("session")+get("college")+get("class");
+        Ret ret = null;
+        for (int i = 1; i <= number; i++) {
+            String studentId="";
+            if (i<10){
+                 studentId=no+"0"+i;
+            }
+            else {
+                studentId=no+i;
+            }
+            ret =srv.batchSave(getBean(Account.class),studentId);
+        }
+        renderJson(ret);
+    }
+
+    /**
      * 进入修改页面
      */
     public void edit() {
@@ -141,6 +161,13 @@ public class AccountAdminController extends BaseController {
         List<Record> adminList = srv.getAdminList();
         set("adminList", adminList);
         render("admin_list.html");
+    }
+
+    /**
+     * 批量导入学号功能
+     */
+    public void batchImport() {
+        render("batch_import.html");
     }
 }
 

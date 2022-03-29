@@ -1,0 +1,145 @@
+<!--
+   弹出层 html、css、js 封装在此同一个模板文件中，模块化管理
+ -->
+
+### isAdd 为 true 表示创建账户，为 false 表示修改账户
+#set(isAdd = (account == null))
+
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+	批量导入学号
+</div>
+
+<!-- 弹出层主体内容 -->
+<div class="open-box">
+	<form id="open-form" action="/admin/account/batchSave" onsubmit="return false;">
+
+		
+		### 参考 bootstrap 文档：垂直排列表单
+		<div>
+			<div>
+				<label class="col-form-label">学届: </label>
+				<input type="text" id="study_session" name="session">
+			</div>
+
+			<div>
+				<label class="col-form-label">学院编号：</label>
+				<input type="text" id="school_number" name="college">
+			</div>
+
+			<div>
+				<label class="col-form-label">班级编号：</label>
+				<input type="text" id="class_number" name="class">
+			</div>
+
+			<div>
+				<label class="col-form-label">班级人数：</label>
+				<input type="text" id="total_students" name="number">
+			</div>
+		</div>
+
+		
+		<div class="form-group d-flex">
+			<label class="col-form-label">默认密码:</label>
+			<div class="flex-grow-1 ml-3">
+				<input class="form-control" type="text" id="default_pwd" name="account.password">
+			</div>
+		</div>
+		
+	</form>
+</div>
+
+<!-- 弹出层 button -->
+<div class="layui-layer-btn" style="padding: 0 25px 20px 0;">
+	<a class="layui-layer-btn0">确定</a>
+	<a class="layui-layer-btn1">取消</a>
+</div>
+
+
+<!-- 弹出层样式 -->
+<style>
+/* 限定左侧 label 宽度，使右侧 input 输入框的宽度保持一致，实现对齐的效果 */
+.col-form-label {
+	width: 30px;
+	text-align: center;
+}
+</style>
+
+
+<!-- 弹出层 js 脚本 -->
+<script>
+	$(function() {
+		$('#open-form input:first').focus();
+		
+		// 绑定提交按钮事件
+		$(".layui-layer-btn0").on("click", submitAccount);
+	});
+	
+	// function submitAccount() {
+	// 	let total = parseInt(document.getElementById('total_students').value);
+	// 	let numbers = generateBatchID();
+	// 	let pwd = document.getElementById('default_pwd').value;
+	// 	let loading = kit.loading('正在处理, 请稍候 .....');
+	// 	$.ajax({url: url, data: {studentIDs: numbers, password: pwd, total: total},
+	// 		type: 'POST', cache: false, dataType: 'html',
+	// 		success: function() {
+	// 			loading.close();
+	// 		}
+	// 	});
+	// 	// 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
+	// 	return false;
+	// 	// var $form = $('#open-form');
+	// 	// var loading = kit.loading('正在处理, 请稍候 .....');
+	// 	// kit.post($form.attr('action'), $form.serialize(), function(ret) {
+	// 	// 	loading.close();		// 关闭 loading 层
+	// 	//
+	// 	// 	if (ret.state == 'ok') {
+	// 	// 		layer.closeAll();	// 提交成功关闭 open 弹出层
+	// 	//
+	// 	// 		kit.fill('/admin/account?pn=#(pn ?? 1)', null, '#content-box');
+	// 	// 	}
+	// 	// 	kit.msg(ret, {time:3200, closeBtn:2});
+	// 	// });
+	// }
+	function submitAccount() {
+		// 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+		$("#open-form").ajaxSubmit({
+			dataType: 'json', type: 'POST',
+
+			success: function(ret) {
+				kit.closeLoading();		// 关闭 loading 层
+				kit.msg(ret);
+
+				if (ret.state == "ok") {
+					setTimeout(function() {
+						location.href = "/admin/account?pn=#(pn ? pn : 1)";
+					}, 2100);
+				}
+			}
+		});
+	}
+	/**
+	 * 通过输入的届数、学院号、班级、和班级人数，生成这个班级同学的学号数组，用来批量传入数据库
+	 * @returns {string[]} : 返回班级学生的学号数组
+	 */
+	// function generateBatchID() {
+	// 	let session = document.getElementById('study_session').value;
+	// 	let school = (parseInt(document.getElementById('school_number').value) < 10 ? '0' +
+	// 			document.getElementById('school_number').value : document.getElementById('school_number').value);
+	// 	let classes = (parseInt(document.getElementById('class_number').value) < 10 ? '0' +
+	// 			document.getElementById('class_number').value : document.getElementById('class_number').value);
+	// 	let total = parseInt(document.getElementById('total_students').value);
+	// 	let numbers = new Array(total);
+	// 	for (let i = 0; i < total; i++) {
+	// 		numbers[i] = (i < 10) ? session + school + classes + '0' + i : session + school + classes + i;
+	// 	}
+	// 	return numbers;
+	// }
+
+	function setDefaultPwd() {
+
+	}
+</script>
+
+
+
