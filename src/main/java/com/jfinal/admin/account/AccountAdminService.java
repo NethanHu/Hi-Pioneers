@@ -78,6 +78,10 @@ public class AccountAdminService {
 
         return Ret.ok("msg", "创建成功");
     }
+    public int geiAccountId(String studentNo){
+        String sql = "select id from account where userName = '"+studentNo+"' limit 1";
+        return Db.queryInt(sql);
+    }
 
     /**
      * 批量创建

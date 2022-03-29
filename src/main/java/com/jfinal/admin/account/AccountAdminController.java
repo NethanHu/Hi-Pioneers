@@ -89,6 +89,17 @@ public class AccountAdminController extends BaseController {
             }
             ret =srv.batchSave(getBean(Account.class),studentId);
         }
+        for (int i = 1; i <=number ; i++) {
+            String studentId ="";
+            if (i<10){
+                studentId=no+"0"+i;
+            }
+            else {
+                studentId=no+i;
+            }
+            int accountId = srv.geiAccountId(studentId);
+            srv.addRole(accountId, 4);
+        }
         renderJson(ret);
     }
 

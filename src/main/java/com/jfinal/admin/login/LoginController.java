@@ -18,7 +18,7 @@ import static com.jfinal.admin.login.LoginService.SESSION_ID;
 /**
  * 登录控制层
  */
-@Path(value = "/admin", viewPath = "/admin/login")
+@Path(value = "/admin", viewPath = "/admin/login" )
 public class LoginController extends BaseController {
 
     @Inject
