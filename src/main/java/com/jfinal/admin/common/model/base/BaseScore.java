@@ -33,6 +33,14 @@ public abstract class BaseScore<M extends BaseScore<M>> extends Model<M> impleme
 		return getInt("paperId");
 	}
 	
+	public void setExamID(java.lang.Integer examID) {
+		set("examID", examID);
+	}
+	
+	public java.lang.Integer getExamID() {
+		return getInt("examID");
+	}
+	
 	public void setScoreItems(java.lang.String scoreItems) {
 		set("scoreItems", scoreItems);
 	}
@@ -73,12 +81,28 @@ public abstract class BaseScore<M extends BaseScore<M>> extends Model<M> impleme
 		return getStr("subjectiveAnswer");
 	}
 	
-	public void setTeacherId(java.lang.Integer teacherId) {
+	public void setTeacherId(java.lang.String teacherId) {
 		set("teacherId", teacherId);
 	}
 	
-	public java.lang.Integer getTeacherId() {
-		return getInt("teacherId");
+	public java.lang.String getTeacherId() {
+		return getStr("teacherId");
+	}
+	
+	public void setExamName(java.lang.String examName) {
+		set("examName", examName);
+	}
+	
+	public java.lang.String getExamName() {
+		return getStr("examName");
+	}
+	
+	public void setType(java.lang.String type) {
+		set("type", type);
+	}
+	
+	public java.lang.String getType() {
+		return getStr("type");
 	}
 	
 }

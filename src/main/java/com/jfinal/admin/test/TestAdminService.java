@@ -35,7 +35,7 @@ public class TestAdminService {
         return Db.queryInt(sql);
     }
     public String getStuNo(int accountId){
-        String sql = "select Sno from Student where accountId ="+accountId+" limit 1";
+        String sql = "select number from account where id ="+accountId+" limit 1";
         return Db.queryStr(sql);
     }
     public String[] getStuCourse(String Sno){

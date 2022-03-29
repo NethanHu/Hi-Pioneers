@@ -97,5 +97,21 @@ public abstract class BaseExam<M extends BaseExam<M>> extends Model<M> implement
 		return getStr("question_scores");
 	}
 	
+	public void setAnswer(java.lang.String answer) {
+		set("answer", answer);
+	}
+	
+	public java.lang.String getAnswer() {
+		return getStr("answer");
+	}
+	
+	public void setChoiceAnswer(java.lang.String choiceAnswer) {
+		set("choiceAnswer", choiceAnswer);
+	}
+	
+	public java.lang.String getChoiceAnswer() {
+		return getStr("choiceAnswer");
+	}
+	
 }
 

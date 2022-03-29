@@ -99,5 +99,13 @@ public abstract class BaseAccount<M extends BaseAccount<M>> extends Model<M> imp
 		return getDate("updated");
 	}
 	
+	public void setNumber(java.lang.String number) {
+		set("number", number);
+	}
+	
+	public java.lang.String getNumber() {
+		return getStr("number");
+	}
+	
 }
 

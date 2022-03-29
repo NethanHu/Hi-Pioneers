@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="always">
+
+    <meta name="keywords" content="jfinal admin">
+    <meta name="description" content="jfinal admin">
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+
+    <style>
+        /* html 是根元素
+         * rem（font size of the root element）是相对于 html 元素的字体大小单位
+         * 在不指定时多数浏览器的默认值为 16px
+         */
+
+        body, html {
+            font-size: 17px;
+            background-color: #F2F2F2;
+        }
+
+        .container {
+            /* 常见的设备网页宽度为：1920px 1600px 1440px 1280px 1140px 960px 768px 640px 320px */
+            /* min-width: 1140px; */
+            /* max-width: 768px; */
+            max-width: 960px;
+
+            margin: 15px auto;
+            padding: 25px 60px;
+            background-color: #FFF;
+            border-radius: 5px;
+
+        }
+
+        .article-title {
+            font-size: 24px;
+            font-weight: 400;
+            color: #333;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-top: 40px;
+            width: 1000px;
+        }
+
+        .article-content p {
+            margin: 16px 0;
+        }
+
+        .article-content h2 {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 22px 0 18px 0;
+        }
+
+        .article-content h3 {
+            font-size: 22px;
+            font-weight: 400;
+            margin: 22px 0 16px 0;
+        }
+
+        /* 在这里修改选项和答案的 span 的CSS样式 */
+        #option_content span {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 根容器 -->
+<div class="container">
+    <form id="mark-form" action="/admin/mark/save" method="POST" onsubmit="return false;">
+    <!-- 主体内容 -->
+        #if( ! isAdd )
+        <input type="hidden" name="score.id" value="#(score.id)">
+        #end
+    <div class="article-box">
+
+        <h2 class="article-title">
+            #(score.examName)
+
+        </h2>
+        <h1 class="article-title">
+            #(score.studentId)
+        </h1>
+        <input type="hidden" id="studentAnswer_obj" value="#(score.objectiveAnswer)">
+        <input type="hidden" id="studentAnswer_sub" value="#(score.subjectiveAnswer)">
+        <input type="hidden" id="scores" value="#(exam.question_scores)">
+        <input type="hidden" id="choice_answer" value="#(exam.choiceAnswer)">
+        <div id="mark_choice"></div>
+        <div id="mark_subjective"></div>
+        <input type="hidden" id="final_score" name="score">
+        <input type="hidden" id="final_result" name="result">
+    </div>
+        <button id="mark_btn" onclick="mark()">提交</button>
+    </form>
+</div>
+
+<script src="/assets/lib/jquery/jquery-3.5.1.min.js"></script>
+<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+<script src="/assets/lib/layer/layer.js"></script>
+<script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/js/paper-kit.js"></script>
+<script src="/assets/js/question-kit.js"></script>
+
+<script>
+    $(function () {
+        choice();
+        subjective();
+        // 设置第一个 input 为输入焦点
+        $("#mark-form input[type='text']:first").focus();
+
+        // 绑定 esc 键关键弹出层
+        kit.bindEscKeydown();
+    });
+    var choice_num =0;
+    var index=1;
+    var choice_sum =0;
+    var sum=0;
+    var result = "得分情况：";
+    function mark(){
+        totalScore();
+        finalResult();
+        document.getElementById("final_score").value=sum;
+        document.getElementById("final_result").value=result;
+        $("#mark-form").ajaxSubmit({
+            dataType: 'json', type: 'POST',
+            success: function(ret) {
+                kit.closeLoading();		// 关闭 loading 层
+                kit.msg(ret);
+
+                if (ret.state == "ok") {
+                    setTimeout(function() {
+                        location.href = "/admin/mark?pn=#(pn ? pn : 1)";
+                    }, 2100);
+                }
+            }
+        });
+
+    }
+    function totalScore(){
+        sum+=choice_sum;
+        for (let i = 1; i <=index-choice_num ; i++) {
+            let score = document.getElementById("score_"+i).value;
+            sum+=parseInt(score);
+        }
+    }
+    function finalResult(){
+        for (let i = choice_num; i <index ; i++) {
+            let score = document.getElementById("score_"+(i-3)).value;
+            result= result+i+"、"+score+"分 ";
+        }
+    }
+    function choice(){
+        let studentAnswer = document.getElementById("studentAnswer_obj").value;
+        let scores =document.getElementById("scores").value;
+        let answer = document.getElementById("choice_answer").value;
+        let student_array = disposeString(studentAnswer);
+        let scores_array = disposeString(scores);
+        let answer_array = disposeString(answer);
+        choice_num=answer_array.length;
+        for (let i = 1; i <=answer_array.length-1 ; i++) {
+            if (student_array[i]==answer_array[i]){
+                choice_sum +=parseInt(scores_array[i]);
+                result = result+index+"、"+scores_array[i]+"分 ";
+            }
+            else {
+                result = result+index+"、"+0+"分 ";
+            }
+            index++;
+        }
+        let choice_result = document.getElementById("mark_choice");
+        choice_result.innerText="选择题总得分"+choice_sum+"分";
+    }
+    function subjective(){
+        let student_answer = document.getElementById("studentAnswer_sub").value;
+        let scores = document.getElementById("scores").value;
+        let student_array = disposeString(student_answer);
+        let score_array = disposeString(scores);
+        let sub_result = document.getElementById("mark_subjective");
+        for (let i = 1; i <=score_array.length-choice_num ; i++) {
+            sub_result.innerHTML = sub_result.innerHTML+
+                `<div>第${i}题</div>
+                <div>${student_array[i]} (${score_array[index]}分)<input type="text" id="score_${i}" ></div>
+                `
+            ;
+            index++;
+        }
+    }
+
+    /**
+     *
+     * @param target : string
+     */
+    function disposeString(target){
+        let array = target.split("~~~");
+        return array;
+    }
+
+</script>
+</body>
+</html>

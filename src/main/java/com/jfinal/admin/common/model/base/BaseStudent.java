@@ -33,6 +33,14 @@ public abstract class BaseStudent<M extends BaseStudent<M>> extends Model<M> imp
 		return getStr("name");
 	}
 	
+	public void setAccountId(java.lang.Integer accountId) {
+		set("accountId", accountId);
+	}
+	
+	public java.lang.Integer getAccountId() {
+		return getInt("accountId");
+	}
+	
 	public void setGender(java.lang.String gender) {
 		set("gender", gender);
 	}

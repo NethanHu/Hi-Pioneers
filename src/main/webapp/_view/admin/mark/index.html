@@ -1,0 +1,46 @@
+<!-- 主界面 -->
+<div class="main">
+
+    <!-- 表格容器 -->
+    <div id="table-box" class="table-box">
+
+        <table class="table table-hover">
+
+            <thead>
+            <tr>
+                <th>考试名称</th>
+                <th>考生学号</th>
+                <th>考试分数</th>
+                <th class="operation">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            #for (x : page.getList())
+            <tr>
+                <td><a>#(x.examName)</a></td>
+                <td>#(x.studentId)</td>
+                <td>#(x.score)</td>
+                <td class="operation">
+<!--                    <a href="/admin/test/preview?id=#(x.id)">开始考试</a>-->
+                    <a href="/admin/mark/mark?id=#(x.id)">阅卷</a>
+                </td>
+            </tr>
+            #end
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- 分页 -->
+    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+
+    #set(append = keyword ? '&keyword=' + keyword : '')
+    #@adminPaginate(page, "/admin/mark?pn=")
+
+</div>
+
+
+
+
+
