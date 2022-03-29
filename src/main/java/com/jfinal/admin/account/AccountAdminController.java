@@ -73,31 +73,24 @@ public class AccountAdminController extends BaseController {
     }
 
     /**
+     * 通过输入的届数、学院号、班级、和班级人数，生成这个班级同学的学号数组，用来批量传入数据库
      * 批量保存
      */
     public void batchSave() {
-        int number = Integer.parseInt(get("number"));
-        String no = get("session")+get("college")+get("class");
         Ret ret = null;
+
+        String no = get("session");
+        int college = Integer.parseInt(get("college"));
+        no += (college < 10) ? ("0" + college) : (college);
+        int classes = Integer.parseInt(get("class"));
+        no += (classes < 10) ? ("0" + classes) : (classes);
+
+        int number = Integer.parseInt(get("number"));
         for (int i = 1; i <= number; i++) {
-            String studentId="";
-            if (i<10){
-                 studentId=no+"0"+i;
-            }
-            else {
-                studentId=no+i;
-            }
-            ret =srv.batchSave(getBean(Account.class),studentId);
-        }
-        for (int i = 1; i <=number ; i++) {
-            String studentId ="";
-            if (i<10){
-                studentId=no+"0"+i;
-            }
-            else {
-                studentId=no+i;
-            }
-            int accountId = srv.geiAccountId(studentId);
+            String studentId = "";
+            studentId = (i < 10) ? (no + "0" + i) : (no + i);
+            ret = srv.batchSave(getBean(Account.class), studentId);
+            int accountId = srv.getAccountId(studentId);
             srv.addRole(accountId, 4);
         }
         renderJson(ret);
@@ -165,7 +158,7 @@ public class AccountAdminController extends BaseController {
     /**
      * 显示 "后台账户/管理员" 列表，在 account_role 表中存在的账户(被分配过角色的账户)
      * 被定义为 "后台账户/管理员"
-     *
+     * <p>
      * 该功能便于查看后台都有哪些账户被分配了角色，在对账户误操作分配了角色时，也便于取消角色分配
      */
     public void showAdminList() {

@@ -78,7 +78,7 @@ public class AccountAdminService {
 
         return Ret.ok("msg", "创建成功");
     }
-    public int geiAccountId(String studentNo){
+    public int getAccountId(String studentNo){
         String sql = "select id from account where userName = '"+studentNo+"' limit 1";
         return Db.queryInt(sql);
     }
@@ -88,8 +88,6 @@ public class AccountAdminService {
      */
     public Ret batchSave(Account acc, String studentID) {
         preProccess(acc);
-
-
 
         // userName 存小写到数据库（不区分大小写）
         acc.setUserName(studentID);

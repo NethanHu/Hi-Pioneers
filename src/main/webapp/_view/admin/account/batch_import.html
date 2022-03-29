@@ -74,33 +74,7 @@
 		// 绑定提交按钮事件
 		$(".layui-layer-btn0").on("click", submitAccount);
 	});
-	
-	// function submitAccount() {
-	// 	let total = parseInt(document.getElementById('total_students').value);
-	// 	let numbers = generateBatchID();
-	// 	let pwd = document.getElementById('default_pwd').value;
-	// 	let loading = kit.loading('正在处理, 请稍候 .....');
-	// 	$.ajax({url: url, data: {studentIDs: numbers, password: pwd, total: total},
-	// 		type: 'POST', cache: false, dataType: 'html',
-	// 		success: function() {
-	// 			loading.close();
-	// 		}
-	// 	});
-	// 	// 返回 false 避免表单提交，请求已经使用上面的 $.ajax 发送完成
-	// 	return false;
-	// 	// var $form = $('#open-form');
-	// 	// var loading = kit.loading('正在处理, 请稍候 .....');
-	// 	// kit.post($form.attr('action'), $form.serialize(), function(ret) {
-	// 	// 	loading.close();		// 关闭 loading 层
-	// 	//
-	// 	// 	if (ret.state == 'ok') {
-	// 	// 		layer.closeAll();	// 提交成功关闭 open 弹出层
-	// 	//
-	// 	// 		kit.fill('/admin/account?pn=#(pn ?? 1)', null, '#content-box');
-	// 	// 	}
-	// 	// 	kit.msg(ret, {time:3200, closeBtn:2});
-	// 	// });
-	// }
+
 	function submitAccount() {
 		// 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
 		$("#open-form").ajaxSubmit({
@@ -118,27 +92,7 @@
 			}
 		});
 	}
-	/**
-	 * 通过输入的届数、学院号、班级、和班级人数，生成这个班级同学的学号数组，用来批量传入数据库
-	 * @returns {string[]} : 返回班级学生的学号数组
-	 */
-	// function generateBatchID() {
-	// 	let session = document.getElementById('study_session').value;
-	// 	let school = (parseInt(document.getElementById('school_number').value) < 10 ? '0' +
-	// 			document.getElementById('school_number').value : document.getElementById('school_number').value);
-	// 	let classes = (parseInt(document.getElementById('class_number').value) < 10 ? '0' +
-	// 			document.getElementById('class_number').value : document.getElementById('class_number').value);
-	// 	let total = parseInt(document.getElementById('total_students').value);
-	// 	let numbers = new Array(total);
-	// 	for (let i = 0; i < total; i++) {
-	// 		numbers[i] = (i < 10) ? session + school + classes + '0' + i : session + school + classes + i;
-	// 	}
-	// 	return numbers;
-	// }
 
-	function setDefaultPwd() {
-
-	}
 </script>
 
 
