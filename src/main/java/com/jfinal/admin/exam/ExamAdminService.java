@@ -26,7 +26,7 @@ public class ExamAdminService {
     }
 
     public Page<Paper> Ppaginate(int pageNumber) {
-        return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
+        return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper where state = 1 order by update_time desc");
     }
 
     public Page<Question> Qpaginate(String[] id) {

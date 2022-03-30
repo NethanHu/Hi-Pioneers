@@ -23,14 +23,21 @@ public class MarkAdminController extends BaseController {
         // pn 为分页号 pageNumber
         int pn = getInt("pn", 1);
         int accountId = getLoginAccountId();
-        String TeacherNo = srv.getTeacherNo(accountId);
-        String[] course_name = srv.getTeacherCourse(TeacherNo);
-        Page<Score> page = srv.TeacherPaginate(getInt("pn", 1),course_name);
-        // 保持住 keyword 变量，便于输出到搜索框的 value 中
+        int roleId = srv.getRoleId(accountId);
+        if (roleId==5 ||roleId==6) {
+            String TeacherNo = srv.getTeacherNo(accountId);
+            String[] course_name = srv.getTeacherCourse(TeacherNo);
+            Page<Score> page = srv.TeacherPaginate(getInt("pn", 1), course_name);
+            // 保持住 keyword 变量，便于输出到搜索框的 value 中
+            set("page",page);
+            render("index.html");
+        }
+        else {
+            Page<Score> page =srv.paginate(pn);
+            set("page",page);
+            render("index.html");
+        }
 
-
-        set("page",page);
-        render("index.html");
     }
     public void mark(){
         Score score = srv.getById(getInt("id"));

@@ -124,6 +124,7 @@
         <input name="score.examName" value="#(exam.examName)" type="hidden">
         <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
         <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
+        <input type="hidden" name="score.type" value="#(exam.course_name)">
     </div>
     </form>
     <!-- 主体内容 -->
@@ -180,6 +181,7 @@
             #end
         </div>
         <input type="hidden" id="score" value="#(exam.question_scores)">
+
     </div>
 
 </div>

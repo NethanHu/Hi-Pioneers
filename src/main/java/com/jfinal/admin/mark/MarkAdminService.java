@@ -18,6 +18,10 @@ public class MarkAdminService  {
     /**
      * 分页
      */
+    public int getRoleId(int accountId){
+        String sql = "select roleId from account_role where accountId ="+accountId+" limit 1";
+        return Db.queryInt(sql);
+    }
     public Page<Score> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from Score order by updateTime desc");
     }
