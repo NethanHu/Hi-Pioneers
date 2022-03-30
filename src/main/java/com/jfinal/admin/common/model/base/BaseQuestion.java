@@ -81,14 +81,6 @@ public abstract class BaseQuestion<M extends BaseQuestion<M>> extends Model<M> i
 		return getStr("pic");
 	}
 	
-	public void setState(java.lang.Integer state) {
-		set("state", state);
-	}
-	
-	public java.lang.Integer getState() {
-		return getInt("state");
-	}
-	
 	public void setQuestion(java.lang.String question) {
 		set("question", question);
 	}

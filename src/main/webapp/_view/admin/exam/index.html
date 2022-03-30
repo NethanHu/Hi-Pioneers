@@ -36,8 +36,8 @@
 				<tr>
 					<td><a href="/admin/paper/preview?id=#(x.paper_id)">#(x.exam_name)</a></td>
 					<td>#(x.paper_id)</td>
-					<td>#date(x.start_time)</td>
-					<td>#date(x.last_time, "HH:mm:ss")</td>
+					<td>#date(x.start_date, "yyyy-MM-dd") #date(x.start_time, "HH:mm")</td>
+					<td>#date(x.duration, "HH:mm:ss")</td>
 					<td class="operation">
 						### 这里用 url 代替 href 是为了防止意外删除数据
 						<a confirm="确定删除 #escape(x.name) ？" ok-remove="tr" url="/admin/exam/delete?id=#(x.id)">删除</a>

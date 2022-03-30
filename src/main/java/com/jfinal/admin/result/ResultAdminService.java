@@ -1,15 +1,14 @@
-package com.jfinal.admin.test;
+package com.jfinal.admin.result;
 
 import com.jfinal.admin.common.model.*;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class TestAdminService {
+public class ResultAdminService {
     private static int pageSize = 15;
 
     private Exam dao = new Exam().dao();
@@ -17,16 +16,7 @@ public class TestAdminService {
     private Question Qdao = new Question().dao(); // 在 Exam 模块中引入 Question 的数据库查询功能
     private CourseSelection CSdao = new CourseSelection().dao();
     private Course Cdao = new Course().dao();
-    int fileMaxSize = 20971520; // 20Mb
-    // 文件临时上传目录
-    String tempUploadPath = "/temp";
 
-    // 基础上传目录，该目录与 me.setBaseUpload(...) 要保持一致
-    String baseUploadPath = "/upload";
-    // 相对路径
-    String relativePath = "/paper/";
-
-    String baseDownloadPath = "/upload/paper";
 
     /**
      * 分页
@@ -113,12 +103,11 @@ public class TestAdminService {
     /**
      * 创建
      */
-    public Ret save(int paperId, String StudentId, Score score) {
-        score.setPaperId(paperId);
+    public Ret save(int paperid, String StudentId, Score score) {
+        score.setPaperId(paperid);
         score.setUpdateTime(new Date());
         score.setStudentId(StudentId);
         score.save();
         return Ret.ok("msg", "创建成功");
     }
-
 }

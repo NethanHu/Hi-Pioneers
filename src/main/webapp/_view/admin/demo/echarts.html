@@ -89,66 +89,107 @@
 			}
 		} ]
 	};
-	
+
+
+	let base = +new Date(1968, 9, 3);
+	let oneDay = 24 * 3600 * 1000;
+	let date = [];
+	let data = [Math.random() * 300];
+	for (let i = 1; i < 20000; i++) {
+		var now = new Date((base += oneDay));
+		date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
+		data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
+	}
+
 	// 柱状图
 	var barOpt = {
-		title : {
-			text : '世界人口总量',
-			subtext : '数据来自网络'
-		},
-		tooltip : {
-			trigger : 'axis',
-			axisPointer : {
-				type : 'shadow'
+		tooltip: {
+			trigger: 'axis',
+			position: function (pt) {
+				return [pt[0], '10%'];
 			}
 		},
-		legend : {
-			data : [ '2011年', '2012年' ]
+		title: {
+			left: 'center',
+			text: 'Large Area Chart'
 		},
-		grid : {
-			left : '3%',
-			right : '4%',
-			bottom : '3%',
-			containLabel : true
+		toolbox: {
+			feature: {
+				dataZoom: {
+					yAxisIndex: 'none'
+				},
+				restore: {},
+				saveAsImage: {}
+			}
 		},
-		xAxis : {
-			type : 'value',
-			boundaryGap : [ 0, 0.01 ]
+		xAxis: {
+			type: 'category',
+			boundaryGap: false,
+			data: date
 		},
-		yAxis : {
-			type : 'category',
-			data : [ '巴西', '印尼', '美国', '印度', '中国', '世界人口(万)' ]
+		yAxis: {
+			type: 'value',
+			boundaryGap: [0, '100%']
 		},
-		series : [ {
-			name : '2011年',
-			type : 'bar',
-			data : [ 18203, 23489, 29034, 104970, 131744, 630230 ]
-		}, {
-			name : '2012年',
-			type : 'bar',
-			data : [ 19325, 23438, 31000, 121594, 134141, 681807 ]
-		} ]
+		dataZoom: [
+			{
+				type: 'inside',
+				start: 0,
+				end: 10
+			},
+			{
+				start: 0,
+				end: 10
+			}
+		],
+		series: [
+			{
+				name: 'Fake Data',
+				type: 'line',
+				symbol: 'none',
+				sampling: 'lttb',
+				itemStyle: {
+					color: 'rgb(255, 70, 131)'
+				},
+				areaStyle: {
+					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+						{
+							offset: 0,
+							color: 'rgb(255, 158, 68)'
+						},
+						{
+							offset: 1,
+							color: 'rgb(255, 70, 131)'
+						}
+					])
+				},
+				data: data
+			}
+		]
 	};
-	
+
+
+	var ROOT_PATH = 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples';
+
 	// 散点图
 	var scatterOpt = {
-		title : {
-			text : '基础散点图'
+		xAxis: {
+			type: 'category',
+			data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 		},
-		xAxis : {},
-		yAxis : {},
-		series : [ {
-			symbolSize : 20,
-			data : [ [ 10.0, 8.04 ], [ 8.07, 6.95 ], [ 13.0, 7.58 ],
-					[ 9.05, 8.81 ], [ 11.0, 8.33 ], [ 14.0, 7.66 ],
-					[ 13.4, 6.81 ], [ 10.0, 6.33 ], [ 14.0, 8.96 ],
-					[ 12.5, 6.82 ], [ 9.15, 7.20 ], [ 11.5, 7.20 ],
-					[ 3.03, 4.23 ], [ 12.2, 7.83 ], [ 2.02, 4.47 ],
-					[ 1.05, 3.33 ], [ 4.05, 4.96 ], [ 6.03, 7.24 ],
-					[ 12.0, 6.26 ], [ 12.0, 8.84 ], [ 7.08, 5.82 ],
-					[ 5.02, 5.68 ] ],
-			type : 'scatter'
-		} ]
+		yAxis: {
+			type: 'value'
+		},
+		series: [
+			{
+				data: [120, 200, 150, 80, 70, 110],
+				type: 'bar',
+				showBackground: true,
+				backgroundStyle: {
+					color: 'rgba(180, 180, 180, 0.2)'
+				}
+			}
+		]
 	};
 	
 	// 折线图
@@ -169,6 +210,8 @@
 			smooth : true
 		} ]
 	};
+
+
 	
 	// 泻染图表
 	function renderChart(containerId, option) {
@@ -177,7 +220,7 @@
 		chart.setOption(option);
 		
 		// 页面缩放时重新渲染
-		window.addEventListener("resize",function(){
+		window.addEventListener("resize", function(){
 			chart.resize();
 		});
 	}

@@ -25,20 +25,28 @@ public abstract class BaseExam<M extends BaseExam<M>> extends Model<M> implement
 		return getStr("exam_name");
 	}
 	
-	public void setStartTime(java.util.Date startTime) {
+	public void setStartDate(java.util.Date startDate) {
+		set("start_date", startDate);
+	}
+	
+	public java.util.Date getStartDate() {
+		return getDate("start_date");
+	}
+	
+	public void setStartTime(java.sql.Time startTime) {
 		set("start_time", startTime);
 	}
 	
-	public java.util.Date getStartTime() {
-		return getDate("start_time");
+	public java.sql.Time getStartTime() {
+		return get("start_time");
 	}
 	
-	public void setLastTime(java.sql.Time lastTime) {
-		set("last_time", lastTime);
+	public void setDuration(java.sql.Time duration) {
+		set("duration", duration);
 	}
 	
-	public java.sql.Time getLastTime() {
-		return get("last_time");
+	public java.sql.Time getDuration() {
+		return get("duration");
 	}
 	
 	public void setCourseName(java.lang.String courseName) {

@@ -62,7 +62,6 @@ public class QuestionAdminService {
         }
 
         question.setAccountId(accountId);
-        question.setState(question.STATE_UNPUBLISHED);    // 默认未发布
         question.setUpdateTime(new Date());
         question.save();
         return Ret.ok("msg", "创建成功");
@@ -82,15 +81,6 @@ public class QuestionAdminService {
         return Ret.ok("msg", "更新成功");
     }
 
-    /**
-     * 发布
-     */
-    public Ret publish(int id, boolean checked) {
-        int state = checked ? Question.STATE_PUBLISHED : Question.STATE_UNPUBLISHED;
-        String sql = "update question set state = ? where id = ?";
-        Db.update(sql, state, id);
-        return Ret.ok();
-    }
 
     /**
      * 获取

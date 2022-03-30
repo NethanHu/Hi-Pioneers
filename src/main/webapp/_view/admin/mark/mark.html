@@ -78,28 +78,28 @@
 <!-- 根容器 -->
 <div class="container">
     <form id="mark-form" action="/admin/mark/save" method="POST" onsubmit="return false;">
-    <!-- 主体内容 -->
+        <!-- 主体内容 -->
         #if( ! isAdd )
         <input type="hidden" name="score.id" value="#(score.id)">
         #end
-    <div class="article-box">
+        <div class="article-box">
 
-        <h2 class="article-title">
-            #(score.examName)
+            <h2 class="article-title">
+                #(score.examName)
 
-        </h2>
-        <h1 class="article-title">
-            #(score.studentId)
-        </h1>
-        <input type="hidden" id="studentAnswer_obj" value="#(score.objectiveAnswer)">
-        <input type="hidden" id="studentAnswer_sub" value="#(score.subjectiveAnswer)">
-        <input type="hidden" id="scores" value="#(exam.question_scores)">
-        <input type="hidden" id="choice_answer" value="#(exam.choiceAnswer)">
-        <div id="mark_choice"></div>
-        <div id="mark_subjective"></div>
-        <input type="hidden" id="final_score" name="score">
-        <input type="hidden" id="final_result" name="result">
-    </div>
+            </h2>
+            <h1 class="article-title">
+                #(score.studentId)
+            </h1>
+            <input type="hidden" id="studentAnswer_obj" value="#(score.objectiveAnswer)">
+            <input type="hidden" id="studentAnswer_sub" value="#(score.subjectiveAnswer)">
+            <input type="hidden" id="scores" value="#(exam.question_scores)">
+            <input type="hidden" id="choice_answer" value="#(exam.choiceAnswer)">
+            <div id="mark_choice"></div>
+            <div id="mark_subjective"></div>
+            <input type="hidden" id="final_score" name="score">
+            <input type="hidden" id="final_result" name="result">
+        </div>
         <button id="mark_btn" onclick="mark()">提交</button>
     </form>
 </div>
@@ -123,24 +123,25 @@
         // 绑定 esc 键关键弹出层
         kit.bindEscKeydown();
     });
-    var choice_num =0;
-    var index=1;
-    var choice_sum =0;
-    var sum=0;
+    var choice_num = 0;
+    var index = 1;
+    var choice_sum = 0;
+    var sum = 0;
     var result = "得分情况：";
-    function mark(){
+
+    function mark() {
         totalScore();
         finalResult();
-        document.getElementById("final_score").value=sum;
-        document.getElementById("final_result").value=result;
+        document.getElementById("final_score").value = sum;
+        document.getElementById("final_result").value = result;
         $("#mark-form").ajaxSubmit({
             dataType: 'json', type: 'POST',
-            success: function(ret) {
+            success: function (ret) {
                 kit.closeLoading();		// 关闭 loading 层
                 kit.msg(ret);
 
                 if (ret.state == "ok") {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.href = "/admin/mark?pn=#(pn ? pn : 1)";
                     }, 2100);
                 }
@@ -148,48 +149,51 @@
         });
 
     }
-    function totalScore(){
-        sum+=choice_sum;
-        for (let i = 1; i <=index-choice_num ; i++) {
-            let score = document.getElementById("score_"+i).value;
-            sum+=parseInt(score);
+
+    function totalScore() {
+        sum += choice_sum;
+        for (let i = 1; i <= index - choice_num; i++) {
+            let score = document.getElementById("score_" + i).value;
+            sum += parseInt(score);
         }
     }
-    function finalResult(){
-        for (let i = choice_num; i <index ; i++) {
-            let score = document.getElementById("score_"+(i-3)).value;
-            result= result+i+"、"+score+"分 ";
+
+    function finalResult() {
+        for (let i = choice_num; i < index; i++) {
+            let score = document.getElementById("score_" + (i - 3)).value;
+            result = result + i + "、" + score + "分 ";
         }
     }
-    function choice(){
+
+    function choice() {
         let studentAnswer = document.getElementById("studentAnswer_obj").value;
-        let scores =document.getElementById("scores").value;
+        let scores = document.getElementById("scores").value;
         let answer = document.getElementById("choice_answer").value;
         let student_array = disposeString(studentAnswer);
         let scores_array = disposeString(scores);
         let answer_array = disposeString(answer);
-        choice_num=answer_array.length;
-        for (let i = 1; i <=answer_array.length-1 ; i++) {
-            if (student_array[i]==answer_array[i]){
-                choice_sum +=parseInt(scores_array[i]);
-                result = result+index+"、"+scores_array[i]+"分 ";
-            }
-            else {
-                result = result+index+"、"+0+"分 ";
+        choice_num = answer_array.length;
+        for (let i = 1; i <= answer_array.length - 1; i++) {
+            if (student_array[i] == answer_array[i]) {
+                choice_sum += parseInt(scores_array[i]);
+                result = result + index + "、" + scores_array[i] + "分 ";
+            } else {
+                result = result + index + "、" + 0 + "分 ";
             }
             index++;
         }
         let choice_result = document.getElementById("mark_choice");
-        choice_result.innerText="选择题总得分"+choice_sum+"分";
+        choice_result.innerText = "选择题总得分" + choice_sum + "分";
     }
-    function subjective(){
+
+    function subjective() {
         let student_answer = document.getElementById("studentAnswer_sub").value;
         let scores = document.getElementById("scores").value;
         let student_array = disposeString(student_answer);
         let score_array = disposeString(scores);
         let sub_result = document.getElementById("mark_subjective");
-        for (let i = 1; i <=score_array.length-choice_num ; i++) {
-            sub_result.innerHTML = sub_result.innerHTML+
+        for (let i = 1; i <= score_array.length - choice_num; i++) {
+            sub_result.innerHTML = sub_result.innerHTML +
                 `<div>第${i}题</div>
                 <div>${student_array[i]} (${score_array[index]}分)<input type="text" id="score_${i}" ></div>
                 `
@@ -202,7 +206,7 @@
      *
      * @param target : string
      */
-    function disposeString(target){
+    function disposeString(target) {
         let array = target.split("~~~");
         return array;
     }

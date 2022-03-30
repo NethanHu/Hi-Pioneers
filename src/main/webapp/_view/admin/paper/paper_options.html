@@ -108,7 +108,10 @@
 
                 // 如果返回 json 格式数据，则 msg 输出，例如后端验证参数失败会返回 json
                 if (kit.isJsonRet(ret)) {
-                    kit.msg(kit.strToJson(ret), {time:3900, closeBtn:2});
+                    kit.msg(kit.strToJson(ret), {time:2100});
+                    setTimeout(function () {
+                        location.href = "/admin/paper?pn=#(pn ? pn : 1)";
+                    }, 2100);
                 } else {
                     $('#content-box').html(ret);
                     $('#search-keyword').select();

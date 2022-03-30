@@ -50,14 +50,6 @@ public class QuestionAdminController extends BaseController {
     }
 
     /**
-     * 支持 switch 开关的发布功能
-     */
-    public void publish() {
-        Ret ret = srv.publish(getInt("id"), getBoolean("checked"));
-        renderJson(ret);
-    }
-
-    /**
      * 进入选择提醒页面
      */
     public void add() {
