@@ -1,239 +1,179 @@
 <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
 #role("超级管理员", "老师", "学生")
 <div class="demo-main d-flex">
-	<div class="panel">
-		<div class="panel-header">饼图</div>
-		<div class="panel-body" id="pie"></div>
-	</div>
-	
-	<div class="panel">
-		<div class="panel-header">柱状图</div>
-		<div class="panel-body" id="bar"></div>
-	</div>
-	
-	<div class="panel">
-		<div class="panel-header">散点图</div>
-		<div class="panel-body" id="scatter"></div>
-	</div>
-	
-	<div class="panel">
-		<div class="panel-header">某同学近期考试分数折线图</div>
-		<div class="panel-body" id="line"></div>
-	</div>
-	
+    <div class="panel">
+        <div class="panel-header">饼图</div>
+        <div class="panel-body" id="pie"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">柱状图</div>
+        <div class="panel-body" id="bar"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">散点图</div>
+        <div class="panel-body" id="scatter"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">某同学近期考试分数折线图</div>
+        <div class="panel-body" id="line"></div>
+    </div>
+
 </div>
 
 <style>
-.demo-main {
-	margin: 1px -7px;
-	flex-wrap: wrap;
-}
-.panel {
-	flex: 1 1 auto;
-	width: 45%;		/* 该配置不能放在 flex 的 auto 位置 */
-	margin: 15px 8px 0;
-}
-.panel-body {
-	padding: 15px;
-	/* width: 550px; */
-	width: 100%;	/* echarts 支持使用百分比 */
-	height: 330px;
-}
+    .demo-main {
+        margin: 1px -7px;
+        flex-wrap: wrap;
+    }
+
+    .panel {
+        flex: 1 1 auto;
+        width: 45%; /* 该配置不能放在 flex 的 auto 位置 */
+        margin: 15px 8px 0;
+    }
+
+    .panel-body {
+        padding: 15px;
+        /* width: 550px; */
+        width: 100%; /* echarts 支持使用百分比 */
+        height: 330px;
+    }
 
 </style>
 
 <!-- 引入 echarts 依赖 -->
 <script src="/assets/lib/echarts/echarts.min.js"></script>
+<script src="/assets/js/echart-kit.js"></script>
 
 <script type="text/javascript">
-	// 饼图
-	var pieOpt = {
-		title : {
-			text : '某站点用户访问来源',
-			subtext : '纯属虚构',
-			left : 'center'
-		},
-		tooltip : {
-			trigger : 'item'
-		},
-		legend : {
-			orient : 'vertical',
-			left : 'left',
-		},
-		series : [ {
-			name : '访问来源',
-			type : 'pie',
-			radius : '50%',
-			data : [ {
-				value : 1048,
-				name : '搜索引擎'
-			}, {
-				value : 735,
-				name : '直接访问'
-			}, {
-				value : 580,
-				name : '邮件营销'
-			}, {
-				value : 484,
-				name : '联盟广告'
-			}, {
-				value : 300,
-				name : '视频广告'
-			} ],
-			emphasis : {
-				itemStyle : {
-					shadowBlur : 10,
-					shadowOffsetX : 0,
-					shadowColor : 'rgba(0, 0, 0, 0.5)'
-				}
-			}
-		} ]
-	};
 
 
-	let base = +new Date(1968, 9, 3);
-	let oneDay = 24 * 3600 * 1000;
-	let date = [];
-	let data = [Math.random() * 300];
-	for (let i = 1; i < 20000; i++) {
-		var now = new Date((base += oneDay));
-		date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
-		data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
-	}
+    var base = +new Date(1968, 9, 3);
+    var oneDay = 24 * 3600 * 1000;
+    var date = [];
+    var data = [Math.random() * 300];
+    for (let i = 1; i < 20000; i++) {
+        var now = new Date((base += oneDay));
+        date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
+        data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
+    }
 
-	// 柱状图
-	var barOpt = {
-		tooltip: {
-			trigger: 'axis',
-			position: function (pt) {
-				return [pt[0], '10%'];
-			}
-		},
-		title: {
-			left: 'center',
-			text: 'Large Area Chart'
-		},
-		toolbox: {
-			feature: {
-				dataZoom: {
-					yAxisIndex: 'none'
-				},
-				restore: {},
-				saveAsImage: {}
-			}
-		},
-		xAxis: {
-			type: 'category',
-			boundaryGap: false,
-			data: date
-		},
-		yAxis: {
-			type: 'value',
-			boundaryGap: [0, '100%']
-		},
-		dataZoom: [
-			{
-				type: 'inside',
-				start: 0,
-				end: 10
-			},
-			{
-				start: 0,
-				end: 10
-			}
-		],
-		series: [
-			{
-				name: 'Fake Data',
-				type: 'line',
-				symbol: 'none',
-				sampling: 'lttb',
-				itemStyle: {
-					color: 'rgb(255, 70, 131)'
-				},
-				areaStyle: {
-					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-						{
-							offset: 0,
-							color: 'rgb(255, 158, 68)'
-						},
-						{
-							offset: 1,
-							color: 'rgb(255, 70, 131)'
-						}
-					])
-				},
-				data: data
-			}
-		]
-	};
-
-
-	var ROOT_PATH = 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples';
-
-	// 散点图
-	var scatterOpt = {
-		xAxis: {
-			type: 'category',
-			data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-		},
-		yAxis: {
-			type: 'value'
-		},
-		series: [
-			{
-				data: [120, 200, 150, 80, 70, 110],
-				type: 'bar',
-				showBackground: true,
-				backgroundStyle: {
-					color: 'rgba(180, 180, 180, 0.2)'
-				}
-			}
-		]
-	};
-	
-	// 折线图
-	var lineOpt = {
-		title : {
-			text : '基础平滑折线图',
-		},
-		xAxis : {
-			type : 'category',
-			data : [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ]
-		},
-		yAxis : {
-			type : 'value'
-		},
-		series : [ {
-			data : [ 20, 932, 901, 934, 1290, 1330, 1320 ],
-			type : 'line',
-			smooth : true
-		} ]
-	};
+    // 柱状图
+    var barOpt = {
+        tooltip: {
+            trigger: 'axis',
+            position: function (pt) {
+                return [pt[0], '10%'];
+            }
+        },
+        title: {
+            left: 'center',
+            text: 'Large Area Chart'
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: date
+        },
+        yAxis: {
+            type: 'value',
+            boundaryGap: [0, '100%']
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 0,
+                end: 10
+            },
+            {
+                start: 0,
+                end: 10
+            }
+        ],
+        series: [
+            {
+                name: 'Fake Data',
+                type: 'line',
+                symbol: 'none',
+                sampling: 'lttb',
+                itemStyle: {
+                    color: 'rgb(255, 70, 131)'
+                },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: 'rgb(255, 158, 68)'
+                        },
+                        {
+                            offset: 1,
+                            color: 'rgb(255, 70, 131)'
+                        }
+                    ])
+                },
+                data: data
+            }
+        ]
+    };
 
 
-	
-	// 泻染图表
-	function renderChart(containerId, option) {
-		var dom = document.getElementById(containerId);
-		var chart = echarts.init(dom);
-		chart.setOption(option);
-		
-		// 页面缩放时重新渲染
-		window.addEventListener("resize", function(){
-			chart.resize();
-		});
-	}
-	
-	/**
-	 * 分别渲染多个图表
-	 */
-	$(function() {
-		renderChart('pie', pieOpt);
-		renderChart('bar', barOpt);
-		renderChart('scatter', scatterOpt);
-		renderChart('line', lineOpt);
-	});
+    // 散点图
+    var scatterOpt = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: [120, 200, 150, 80, 70, 110],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.2)'
+                }
+            }
+        ]
+    };
+
+    // 渲染图表
+    function renderChart(containerId, option) {
+        var dom = document.getElementById(containerId);
+        var chart = echarts.init(dom);
+        chart.setOption(option);
+
+        // 页面缩放时重新渲染
+        window.addEventListener("resize", function () {
+            chart.resize();
+        });
+    }
+
+    /**
+     * 分别渲染多个图表
+     */
+    $(function () {
+        renderChart('pie', initPie('分数段占比图', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            [120, 200, 150, 80, 70, 110, 130]));
+        renderChart('bar', barOpt);
+        renderChart('scatter', initLine('分数段曲线图', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            [120, 200, 150, 80, 70, 110, 130], false));
+        renderChart('line', initHist('分数段直方图', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            [120, 200, 150, 80, 70, 110, 130]));
+    });
 </script>
 #end
 

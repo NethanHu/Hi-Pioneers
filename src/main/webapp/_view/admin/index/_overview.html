@@ -1,63 +1,61 @@
+<div class="panel-header">
+    概览
+</div>
 
-	<div class="panel-header">
-		概览
-	</div>
-	
-	<div class="panel-body">
-		#role("学生")
-		<div>
-			<span>待考试</span>
-			<a fill href="/admin/test">#(totalTestStudent)</a>
-		</div>
-		<div>
-			<span>可查询分数</span>
-			<a fill href="/admin/result">#(seeMyScore)</a>
-		</div>
-		#end
+<div class="panel-body">
+    #role("学生")
+    <div>
+        <span>待考试</span>
+        <a fill href="/admin/test">#(totalTestStudent)</a>
+    </div>
+    <div>
+        <span>可查询分数</span>
+        <a fill href="/admin/result">#(seeMyScore)</a>
+    </div>
+    #end
 
-		#role("老师")
-		<div>
-			<span>已发布考试</span>
-			<a fill href="/admin/test">#(totalTestTeacher)</a>
-		</div>
-		<div>
-			<span>待批阅</span>
-			<a fill href="/admin/mark">#(totalNotMark)</a>
-		</div>
-		<div>
-			<span>已发布成绩</span>
-			<a fill href="/admin/result">#(seeStudentScore)</a>
-		</div>
-		#end
+    #role("老师")
+    <div>
+        <span>已发布考试</span>
+        <a fill href="/admin/test">#(totalTestTeacher)</a>
+    </div>
+    <div>
+        <span>待批阅</span>
+        <a fill href="/admin/mark">#(totalNotMark)</a>
+    </div>
+    <div>
+        <span>已发布成绩</span>
+        <a fill href="/admin/result">#(seeStudentScore)</a>
+    </div>
+    #end
 
-		#role("学科主任")
-		<div>
-			<span>已发布考试</span>
-			<a fill href="/admin/test">#(totalTestTeacher)</a>
-		</div>
-		<div>
-			<span>待批阅</span>
-			<a fill href="/admin/mark">#(totalNotMark)</a>
-		</div>
-		<div>
-			<span>已发布成绩</span>
-			<a fill href="/admin/result">#(seeTotalScore)</a>
-		</div>
-		#end
+    #role("学科主任")
+    <div>
+        <span>已发布考试</span>
+        <a fill href="/admin/test">#(totalTestTeacher)</a>
+    </div>
+    <div>
+        <span>待批阅</span>
+        <a fill href="/admin/mark">#(totalNotMark)</a>
+    </div>
+    <div>
+        <span>已发布成绩</span>
+        <a fill href="/admin/result">#(seeTotalScore)</a>
+    </div>
+    #end
 
-		#role("超级管理员", "权限管理员")
-		<div>
-			<span>账户</span>
-			<a fill href="/admin/account">#(totalAccount)</a>
-		</div>
-		<div>
-			<span>角色</span>
-			<a fill href="/admin/role">#(totalRole)</a>
-		</div>
-		<div>
-			<span>权限</span>
-			<a fill href="/admin/permission">#(totalPermission)</a>
-		</div>
-		#end
-	</div>
-
+    #role("超级管理员", "权限管理员")
+    <div>
+        <span>账户</span>
+        <a fill href="/admin/account">#(totalAccount)</a>
+    </div>
+    <div>
+        <span>角色</span>
+        <a fill href="/admin/role">#(totalRole)</a>
+    </div>
+    <div>
+        <span>权限</span>
+        <a fill href="/admin/permission">#(totalPermission)</a>
+    </div>
+    #end
+</div>
