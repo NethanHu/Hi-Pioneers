@@ -10,6 +10,10 @@ import com.jfinal.core.Path;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @Path(value = "/admin/test", viewPath = "/admin/test")
 public class TestAdminController extends BaseController {
@@ -17,17 +21,20 @@ public class TestAdminController extends BaseController {
     TestAdminService srv;
 
     public void index() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date nowDate = new Date();
+        String time = sdf.format(nowDate);
         int accountId = getLoginAccountId();
         int roleId = srv.getRoleId(accountId);
         if (roleId == 4) {
             String StudentNo = srv.getStuNo(accountId);
             String[] course_name = srv.getStuCourse(StudentNo);
             Page<Exam> page = srv.studentPaginate(getInt("pn", 1), course_name);
-            set("page", page);
+            set("page", page).set("time",time);
             render("index.html");
         } else {
             Page<Exam> page = srv.paginate(getInt("pn", 1));
-            set("page", page);
+            set("page", page).set("time",time);
             render("index.html");
         }
     }
@@ -38,6 +45,8 @@ public class TestAdminController extends BaseController {
     public void start() {
 
         Exam exam = srv.EgetById(getInt("id"));
+        Time time = exam.getDuration();
+
         int paper_id = exam.getPaperId();
         Paper paper = srv.PgetById(paper_id);
         String[] questionId = paper.getContent().split("~~~");

@@ -21,16 +21,17 @@
             <tr>
                 <td><a>#(x.exam_name)</a></td>
                 <td>#(x.paper_id)</td>
-                <td>#date(x.start_time)</td>
-                <td>#date(x.last_time, "HH:mm:ss")</td>
+                <td ><div id="start_time_#(page.getList().indexOf(x) + 1)">#date(x.start_date, "yyyy-MM-dd") #date(x.start_time, "HH:mm")</div></td>
+                <td ><div id="duration_#(page.getList().indexOf(x) + 1)">#date(x.duration, "HH:mm")</div></td>
                 <td class="operation">
-                    <a href="/admin/test/start?id=#(x.id)">开始考试</a>
+                    <a href="/admin/test/start?id=#(x.id)" id="start_#(page.getList().indexOf(x) + 1)">开始考试</a>
                 </td>
             </tr>
             #end
             </tbody>
-
         </table>
+        <input type="hidden" id="time" value="#(time)">
+        <input type="hidden" id="test_num" value="#(page.getList().size())">
     </div>
 
     <!-- 分页 -->
@@ -40,7 +41,116 @@
     #@adminPaginate(page, "/admin/exam?pn=")
 
 </div>
+<script>
+    $(function(){
+        checkTime();
+    });
+    var time = document.getElementById("time").value;
+    var nowTime = dateToArray(time);
+    var test_length = parseInt(document.getElementById("test_num").value);
+    var finalTime =[0,0,0,0,0];
+    var startTime;
+    var index;
+    function checkTime(){
+        for (let i = 1; i <=test_length ; i++) {
+            let start_time = document.getElementById("start_time_"+i).innerText;
+            let duration = document.getElementById("duration_"+i).innerText;
+            startTime = dateToArray(start_time);
+            let lastTime = timeToArray(duration);
 
+            let start = document.getElementById("start_"+i);
+            for (let j = 4; j >=0 ; j--) {
+                if (j==4){
+                    if (startTime[j]+lastTime[j]>=60){
+                        finalTime[j] +=startTime[j]+lastTime[j]-60;
+                        finalTime[j-1] +=1;
+                    }
+                    else {
+                        finalTime[j]=startTime[j]+lastTime[j];
+                    }
+                    continue;
+                }
+                else if (j==3){
+                    if (startTime[j]+lastTime[j]>=24){
+                        finalTime[j] +=startTime[j]+lastTime[j]-24;
+                        finalTime[j-1] +=1;
+                    }
+                    else {
+                        finalTime[j]+=startTime[j]+lastTime[j];
+                    }
+                    continue;
+                }
+                finalTime[j]+=startTime[j]+lastTime[j];
+            }
+            for (let j = 0; j < 5; j++) {
+                if ((nowTime[j]<startTime[j])||(nowTime[j]>finalTime[j])){
+                   if (nowTime[j]<startTime[j]){
+                       if (j==0){
+                           start.removeAttribute("href");
+                           start.innerText="考试还未开始";
+                           break;
+                       }
+                       else {
+                           if (nowTime[j-1]==startTime[j-1]){
+                               start.removeAttribute("href");
+                               start.innerText="考试还未开始";
+                               break;
+                           }
+                       }
+                   }
+                   if ((nowTime[j]>finalTime[j])) {
+                       if (j==0){
+                           start.removeAttribute("href");
+                           start.innerText="考试已结束";
+                           break;
+                       }
+                       else {
+                           if (nowTime[j-1]==finalTime[j-1]){
+                               start.removeAttribute("href");
+                               start.innerText="考试已结束";
+                               break;
+                           }
+                       }
+                   }
+                }
+
+            }
+        }
+    }
+
+    /**
+     *
+     * @param time : String
+     */
+    function dateToArray(time){
+        let timeArray = new Array();
+        let date= time.split(" ");
+        let YMD = date[0].split("-");
+        let Hm = date[1].split(":");
+        for (let i = 0; i < 3; i++) {
+            timeArray[i]=parseInt(YMD[i]);
+        }
+        for (let i = 0; i <2 ; i++) {
+            timeArray[i+3]=parseInt(Hm[i]);
+        }
+        return timeArray;
+    }
+
+    /**
+     * 
+     * @param time : String
+     */
+    function timeToArray(time){
+        let timeArray = new Array();
+        let Hm = time.split(":");
+        for (let i = 0; i < 3; i++) {
+            timeArray[i]=0;
+        }
+        timeArray[3]=parseInt(Hm[0]);
+        timeArray[4]=parseInt(Hm[1]);
+        return timeArray;
+    }
+</script>
 
 
 
