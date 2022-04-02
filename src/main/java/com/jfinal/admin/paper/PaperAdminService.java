@@ -1,6 +1,7 @@
 package com.jfinal.admin.paper;
 
 import com.jfinal.admin.common.kit.FileKit;
+import com.jfinal.admin.common.model.Account;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
 import com.jfinal.kit.PathKit;
@@ -221,6 +222,16 @@ public class PaperAdminService {
         String sql = "update Paper set state = ? where id = ?";
         Db.update(sql, state, id);
         return Ret.ok();
+    }
+
+    /**
+     * 搜索功能
+     */
+    public Page<Paper> search(String key, int pageNumber) {
+        String sql = "select * from Paper "
+                + "where ShowName like concat('%', #para(0), '%') "
+                + "order by update_time desc";
+        return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
     }
 
     /**

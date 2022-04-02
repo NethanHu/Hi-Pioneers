@@ -5,10 +5,12 @@
           onsubmit="return false;">
         <div id="table-box" class="table-box">
             <input type="hidden" id="paper_content" value="#(page.getList().size())">
-
-            <input type="text" name="exam.examName" value="#(exam.exam_name ??)" class="form-control"
-                   placeholder="考试名称">
             <input type="hidden" name="paper_id" value=#(paper.id)>
+
+            <div>
+                <label>考试名称: </label>
+                <input type="text" name="exam.examName" value="#(exam.exam_name ??)">
+            </div>
             <div>
                 <label>开考时间: </label>
                 <input type="date" name="exam.startDate" value="#(exam.startDate ??)">
@@ -18,20 +20,24 @@
                 <label>考试时长: </label>
                 <input type="time" name="exam.duration" value="#(exam.duration ??)">
             </div>
-            <input type="text" name="exam.courseName" value="#(exam.course_name ??)" class="form-control"
-                   placeholder="考试科目">
+            <div>
+                <label>考试科目: </label>
+                <input type="text" name="exam.courseName" value="#(exam.course_name ??)">
+            </div>
+
             <div class="form-group">
                 ### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题
+                <label>考试简介: </label>
                 <textarea id="editor1" name="exam.examDescription">#escape(exam.exam_description ??)</textarea>
             </div>
 
-            <table class="table table-hover">
+            <table class="table table-hover" >
                 <thead>
                 <tr>
-                    <th>序号</th>
-                    <th>问题</th>
+                    <th style="width: 5%">序号</th>
+                    <th style="width: 75%">问题</th>
                     <th>类型</th>
-                    <th>难度</th>
+                    <th style="width: 5%">难度</th>
                     <th class="operation">分值</th>
                     <th style="display: none"></th>
                 </tr>
@@ -44,15 +50,16 @@
                     #if("一般选择题".equals(x.type))
                     <td id="choice_index_#(page.getList().indexOf(x) + 1)"></td>
                     <td>
-                        <div style="height: 21px; overflow: hidden; text-overflow: ellipsis">#(x.question)</div>
+                        <div>#(x.question)</div>
                     </td>
                     <td>#(x.type)</td>
                     <td>#(x.level)</td>
                     <td class="operation">
-                        <input type="text" id="choice_score_#(page.getList().indexOf(x) + 1)">
+                        <input type="text" id="choice_score_#(page.getList().indexOf(x) + 1)" style="width: 40px">
                     </td>
-                    <td style="display: none"><input type="hidden" id="choice_answer_#(page.getList().indexOf(x) + 1)"
-                                                     value="#(x.answer)"></td>
+                    <td style="display: none">
+                        <input type="hidden" id="choice_answer_#(page.getList().indexOf(x) + 1)" value="#(x.answer)">
+                    </td>
                     #end
                 </tr>
                 #end
@@ -67,7 +74,7 @@
                     <td>#(x.type)</td>
                     <td>#(x.level)</td>
                     <td class="operation">
-                        <input type="text" id="blank_score_#(page.getList().indexOf(x) + 1)">
+                        <input type="text" id="blank_score_#(page.getList().indexOf(x) + 1)" style="width: 40px">
                     </td>
                     <td style="display: none"><input type="hidden" id="blank_answer_#(page.getList().indexOf(x) + 1)"
                                                      value="#(x.answer)"></td>
@@ -85,7 +92,7 @@
                     <td>#(x.type)</td>
                     <td>#(x.level)</td>
                     <td class="operation">
-                        <input type="text" id="answer_score_#(page.getList().indexOf(x) + 1)">
+                        <input type="text" id="answer_score_#(page.getList().indexOf(x) + 1)" style="width: 40px">
                     </td>
                     <td style="display: none"><input type="hidden" id="answer_answer_#(page.getList().indexOf(x) + 1)"
                                                      value="#(x.answer)"></td>
@@ -98,7 +105,7 @@
             <input type="hidden" name="exam.questionScores" id="final_score">
             <div class="form-group text-center">
                 <button id="exam_btn" class="btn btn-success btn-sm pl-2 pr-3">
-                    <i class="fa fa-check mr-1"></i>#(isAdd ? '创建' : '更析')
+                    <i class="fa fa-check mr-1"></i> 创建
                 </button>
             </div>
             <input type="hidden" id="choice_answer" name="exam.choiceAnswer">

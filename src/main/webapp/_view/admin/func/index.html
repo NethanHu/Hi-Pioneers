@@ -6,12 +6,6 @@
 	    <i class="fa fa-warning mr-2" style="color: #f39c12;"></i>
 	    前后端极简、轻量、快捷交互（无需写 js 代码，学习成本极低，三分钟学会使用）
 	</div>
-	<div class="demo-main d-flex">
-		<div class="panel">
-			<div class="panel-header">饼图</div>
-			<div class="panel-body" id="pie"></div>
-		</div>
-	</div>
 	
 	<!-- 功能容器 -->
 	<div class="func-box">
@@ -51,6 +45,17 @@
 	</div>
 </div>
 
+<div class="demo-main d-flex">
+	<div class="panel">
+		<div class="panel-header">饼图</div>
+		<div class="panel-body" id="pie"></div>
+	</div>
+	<div class="panel">
+		<div class="panel-header">柱状图</div>
+		<div class="panel-body" id="bar"></div>
+	</div>
+</div>
+
 <style>
 	.panel {
 		flex: 1 1 auto;
@@ -87,6 +92,8 @@
 <script type="text/javascript">
 	$(function () {
 		renderChart('pie', initPie('分数段占比图', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				[120, 200, 150, 80, 70, 110, 130]));
+		renderChart('bar', initHist('分数段直方图', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 				[120, 200, 150, 80, 70, 110, 130]));
 	});
 

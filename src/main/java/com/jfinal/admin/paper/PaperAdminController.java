@@ -2,6 +2,7 @@ package com.jfinal.admin.paper;
 
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
+import com.jfinal.admin.common.model.Account;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
 import com.jfinal.aop.Clear;
@@ -29,7 +30,13 @@ public class PaperAdminController extends BaseController {
      * 首页
      */
     public void index() {
-        Page<Paper> page = srv.paginate(getInt("pn", 1));
+        int pn = getInt("pn", 1);
+        String keyword = get("keyword");
+
+        Page<Paper> page = StrKit.isBlank(keyword)
+                ? srv.paginate(pn)
+                : srv.search(keyword, pn);
+        keepPara("keyword");
         set("page", page);
         render("index.html");
     }
@@ -136,14 +143,9 @@ public class PaperAdminController extends BaseController {
         String course = get("course");
         String level = get("level");
         String type = get("type");
-        Page<Question> page;
-
-        if (StrKit.isBlank(course) & StrKit.isBlank(level) & StrKit.isBlank(type)) {
-            page = srv.Qpaginate(pn);
-        } else {
-            page = srv.searchForQuestion(course, type, level, pn);
-        }
-
+        Page<Question> page = (StrKit.isBlank(course) & StrKit.isBlank(level) & StrKit.isBlank(type))
+                ? srv.Qpaginate(pn)
+                : srv.searchForQuestion(course, type, level, pn);
         set("page", page);
         render("choose_questions.html");
     }
@@ -159,25 +161,24 @@ public class PaperAdminController extends BaseController {
         String min_level = get("min_level");
         String max_level = get("max_level");
         String[][] type = new String[index][2];
+
         for (int i = 0; i < index; i++) {
             String type_name = get("type[" + i + "][name]");
             String type_number = get("type[" + i + "][number]");
             type[i][0] = type_name;
             type[i][1] = type_number;
         }
-        List<Question> newlist;
+        List<Question> newList;
 
-        newlist = srv.selectBy(unit, course, type, min_level, max_level);
+        newList = srv.selectBy(unit, course, type, min_level, max_level);
 
         String paper_content = "";
-        for (int i = 0; i < newlist.size(); i++) {
-            Question question = newlist.get(i);
+        for (int i = 0; i < newList.size(); i++) {
+            Question question = newList.get(i);
             paper_content = paper_content + "~~~" + question.getStr("id");
         }
 
         Ret ret = srv.autosave(name, paper_content, getLoginAccountId(), getBean(Paper.class));
         renderJson(ret);
-
-        // 保持住 keyword 变量，便于输出到搜索框的 value 中
     }
 }

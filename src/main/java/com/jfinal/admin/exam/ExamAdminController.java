@@ -7,6 +7,7 @@ import com.jfinal.admin.common.model.Question;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.kit.Ret;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -22,8 +23,13 @@ public class ExamAdminController extends BaseController {
      * 首页
      */
     public void index() {
+        int pn = getInt("pn", 1);
+        String keyword = get("keyword");
 
-        Page<Exam> page = srv.paginate(getInt("pn", 1));
+        Page<Exam> page = StrKit.isBlank(keyword)
+                ? srv.paginate(pn)
+                : srv.search(keyword, pn);
+        keepPara("keyword");
         set("page", page);
         render("index.html");
     }

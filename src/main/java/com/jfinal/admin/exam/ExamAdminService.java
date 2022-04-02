@@ -101,4 +101,11 @@ public class ExamAdminService {
         exam.save();
         return Ret.ok("msg", "创建成功");
     }
+
+    public Page<Exam> search(String keyword, int pageNumber) {
+        String sql = "select * from exam "
+                + "where exam_name like concat('%', #para(0), '%') "
+                + "order by update_time desc";
+        return dao.templateByString(sql, keyword).paginate(pageNumber, pageSize);
+    }
 }
