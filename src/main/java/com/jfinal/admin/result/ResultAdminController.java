@@ -7,7 +7,6 @@ import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.plugin.activerecord.Page;
 
-
 @Path(value = "/admin/score", viewPath = "/admin/score")
 public class ResultAdminController extends BaseController {
     @Inject

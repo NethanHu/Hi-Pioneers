@@ -1,37 +1,36 @@
 #if(isDefaultPassword)
-	<!-- 显示一行警告栏 -->
-	<div class="tips-row">
-		<i class="fa fa-warning mx-1" style="color: #f39c12;"></i>
-		当前账号使用的是默认密码，有安全隐患，请到账户管理修改密码! 
-		<a class="mx-2" open="{area:'400px', offset:'139px'}" url="/admin/account/edit?id=#(loginAccount.id)">[立即修改]</a>
-	</div>
+<!-- 显示一行警告栏 -->
+<div class="tips-row">
+    <i class="fa fa-warning mx-1" style="color: #f39c12;"></i>
+    当前账号使用的是默认密码，有安全隐患，请到账户管理修改密码!
+    <a class="mx-2" open="{area:'400px', offset:'139px'}" url="/admin/account/edit?id=#(loginAccount.id)">[立即修改]</a>
+</div>
 #end
 
 <div class="home-main">
-	
-	<!-- 概览 -->
-	<div id="overview" class="panel">
-		<!-- 加载动画 -->
-		<i class="fa fa-spinner fa-pulse fa-2x" style="padding:20px;"></i>
-	</div>
-	
+    <!-- 概览 -->
+    <div id="overview" class="panel">
+        <!-- 加载动画 -->
+        <i class="fa fa-spinner fa-pulse fa-2x" style="padding:20px;"></i>
+    </div>
+
 </div>
 
 <script>
-	/**
-	 * 本页面演示了将页面拆分成 html + js + css + ajax 独立封装组件的用法
-	 * 主要优点有：
-	 *   1：在很大程度上拥有了前后分离的一些优势
-	 *   2：被折分后的 html + js + css 组件仍然可以享用模板引擎便利，html 的生成是模板引擎天然的应用场景
-	 *   3：被拆分后的 html + js + css 组件可继续拆分成更小的组件，适用于不同复杂度场景下的设计与封装
-	 *   4：后端 action 粒度更小，异步加载响应更快，提升用户体验
-	 *   5：消解了传统前后分离方案的学习成本，不必引入厚重的前端技术栈
-	 * 
-	 * 注意：大型复杂交互 web 应用才能充分体现该方案的优势。本项目由于规模极小，用传统模式更方便
-	 */
-	$(function() {
-		kit.fill('/admin/overview', null, '#overview');
-	});
+    /**
+     * 本页面演示了将页面拆分成 html + js + css + ajax 独立封装组件的用法
+     * 主要优点有：
+     *   1：在很大程度上拥有了前后分离的一些优势
+     *   2：被折分后的 html + js + css 组件仍然可以享用模板引擎便利，html 的生成是模板引擎天然的应用场景
+     *   3：被拆分后的 html + js + css 组件可继续拆分成更小的组件，适用于不同复杂度场景下的设计与封装
+     *   4：后端 action 粒度更小，异步加载响应更快，提升用户体验
+     *   5：消解了传统前后分离方案的学习成本，不必引入厚重的前端技术栈
+     *
+     * 注意：大型复杂交互 web 应用才能充分体现该方案的优势。本项目由于规模极小，用传统模式更方便
+     */
+    $(function () {
+        kit.fill('/admin/overview', null, '#overview');
+    });
 </script>
 
 

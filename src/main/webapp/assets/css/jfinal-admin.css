@@ -492,12 +492,11 @@ body .layui-layer-btn a.layui-layer-btn0:hover {
 	padding: 5px 10px;
 }
 .main {
+	background-color: white;
 	position: relative;
 	padding: 15px;
 	margin: 15px 0;
 	height: 80%;
-
-
 }
 .toolbar {
 	position: relative;

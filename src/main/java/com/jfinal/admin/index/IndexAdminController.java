@@ -51,14 +51,6 @@ public class IndexAdminController extends BaseController {
         set("totalPermission", srv.getTotalPermission());
         render("_overview.html");
     }
-
-    /**
-     * 最新图片
-     */
-    public void latestImage() {
-        set("latestImage", srv.getLatestImage());
-        render("_latest_image.html");
-    }
 }
 
 

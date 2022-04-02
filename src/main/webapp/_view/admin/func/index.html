@@ -6,6 +6,12 @@
 	    <i class="fa fa-warning mr-2" style="color: #f39c12;"></i>
 	    前后端极简、轻量、快捷交互（无需写 js 代码，学习成本极低，三分钟学会使用）
 	</div>
+	<div class="demo-main d-flex">
+		<div class="panel">
+			<div class="panel-header">饼图</div>
+			<div class="panel-body" id="pie"></div>
+		</div>
+	</div>
 	
 	<!-- 功能容器 -->
 	<div class="func-box">
@@ -27,7 +33,7 @@
 		</button>
 		
 		<!-- msg 交互模式，并通过 data 属性传递数 -->
-		<button msg url="/admin/func/passData" data="{k1:123, k2:'abc'}" class="btn btn-default btn-sm">
+		<button msg url="/admin/func/passData" data="{k1:1234, k2:'abc'}" class="btn btn-default btn-sm">
 			data属性传参
 		</button>
 		
@@ -46,6 +52,18 @@
 </div>
 
 <style>
+	.panel {
+		flex: 1 1 auto;
+		width: 45%; /* 该配置不能放在 flex 的 auto 位置 */
+		margin: 15px 8px 0;
+	}
+
+	.panel-body {
+		padding: 15px;
+		/* width: 550px; */
+		width: 100%; /* echarts 支持使用百分比 */
+		height: 330px;
+	}
 	.main {
 		padding: 25px 45px;
 	}
@@ -61,6 +79,29 @@
 		margin-bottom: 15px;
 	}
 </style>
+
+<!-- 引入 echarts 依赖 -->
+<script src="/assets/lib/echarts/echarts.min.js"></script>
+<script src="/assets/js/echart-kit.js"></script>
+
+<script type="text/javascript">
+	$(function () {
+		renderChart('pie', initPie('分数段占比图', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				[120, 200, 150, 80, 70, 110, 130]));
+	});
+
+	// 渲染图表
+	function renderChart(containerId, option) {
+		var dom = document.getElementById(containerId);
+		var chart = echarts.init(dom);
+		chart.setOption(option);
+
+		// 页面缩放时重新渲染
+		window.addEventListener("resize", function () {
+			chart.resize();
+		});
+	}
+</script>
 
 
 
