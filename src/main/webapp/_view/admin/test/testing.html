@@ -109,6 +109,10 @@
 <!-- 根容器 -->
 <div class="container">
     <input type="hidden" id="question_content" value="#(page.getList().size())">
+    <input type="hidden" id="nowTime" value="#(time)">
+    <input type="hidden" id="startDate" value="#(exam.start_date)">
+    <input type="hidden" id="startTime" value="#(exam.start_time)">
+    <input type="hidden" id="duration" value="#(exam.duration)">
     <form id="test-form" action="/admin/test/save" method="POST" onsubmit="return false;">
     <div class="answer_sheet">
         <div class="article-title">
@@ -133,6 +137,7 @@
         <h1 class="article-title">
             #(exam.exam_name)
         </h1>
+        <div id="timer"></div>
         <div>
             <div>学科：#(exam.course_name)</div>
             <div>考试时间:#(exam.last_time)</div>
@@ -202,6 +207,7 @@
         setBlank();
         setAnswer();
         setProof();
+        getFinishTime();
 
         // 设置第一个 input 为输入焦点
         $("#test-form input[type='text']:first").focus();
@@ -209,11 +215,82 @@
         // 绑定 esc 键关键弹出层
         kit.bindEscKeydown();
     });
-
+    var finaltime;
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('question_content').value);
     var answer_index = 1;
+    var finish_time = [0,0,0,0,0,0]
+    var timer = document.getElementById("timer");
+    var finalTIme;
+    var nowTime = document.getElementById("nowTime").value;
+    var now_time = new Date(nowTime);
+    var nowtimer = now_time.getTime();
+    setInterval(function (){
+        nowtimer= nowtimer+1000;
+        timer.innerHTML=showTime();
+    },1000);
+    function showTime(){
 
+        let lefttime = finaltime.getTime()-nowtimer;
+        let leftH= Math.floor(lefttime/(1000*60*60)%24);
+        let leftM = Math.floor(lefttime/(1000*60)%60);
+        let leftS =  Math.floor(lefttime/1000%60);
+        return leftH+":"+leftM+":"+leftS;
+
+    }
+    function getFinishTime(){
+        let startTime = document.getElementById("startTime").value;
+        let startDate = document.getElementById("startDate").value;
+        let duration = document.getElementById("duration").value;
+        let startT = startTime.split(":");
+        let startD = startDate.split("-");
+        let dur = duration.split(":");
+
+        for (let i = 0; i < startD.length; i++) {
+            finish_time[i]=parseInt(startD[i]);
+        }
+        for (let i = 5; i >=3; i--) {
+            if (i==5||i==4) {
+                if (parseInt(startT[i-3]) + parseInt(dur[i-3]) >= 60) {
+                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]) - 60;
+                    finish_time[i - 1] += 1;
+                } else {
+                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]);
+                }
+            }
+            else {
+                if (parseInt(startT[i-3]) + parseInt(dur[i-3]) >= 24) {
+                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]) - 24;
+                    finish_time[i - 1] += 1;
+                } else {
+                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]);
+                }
+            }
+        }
+        finalTime ="";
+        for (let i = 0; i < 6; i++) {
+            if (i==0){
+                finalTime=finalTime+finish_time[i];
+                continue;
+            }
+            if (i>0 && i<3){
+                finalTime = finalTime +"-"+finish_time[i];
+                if (i==2){
+                    finalTime = finalTime + " ";
+                }
+                continue;
+            }
+            if (i==3){
+                finalTime = finalTime + finish_time[i];
+                continue;
+            }
+            if (i>3){
+                finalTime = finalTime + ":"+finish_time[i];
+                continue;
+            }
+        }
+        finaltime = new Date(finalTime);
+    }
     function uploadTest() {
         getObjAnswer();
         getSubAnswer();
@@ -455,6 +532,7 @@
             proof.innerHTML = "证明题" + proof.innerHTML;
         }
     }
+
 </script>
 </body>
 </html>

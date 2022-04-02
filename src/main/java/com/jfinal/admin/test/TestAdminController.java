@@ -43,7 +43,9 @@ public class TestAdminController extends BaseController {
      * 考题预览功能
      */
     public void start() {
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date nowDate = new Date();
+        String nowTime = sdf.format(nowDate);
         Exam exam = srv.EgetById(getInt("id"));
         Time time = exam.getDuration();
 
@@ -52,7 +54,7 @@ public class TestAdminController extends BaseController {
         String[] questionId = paper.getContent().split("~~~");
         Page<Question> page = srv.showQuestion(questionId);
         // 让 page 既包含 exam 的内容, 也有 paper 的内容
-        set("exam", exam).set("paper", paper).set("page", page);
+        set("exam", exam).set("paper", paper).set("page", page).set("time",nowTime);
         render("testing.html");
     }
 
