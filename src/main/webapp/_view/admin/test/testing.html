@@ -28,13 +28,12 @@
             /* min-width: 1140px; */
             /* max-width: 768px; */
             max-width: 960px;
-
+            min-height: 100%;
             margin: 15px auto;
             padding: 25px 60px;
             background-color: #FFF;
             border-radius: 5px;
-            position: absolute;
-            left: 15%;
+            position: relative;
 
         }
 
@@ -55,6 +54,7 @@
 
         .article-content p {
             margin: 16px 0;
+            max-width: 80%;
         }
 
         .article-content h2 {
@@ -74,16 +74,7 @@
             font-size: 16px;
         }
 
-        .answer_sheet {
-            position: absolute;
-            right: -50%;
-            width: 45%;
-            background-color: rgba(255, 255, 255, 0.5);
-            height: 80%;
-            border: 0px solid black;
-            min-width: 450px;
 
-        }
 
         .fillin {
             display: flex;
@@ -102,6 +93,70 @@
             padding: 20px;
             font-size: 20px;
         }
+        /* 动画代码 */
+        /*@keyframes example {
+            0%   {visibility: hidden;}
+            25%  {visibility: hidden;}
+            50%  {visibility: visible}
+            100% {visibility: visible}
+        }*/
+        .answer_sheet {
+            position: fixed;
+            bottom: 5%;
+            width: 900px;
+            background-color: rgba(255, 255, 255, 1);
+            height: 60%;
+            min-width: 450px;
+            overflow: auto;
+            border: 2px black solid;
+            padding: 2px;
+            left: 29%;
+            display: none;
+        }
+        .answer_sheetbtn{
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            bottom: 100px;
+            left: 80%;
+        }
+        .dropdown:hover .answer_sheet{
+            display: block;
+        }
+        .dropdown:hover .answer_sheetbtn{
+            display: none;
+        }
+        #upload_btn{
+            position: fixed;
+            bottom: 10%;
+            right: 20%;
+        }
+        #answer_paper li{
+            padding-top: 20px;
+            padding-left: 10px;
+            display: flex;
+            align-items: baseline;
+            margin-left: 10px;
+        }
+        #answer_paper li input{
+            padding-top: 5px;
+            padding-left: 15px;
+            display: flex;
+            align-items: baseline;
+            margin-left: 5px;
+        }
+
+        #answer_paper li textarea{
+            padding-top: 5px;
+            padding-left: 15px;
+            display: flex;
+            align-items: baseline;
+            margin-left: 5px;
+        }
+
     </style>
 </head>
 
@@ -113,27 +168,9 @@
     <input type="hidden" id="startDate" value="#(exam.start_date)">
     <input type="hidden" id="startTime" value="#(exam.start_time)">
     <input type="hidden" id="duration" value="#(exam.duration)">
-    <form id="test-form" action="/admin/test/save" method="POST" onsubmit="return false;">
-        <div class="answer_sheet">
-            <div class="article-title">
-                答题卷
-            </div>
-            <div class="fillin">
-                <ul id="answer_paper">
-                </ul>
-            </div>
-            <button id="upload_btn" onclick="uploadTest()">提交</button>
-            <input name="paperId" value="#(paper.id)" type="hidden">
-            <input name="score.examID" value="#(exam.id)" type="hidden">
-            <input name="score.examName" value="#(exam.examName)" type="hidden">
-            <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
-            <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
-            <input type="hidden" name="score.type" value="#(exam.course_name)">
-        </div>
-    </form>
-    <!-- 主体内容 -->
-    <div class="article-box">
 
+    <!-- 主体内容 -->
+    <div class="article-box" style="padding-bottom: 50px">
         <h1 class="article-title">
             #(exam.exam_name)
         </h1>
@@ -154,7 +191,6 @@
             #end
             #end
         </div>
-
         <div id="blank">
             #for (x : page.getList())
             #if("填空题".equals(x.type))
@@ -186,7 +222,31 @@
             #end
         </div>
         <input type="hidden" id="score" value="#(exam.question_scores)">
-
+        <div class="dropdown" style="position: relative;display: inline-block">
+            <button class="answer_sheetbtn">
+                打开答题卡
+            </button>
+            <form id="test-form" action="/admin/test/save" method="POST" onsubmit="return false;">
+                <div class="answer_sheet">
+                    <button class="answer_sheetbtn">
+                    </button>
+                    <div class="article-title">
+                        答题卷
+                    </div>
+                    <div class="fillin">
+                        <ul id="answer_paper">
+                        </ul>
+                    </div>
+                    <button id="upload_btn" onclick="uploadTest()">提交</button>
+                    <input name="paperId" value="#(paper.id)" type="hidden">
+                    <input name="score.examID" value="#(exam.id)" type="hidden">
+                    <input name="score.examName" value="#(exam.examName)" type="hidden">
+                    <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
+                    <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
+                    <input type="hidden" name="score.type" value="#(exam.course_name)">
+                </div>
+            </form>
+        </div>
     </div>
 
 </div>
