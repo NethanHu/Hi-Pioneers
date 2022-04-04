@@ -12,7 +12,7 @@
 		### 注意：需要根据搜索功能所处的模块修改 form 表单的 action 属性
 		<form action='/admin/exam' onsubmit="return admin.search();" id="search-form" class="search-box">
 			<input value="#(keyword)" placeholder="搜索" id="search-keyword" class="form-control form-control-sm" type="text">
-			<i class="fa fa-search" ></i>
+			<i class="fa fa-search" onclick="return search();"></i>
 		</form>
 	</div>
 	

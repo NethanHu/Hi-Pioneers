@@ -8,9 +8,9 @@
 
             <thead>
             <tr>
-                <th>名称</th>
-                <th>试卷号</th>
-                <th>开始时间</th>
+                <th>考试名称</th>
+                <th>考试时间</th>
+                <th>成绩</th>
                 <th class="operation">操作</th>
             </tr>
             </thead>
@@ -18,11 +18,11 @@
             <tbody>
             #for (x : page.getList())
             <tr>
-                <td><a>#(x.exam_name)</a></td>
-                <td>#(x.paper_id)</td>
+                <td><a>#(x.examName)</a></td>
                 <td>#date(x.start_time)</td>
+                <td>#(x.score) / #(x.totalScore)</td> // 这里用考试成绩 / 总分来展示, 如: 48 / 60, 95 / 100.
                 <td class="operation">
-                    <a href="/admin/test/showScore">年级成绩</a>
+                    <a href="/admin/result/showStudentScore?id=#(x.id)">题目得分</a>
                 </td>
             </tr>
             #end

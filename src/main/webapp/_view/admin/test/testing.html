@@ -114,22 +114,22 @@
     <input type="hidden" id="startTime" value="#(exam.start_time)">
     <input type="hidden" id="duration" value="#(exam.duration)">
     <form id="test-form" action="/admin/test/save" method="POST" onsubmit="return false;">
-    <div class="answer_sheet">
-        <div class="article-title">
-            答题卷
+        <div class="answer_sheet">
+            <div class="article-title">
+                答题卷
+            </div>
+            <div class="fillin">
+                <ul id="answer_paper">
+                </ul>
+            </div>
+            <button id="upload_btn" onclick="uploadTest()">提交</button>
+            <input name="paperId" value="#(paper.id)" type="hidden">
+            <input name="score.examID" value="#(exam.id)" type="hidden">
+            <input name="score.examName" value="#(exam.examName)" type="hidden">
+            <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
+            <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
+            <input type="hidden" name="score.type" value="#(exam.course_name)">
         </div>
-        <div class="fillin">
-            <ul id="answer_paper">
-            </ul>
-        </div>
-        <button id="upload_btn" onclick="uploadTest()">提交</button>
-        <input name="paperId" value="#(paper.id)" type="hidden">
-        <input name="score.examID" value="#(exam.id)" type="hidden">
-        <input name="score.examName" value="#(exam.examName)" type="hidden">
-        <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
-        <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
-        <input type="hidden" name="score.type" value="#(exam.course_name)">
-    </div>
     </form>
     <!-- 主体内容 -->
     <div class="article-box">
@@ -219,26 +219,28 @@
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('question_content').value);
     var answer_index = 1;
-    var finish_time = [0,0,0,0,0,0]
+    var finish_time = [0, 0, 0, 0, 0, 0]
     var timer = document.getElementById("timer");
     var finalTIme;
     var nowTime = document.getElementById("nowTime").value;
     var now_time = new Date(nowTime);
     var nowtimer = now_time.getTime();
-    setInterval(function (){
-        nowtimer= nowtimer+1000;
-        timer.innerHTML=showTime();
-    },1000);
-    function showTime(){
+    setInterval(function () {
+        nowtimer = nowtimer + 1000;
+        timer.innerHTML = showTime();
+    }, 1000);
 
-        let lefttime = finaltime.getTime()-nowtimer;
-        let leftH= Math.floor(lefttime/(1000*60*60)%24);
-        let leftM = Math.floor(lefttime/(1000*60)%60);
-        let leftS =  Math.floor(lefttime/1000%60);
-        return leftH+":"+leftM+":"+leftS;
+    function showTime() {
+
+        let lefttime = finaltime.getTime() - nowtimer;
+        let leftH = Math.floor(lefttime / (1000 * 60 * 60) % 24);
+        let leftM = Math.floor(lefttime / (1000 * 60) % 60);
+        let leftS = Math.floor(lefttime / 1000 % 60);
+        return leftH + ":" + leftM + ":" + leftS;
 
     }
-    function getFinishTime(){
+
+    function getFinishTime() {
         let startTime = document.getElementById("startTime").value;
         let startDate = document.getElementById("startDate").value;
         let duration = document.getElementById("duration").value;
@@ -247,112 +249,115 @@
         let dur = duration.split(":");
 
         for (let i = 0; i < startD.length; i++) {
-            finish_time[i]=parseInt(startD[i]);
+            finish_time[i] = parseInt(startD[i]);
         }
-        for (let i = 5; i >=3; i--) {
-            if (i==5||i==4) {
-                if (parseInt(startT[i-3]) + parseInt(dur[i-3]) >= 60) {
-                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]) - 60;
+        for (let i = 5; i >= 3; i--) {
+            if (i == 5 || i == 4) {
+                if (parseInt(startT[i - 3]) + parseInt(dur[i - 3]) >= 60) {
+                    finish_time[i] += parseInt(startT[i - 3]) + parseInt(dur[i - 3]) - 60;
                     finish_time[i - 1] += 1;
                 } else {
-                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]);
+                    finish_time[i] += parseInt(startT[i - 3]) + parseInt(dur[i - 3]);
                 }
-            }
-            else {
-                if (parseInt(startT[i-3]) + parseInt(dur[i-3]) >= 24) {
-                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]) - 24;
+            } else {
+                if (parseInt(startT[i - 3]) + parseInt(dur[i - 3]) >= 24) {
+                    finish_time[i] += parseInt(startT[i - 3]) + parseInt(dur[i - 3]) - 24;
                     finish_time[i - 1] += 1;
                 } else {
-                    finish_time[i] += parseInt(startT[i-3]) + parseInt(dur[i-3]);
+                    finish_time[i] += parseInt(startT[i - 3]) + parseInt(dur[i - 3]);
                 }
             }
         }
-        finalTime ="";
+        finalTime = "";
         for (let i = 0; i < 6; i++) {
-            if (i==0){
-                finalTime=finalTime+finish_time[i];
+            if (i == 0) {
+                finalTime = finalTime + finish_time[i];
                 continue;
             }
-            if (i>0 && i<3){
-                finalTime = finalTime +"-"+finish_time[i];
-                if (i==2){
+            if (i > 0 && i < 3) {
+                finalTime = finalTime + "-" + finish_time[i];
+                if (i == 2) {
                     finalTime = finalTime + " ";
                 }
                 continue;
             }
-            if (i==3){
+            if (i == 3) {
                 finalTime = finalTime + finish_time[i];
                 continue;
             }
-            if (i>3){
-                finalTime = finalTime + ":"+finish_time[i];
+            if (i > 3) {
+                finalTime = finalTime + ":" + finish_time[i];
                 continue;
             }
         }
         finaltime = new Date(finalTime);
     }
+
     function uploadTest() {
         getObjAnswer();
         getSubAnswer();
         // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
         $("#test-form").ajaxSubmit({
             dataType: 'json', type: 'POST',
-            success: function(ret) {
+            success: function (ret) {
                 kit.closeLoading();		// 关闭 loading 层
                 kit.msg(ret);
 
                 if (ret.state == "ok") {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.href = "/admin/test?pn=#(pn ? pn : 1)";
                     }, 2100);
                 }
             }
         });
     }
-    function getObjAnswer(){
+
+    function getObjAnswer() {
         let final_answer = document.getElementById("obj-answer");
-        let answers="";
+        let answers = "";
         for (let i = 1; i <= question_list_length; i++) {
-            let obj_answer = document.getElementById("choice_"+i);
-            if (obj_answer==null){
+            let obj_answer = document.getElementById("choice_" + i);
+            if (obj_answer == null) {
                 continue;
             }
-            for (let j = 1; j <=4 ; j++) {
-                let selection = document.getElementById("choice_"+i+"_"+j);
-                if (selection.className==='fa fa-dot-circle-o'){
-                    if (j==1){
-                        answers=answers+"~~~"+"A";
+            for (let j = 1; j <= 4; j++) {
+                let selection = document.getElementById("choice_" + i + "_" + j);
+                if (selection.className === 'fa fa-dot-circle-o') {
+                    if (j == 1) {
+                        answers = answers + "~~~" + "A";
                     }
-                    if (j==2){
-                        answers=answers+"~~~"+"B";
+                    if (j == 2) {
+                        answers = answers + "~~~" + "B";
                     }
-                    if (j==3){
-                        answers=answers+"~~~"+"C";
+                    if (j == 3) {
+                        answers = answers + "~~~" + "C";
                     }
-                    if (j==4){
-                        answers=answers+"~~~"+"D";
+                    if (j == 4) {
+                        answers = answers + "~~~" + "D";
                     }
                 }
             }
-            final_answer.value=answers;
+            final_answer.value = answers;
         }
     }
-    function getSubAnswer(){
-        let sub_answer = document.getElementById("sub-answer");
-        let subanswers="";
-        for (let i = 0; i <= question_list_length; i++) {
-            let blank_answer = document.getElementById("blank_"+i);
-            let answer_answer = document.getElementById("answer_"+i);
 
-            if (blank_answer!=null){
-                subanswers=subanswers+"~~~"+blank_answer.value;
+    function getSubAnswer() {
+        let sub_answer = document.getElementById("sub-answer");
+        let subanswers = "";
+        for (let i = 0; i <= question_list_length; i++) {
+            let blank_answer = document.getElementById("blank_" + i);
+            let answer_answer = document.getElementById("answer_" + i);
+
+            if (blank_answer != null) {
+                subanswers = subanswers + "~~~" + blank_answer.value;
             }
-            if (answer_answer!=null){
-                subanswers=subanswers+"~~~"+answer_answer.value;
+            if (answer_answer != null) {
+                subanswers = subanswers + "~~~" + answer_answer.value;
             }
         }
-        sub_answer.value=subanswers;
+        sub_answer.value = subanswers;
     }
+
     function setAnswerPaper() {
         var answers_paper = document.getElementById("answer_paper");
         for (let i = 1; i <= question_list_length; i++) {
@@ -400,12 +405,12 @@
         }
     }
 
-    function tranRadioSelect(obj, id,index) {
+    function tranRadioSelect(obj, id, index) {
         obj.className == 'fa fa-circle-o' ? obj.className = 'fa fa-dot-circle-o' : obj.className = 'fa fa-circle-o';
-        for (let i = 1; i <=4 ; i++) {
-            if (index!=i) {
+        for (let i = 1; i <= 4; i++) {
+            if (index != i) {
                 let btn_choice = document.getElementById("choice_" + id + "_" + i);
-                btn_choice.setAttribute("class",'fa fa-circle-o') ;
+                btn_choice.setAttribute("class", 'fa fa-circle-o');
             }
         }
     }

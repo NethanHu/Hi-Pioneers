@@ -1,0 +1,62 @@
+<div class="demo-main d-flex">
+    <div class="panel">
+        <div class="panel-header">饼图</div>
+        <div class="panel-body" id="pie"></div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">柱状图</div>
+        <div class="panel-body" id="bar"></div>
+    </div>
+</div>
+
+<style>
+    .demo-main {
+        margin: 1px -7px;
+        flex-wrap: wrap;
+    }
+
+    .panel {
+        flex: 1 1 auto;
+        width: 45%; /* 该配置不能放在 flex 的 auto 位置 */
+        margin: 15px 8px 0;
+    }
+
+    .panel-body {
+        padding: 15px;
+        /* width: 550px; */
+        width: 100%; /* echarts 支持使用百分比 */
+        height: 330px;
+    }
+</style>
+
+<!-- 引入 echarts 依赖 -->
+<script src="/assets/lib/echarts/echarts.min.js"></script>
+<script src="/assets/js/echart-kit.js"></script>
+
+<script type="text/javascript">
+    /**
+     * 分别渲染多个图表
+     */
+    $(function () {
+        renderChart('pie', initPie('分数段占比图', score_interval, interval_number));
+        renderChart('bar', initHist('分数段占比图', score_interval, interval_number));
+    });
+
+    var score_interval = []; // 这里用if-else if语句填充分数段, 注意这里是 string 类型变量作为数组
+    var interval_number = []; // 这里填充每个分数区间有多少人, 这里是 number 类型变量作为数组
+
+    /**
+     * 渲染图表主功能
+     */
+    function renderChart(containerId, option) {
+        var dom = document.getElementById(containerId);
+        var chart = echarts.init(dom);
+        chart.setOption(option);
+
+        // 页面缩放时重新渲染
+        window.addEventListener("resize", function () {
+            chart.resize();
+        });
+    }
+</script>

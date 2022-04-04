@@ -47,7 +47,7 @@ a, a:hover {
 
 /* 添加 bootstrap 3 中的 btn-default 样式 */
 .btn-default {
-    color: red;
+    color: #0F192A;
     background-color: #fff;
     border-color: #ccc
 }
@@ -58,7 +58,7 @@ a, a:hover {
 }
 .btn-default:hover {
     color: green;
-    border-color: red;
+    border-color: green;
 }
 .btn-default.active,.btn-default:active,.open>.dropdown-toggle.btn-default {
     color: #333;

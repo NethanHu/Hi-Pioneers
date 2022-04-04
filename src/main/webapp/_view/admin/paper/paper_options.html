@@ -1,76 +1,75 @@
 <div class="main">
 
-<!-- 弹出层主体内容 -->
-<div class="open-box" >
+    <!-- 弹出层主体内容 -->
     <div class="box-option">
         <h3>智能组卷</h3>
-        <form id="open-form" enctype="multipart/form-data" action="/admin/paper/generate" onsubmit="return generatePaper();" method="POST">
+        <form id="open-form" enctype="multipart/form-data" action="/admin/paper/generate"
+              onsubmit="return generatePaper();" method="POST">
             <p>请输入试卷名称 :</p>
-        <input type="text" id="paper_name">
-        <div>
-            <span>选择考试课程（留空则为全选）</span>
-            <label>课程：</label>
-            <select id="course_select">
-                <option></option>
-                <option>语文</option>
-                <option>数学</option>
-                <option>英语</option>
-                <option>物理</option>
-            </select>
-        </div>
+            <input type="text" id="paper_name">
+            <div>
+                <span>选择考试课程（留空则为全选）</span>
+                <label>课程：</label>
+                <select id="course_select">
+                    <option></option>
+                    <option>语文</option>
+                    <option>数学</option>
+                    <option>英语</option>
+                    <option>物理</option>
+                </select>
+            </div>
 
-        <div>
-            <span>选择难度（包含，且可留空）</span>
-            <label>最小难度：</label>
-            <select id="min_level_select">
-                <option></option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-            <label>最大难度：</label>
-            <select id="max_level_select">
-                <option></option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-        </div>
+            <div>
+                <span>选择难度（包含，且可留空）</span>
+                <label>最小难度：</label>
+                <select id="min_level_select">
+                    <option></option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                <label>最大难度：</label>
+                <select id="max_level_select">
+                    <option></option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
 
-        <div id="type_number_choose">
-            <ul id="type_number_list">
-                <!--              在这个区域内，点击一次"添加选项"就会appendChild来增加选项-->
+            <div id="type_number_choose">
+                <ul id="type_number_list">
+                    <!--              在这个区域内，点击一次"添加选项"就会appendChild来增加选项-->
 
-            </ul>
+                </ul>
 
-            <button type="button" style="margin-top: 20px" onclick="addOption()">
-                <i class="fa fa-plus-square"></i>&nbsp;添加类型
-            </button>
-            <button  type="button" id="del_button" onclick="deleteOption()" style="display: none">
-                <i class="fa fa-minus-square"></i>&nbsp;移除类型
-            </button>
+                <button type="button" style="margin-top: 20px" onclick="addOption()">
+                    <i class="fa fa-plus-square"></i>&nbsp;添加类型
+                </button>
+                <button type="button" id="del_button" onclick="deleteOption()" style="display: none">
+                    <i class="fa fa-minus-square"></i>&nbsp;移除类型
+                </button>
 
-        </div>
+            </div>
 
-        <!-- 弹出层 button -->
-        <div  class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
-            <a href="index.html" class="layui-layer-btn0">开始组卷</a>
-        </div>
+            <!-- 弹出层 button -->
+            <div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
+                <a href="index.html" class="layui-layer-btn0">开始组卷</a>
+            </div>
 
-    </form></div>
+        </form>
+    </div>
 </div>
-</div>
-
 
 
 <!-- 弹出层 js 脚本 -->
 <script>
 
-    $(function() {
+    $(function () {
         $("#open-form input[type='text']:first").focus();
         // 绑定提交按钮事件
         $(".layui-layer-btn0").on("click", generatePaper);
@@ -81,10 +80,12 @@
      * 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
      */
     var type = [];
-    function AddType(type_name , type_number){
+
+    function AddType(type_name, type_number) {
         this.name = type_name;
         this.number = type_number;
     }
+
     function generatePaper() {
         let url = $('#open-form').attr('action');
         let course = $('#course_select option:selected ').val();
@@ -92,21 +93,32 @@
         let max_level = $('#max_level_select option:selected ').val();
         let name = document.getElementById("paper_name").value;
 
-        for (let i = 0; i < choice_index-1; i++) {
-            let type_name = document.getElementById("type_select_"+(i+1));
+        for (let i = 0; i < choice_index - 1; i++) {
+            let type_name = document.getElementById("type_select_" + (i + 1));
             let index = type_name.selectedIndex;
             let name = type_name.options[index].text;
-            let type_number = document.getElementById("type_number_"+(i+1)).value;
-            type[i]=new AddType(name,type_number);
+            let type_number = document.getElementById("type_number_" + (i + 1)).value;
+            type[i] = new AddType(name, type_number);
         }
-        $.ajax({url: url, data: {course:course , min_level:min_level , max_level:max_level , type:type , index:choice_index , name:name},
-            type: 'POST', cache: false, dataType: 'html',
-            success: function(ret) {
+        $.ajax({
+            url: url,
+            data: {
+                course: course,
+                min_level: min_level,
+                max_level: max_level,
+                type: type,
+                index: choice_index,
+                name: name
+            },
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            success: function (ret) {
                 kit.closeLoading();
 
                 // 如果返回 json 格式数据，则 msg 输出，例如后端验证参数失败会返回 json
                 if (kit.isJsonRet(ret)) {
-                    kit.msg(kit.strToJson(ret), {time:2100});
+                    kit.msg(kit.strToJson(ret), {time: 2100});
                     setTimeout(function () {
                         location.href = "/admin/paper?pn=#(pn ? pn : 1)";
                     }, 2100);

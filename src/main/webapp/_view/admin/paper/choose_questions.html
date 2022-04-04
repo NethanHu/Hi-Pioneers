@@ -40,11 +40,11 @@
             #for (x : page.getList())
 
             <tr>
-                <td>#(x.id)</td>
-                <td><div style="height: 21px; overflow: hidden; text-overflow: ellipsis" id="question_#(x.id)">#(x.question)</div></td>
-                <td>#(x.course_name)</td>
-                <td>#(x.type)</td>
-                <td>#(x.level)</td>
+                <td style="width: 5%;">#(x.id)</td>
+                <td style="width: 70%;">#(x.question)</td>
+                <td style="width: 5%;">#(x.course_name)</td>
+                <td style="width: 10%;">#(x.type)</td>
+                <td style="width: 5%;">#(x.level)</td>
                 <td class="operation">
                     <button type="checkbox" id="btn_#(x.id)" onclick="choose('#(x.id)')">选择</button>
                 </td>
@@ -58,11 +58,6 @@
     #set(append = keyword ? '&keyword=' + keyword : '')
     #@adminPaginate(page, "/admin/paper/search?pn=")
 </form>
-</div>
-
-<!-- 弹出层 button -->
-<div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
-
 </div>
 
 <div id="create_paper" class="panel">

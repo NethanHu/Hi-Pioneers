@@ -2,8 +2,13 @@
 <div class="main">
 <!--    选中的题目预览功能-->
     <form id="paper-form" action="/admin/paper/save" method="POST" onsubmit="return false;">
+        <span style="display: inline-block; width: 10%">输入试卷名称: </span>
+        <input class="form-control" autocomplete="off" type="text" id="input_show_name" name="paper.showName"
+        style="display: inline-block; width: 75%">
 
-        <input class="form-control" autocomplete="off" type="text" id="input_show_name" name="paper.showName">
+        <button id="paper-btn" class="btn btn-success btn-sm pl-2 pr-3" onclick="submitPaper()" style="margin-left: 5%; width:5%">
+            <i class="fa fa-check"></i> 创建
+        </button>
 
 <!--        题目表格-->
     <div class="table-box">
@@ -26,9 +31,6 @@
         </table>
     </div>
 
-        <button id="paper-btn" class="btn btn-success btn-sm pl-2 pr-3" onclick="submitPaper()">
-            创建
-        </button>
         <input type="hidden" name="paper.content" id="paper_content" >
     </form>
 </div>

@@ -1,0 +1,49 @@
+<!-- 主界面 -->
+<div class="main">
+
+    <!-- 表格容器 -->
+    <div id="table-box" class="table-box">
+
+        <table class="table table-hover">
+
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>考试名称</th>
+                <th>试卷号</th>
+                <th>考试时间</th>
+                <th>考试人数</th>
+                <th class="operation">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            #for (x : page.getList())
+            <tr>
+                <td>#(x.examId)</td>
+                <td>#(x.exam_name)</td>
+                <td>#(x.paper_id)</td>
+                <td>#date(x.start_time)</td>
+                <td>#(x.involve_number) / #(x.total_students)</td> // *可选, 可以用参与考试的人数 / 需要考试的总人数来展示
+                <td class="operation">
+                    <a href="/admin/test/showTotalScore">学生成绩</a>
+                </td>
+            </tr>
+            #end
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- 分页 -->
+    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
+
+    #set(append = keyword ? '&keyword=' + keyword : '')
+    #@adminPaginate(page, "/admin/exam?pn=")
+
+</div>
+
+
+
+
+
