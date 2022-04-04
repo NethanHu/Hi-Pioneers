@@ -125,6 +125,7 @@
             <button id="upload_btn" onclick="uploadTest()">提交</button>
             <input name="paperId" value="#(paper.id)" type="hidden">
             <input name="score.examID" value="#(exam.id)" type="hidden">
+            <input name="score.totalScore" value="#(exam.totalScore)" type="hidden">
             <input name="score.examName" value="#(exam.examName)" type="hidden">
             <input name="score.objectiveAnswer" id="obj-answer" type="hidden">
             <input name="score.subjectiveAnswer" id="sub-answer" type="hidden">
@@ -199,7 +200,7 @@
 <script src="/assets/js/jfinal-kit.js"></script>
 <script src="/assets/js/paper-kit.js"></script>
 <script src="/assets/js/question-kit.js"></script>
-
+<script src="/assets/lib/ckeditor/ckeditor.js"></script>
 <script>
     $(function () {
         setAnswerPaper();
@@ -208,6 +209,7 @@
         setAnswer();
         setProof();
         getFinishTime();
+        setCkeditor();
 
         // 设置第一个 input 为输入焦点
         $("#test-form input[type='text']:first").focus();
@@ -229,6 +231,16 @@
         nowtimer = nowtimer + 1000;
         timer.innerHTML = showTime();
     }, 1000);
+
+    function setCkeditor(){
+        for (let i = 1; i <= question_list_length; i++) {
+            let textarea = document.getElementById("answer_"+i);
+            if (textarea==null){
+                continue;
+            }
+            CKEDITOR.replace('answer_'+i, {height: '350px'});
+        }
+    }
 
     function showTime() {
 
@@ -397,8 +409,8 @@
             // let li_node = document.createElement('li');
             answers_paper.innerHTML += `<li id="li_${answer_index}">
                 第${answer_index}题:
-               <textarea class="editor" id="answer_${answer_index}"></textarea>
-                </li>`;
+               <div class="form-group"><textarea class="editor" id="answer_${answer_index}"></textarea>
+                </div></li>`;
 
             // answers_paper.appendChild(li_node);
             answer_index++;

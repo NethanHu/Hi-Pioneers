@@ -110,6 +110,7 @@
             </div>
             <input type="hidden" id="choice_answer" name="exam.choiceAnswer">
             <input type="hidden" id="subjective_answer" name="exam.answer">
+            <input type="hidden" id="total_score" name="exam.totalScore">
         </div>
     </form>
     ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
@@ -149,6 +150,8 @@
     var question_index = 1;
     var question_list_length = parseInt(document.getElementById('paper_content').value);
     var score = '';
+    var totalScore = 0;
+
 
     function setAnswer() {
         let final_obj_answer = "";
@@ -195,12 +198,15 @@
     }
 
     function setExam() {
+
         let final_score = document.getElementById("final_score");
+        let total_score = document.getElementById("total_score");
         for (let i = 1; i <= question_list_length; i++) {
             let choice_score = document.getElementById("choice_score_" + i);
             if (choice_score == null) {
                 continue;
             }
+            totalScore +=parseInt(choice_score.value);
             score = score + "~~~" + choice_score.value;
         }
         for (let i = 1; i <= question_list_length; i++) {
@@ -208,6 +214,7 @@
             if (blank_score == null) {
                 continue;
             }
+            totalScore +=parseInt(blank_score.value);
             score = score + "~~~" + blank_score.value;
         }
         for (let i = 1; i <= question_list_length; i++) {
@@ -215,8 +222,10 @@
             if (answer_score == null) {
                 continue;
             }
+            totalScore +=parseInt(answer_score.value);
             score = score + "~~~" + answer_score.value;
         }
+        total_score.setAttribute('value',totalScore);
         final_score.setAttribute('value', score);
         // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
         $("#exam-form").ajaxSubmit({

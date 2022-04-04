@@ -54,12 +54,13 @@
     var time = document.getElementById("time").value;
     var nowTime = dateToArray(time);
     var test_length = parseInt(document.getElementById("test_num").value);
-    var finalTime = [0, 0, 0, 0, 0];
-    var startTime;
+
     var index;
 
     function checkTime() {
         for (let i = 1; i <= test_length; i++) {
+            let finalTime = [0, 0, 0, 0, 0];
+            let startTime;
             let start_time = document.getElementById("start_time_" + i).innerText;
             let duration = document.getElementById("duration_" + i).innerText;
             startTime = dateToArray(start_time);
