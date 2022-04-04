@@ -26,8 +26,9 @@ public class ResultAdminController extends BaseController {
         if (roleId==5){
             String TeacherNo = srv.getAccNo(accountId);
             String[] course_name = srv.getTeacherCourse(TeacherNo);
-            Page<Score> page = srv.teacherPaginate(getInt("pn", 1),course_name);
-            set("page", page);
+            String[][] score = srv.teacherPaginate(course_name);
+            Page<Score> page = srv.paginate(getInt("pn", 1));
+            set("score", score).set("page",page);
             render("teacher_index.html");
         }
         if (roleId==6){
