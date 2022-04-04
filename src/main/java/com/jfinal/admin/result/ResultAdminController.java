@@ -40,6 +40,26 @@ public class ResultAdminController extends BaseController {
         }
     }
 
+    public void showStudentScore(){
+            set("score",srv.SgetById(getInt("id")));
+            render("student_score.html");
+    }
+    public void showTotalScore(){
+        Page<Score> page = srv.totalScorePaginate(getInt("pn", 1),get("name"));
+        set("page",page).set("courseName",get("name"));
+        render("total_score.html");
+    }
+    public void showCharts(){
+        int[] scores=new int[5];
+        String name = get("name");
+        scores[0]=srv.getScoreNumber(name,0,60);
+        scores[1]=srv.getScoreNumber(name,60,70);
+        scores[2]=srv.getScoreNumber(name,70,80);
+        scores[3]=srv.getScoreNumber(name,80,90);
+        scores[4]=srv.getScoreNumber(name,90,100);
+        set("scores",scores);
+        render("score_charts.html");
+    }
 //    public void showScore() {
 //        int accountId = getLoginAccountId();
 //        int roleId = srv.getRoleId(accountId);

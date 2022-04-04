@@ -2,7 +2,7 @@
 <div class="main">
 
     <!-- 点击按钮弹出可视化图 -->
-    <button fill url="/admin/result/showCharts" class="btn btn-success btn-sm">
+    <button open url="/admin/result/showCharts?name=#(courseName)" class="btn btn-success btn-sm">
         <i class="fa fa-bar-chart"></i>
         成绩图表
     </button>
@@ -15,7 +15,7 @@
             <thead>
             <tr>
                 <th>学号</th>
-                <th>姓名</th>
+                <th>考试名称</th>
                 <th>成绩</th>
                 <th class="operation">操作</th>
             </tr>
@@ -29,7 +29,6 @@
                 <td>#(x.score)</td>
                 <td class="operation">
                     <a href="/admin/result/showStudentScore?id=#(x.id)">题目得分</a>
-                    // 老师也可以通过学生的ID查询到该学生的得分情况，和学生index中的查询得分相同
                 </td>
             </tr>
             #end

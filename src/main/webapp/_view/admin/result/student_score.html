@@ -3,36 +3,9 @@
 
     <!-- 表格容器 -->
     <div id="table-box" class="table-box">
-
-        <table class="table table-hover">
-
-            <thead>
-            <tr>
-                <th>题号</th>
-                <th>题目</th>
-                <th>得分情况</th>
-                <th>正确答案</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            #for (x : page.getList())
-            <tr>
-                <td>#(x.questionId)</td>
-                <td>#(x.question)</td>
-                <td>#(x.getScore) / #(x.score)</td>
-                <td>#(x.rightAnswer)</td>
-            </tr>
-            #end
-            </tbody>
-
-        </table>
+        #(score.scoreItems)
     </div>
 
-    <!-- 分页 -->
-    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
 
-    #set(append = keyword ? '&keyword=' + keyword : '')
-    #@adminPaginate(page, "/admin/exam?pn=")
 
 </div>

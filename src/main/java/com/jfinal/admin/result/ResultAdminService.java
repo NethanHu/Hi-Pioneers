@@ -132,7 +132,14 @@ public class ResultAdminService {
     public Page<Paper> Ppaginate(int pageNumber) {
         return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
-
+    public Page<Score> totalScorePaginate(int pageNumber,String name){
+        String sql = "from Score where examName='"+name+"' ";
+        return dao.paginate(pageNumber,pageSize,"select * ",sql);
+    }
+    public int getScoreNumber(String name,int min_score,int max_score){
+        String sql = "select count(*) from Score where examName='"+name+"' and score>="+min_score+" and score<"+max_score+" ";
+        return Db.queryInt(sql);
+    }
     /**
      * 获取 id
      */
