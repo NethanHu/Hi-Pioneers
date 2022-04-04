@@ -17,8 +17,7 @@ public class ResultAdminService {
     private CourseSelection CSdao = new CourseSelection().dao();
     private Course Cdao = new Course().dao();
     private Teaching Tdao = new Teaching().dao();
-
-
+    private Exam Edao = new Exam().dao();
     /**
      * 分页
      */
@@ -94,17 +93,30 @@ public class ResultAdminService {
         return dao.paginate(pageNumber, pageSize, "select *", "from exam where state=1 order by update_time desc");
     }
 
-    public Page<Score> teacherPaginate(int pageNumber, String[] name) {
-        String sql = "from Score where";
+    public String[][] teacherPaginate( String[] name) {
+        String sql = "select * from exam where ";
         for (int i = 0; i < name.length; i++) {
-            if (i == 0) {
-                sql = sql + " type = '" + name[i] + "' ";
-            } else {
-                sql = sql + "or type = '" + name[i] + "' ";
+            if (i==0){
+                sql=sql+"course_name='"+name[i]+"' ";
+            }
+            else {
+                sql = sql+"or course_name='"+name[i]+"' ";
             }
         }
-        sql = sql + " order by updateTime ";
-        return dao.paginate(pageNumber, pageSize, "select * ", sql);
+        List<Exam> exam = Edao.find(sql);
+        String[][] result = new String[exam.size()][5];
+        for (int i = 0; i < exam.size(); i++) {
+            Exam E = exam.get(i);
+            result[i][0]=E.getCourseName();
+            result[i][1]=E.getExamName();
+            result[i][2]=Integer.toString(E.getPaperId());
+            String getInvolveNo = "select count(*) from Score where examName='"+E.getExamName()+"' ";
+            result[i][3]=String.valueOf(Db.queryInt(getInvolveNo));
+            String getCourseNo = "select Cno from Course where name='"+E.getCourseName()+"'";
+            String getTotalNo = "select count(*) from CourseSelection where Cno='"+Db.queryStr(getCourseNo)+"' ";
+            result[i][4]=String.valueOf(Db.queryInt(getTotalNo));
+        }
+        return result;
     }
     public Page<Score> headerPaginate(int pageNumber, String type){
         String sql = "from Score where type='高等数学' or type='线性代数' or type='概率论'";
