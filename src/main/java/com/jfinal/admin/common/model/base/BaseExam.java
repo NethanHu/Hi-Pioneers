@@ -65,6 +65,14 @@ public abstract class BaseExam<M extends BaseExam<M>> extends Model<M> implement
 		return getInt("paper_id");
 	}
 	
+	public void setTotalScore(java.lang.Integer totalScore) {
+		set("totalScore", totalScore);
+	}
+	
+	public java.lang.Integer getTotalScore() {
+		return getInt("totalScore");
+	}
+	
 	public void setState(java.lang.Integer state) {
 		set("state", state);
 	}
