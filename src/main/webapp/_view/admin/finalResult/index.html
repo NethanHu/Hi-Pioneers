@@ -1,8 +1,9 @@
 <div class="main">
+    <a href="/admin/finalResult/exportOutExcel?Tno=#(Tno)" class="btn btn-default btn-sm">
+        <i class="fa fa-file-excel-o"></i> 导出为Excel
+    </a>
+
     <div id="table-box" class="table-box">
-        <a href="/admin/finalResult/exportOutExcel?Tno=#(Tno)" class="btn btn-default btn-sm">
-            <i class="fa fa-file-excel-o"></i> 导出为Excel
-        </a>
         <input type="hidden" id="course" value="#(course)">
         <table class="table table-hover">
 
@@ -25,7 +26,7 @@
                 <td>#(x.name)</td>
                 <td>#(y.name)</td>
                 <td>#(x.score)</td>
-                <td><a href="/admin/finalResult/input?id=#(x.id)&Sno=#(x.Sno)&course=#(y.name)">录入</a></td>
+                <td class="operation"><a href="/admin/finalResult/input?id=#(x.id)&Sno=#(x.Sno)&course=#(y.name)">录入</a></td>
             </tr>
             #end
             #end
