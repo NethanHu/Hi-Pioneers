@@ -1,18 +1,25 @@
-<div class="demo-main d-flex">
-    <div class="panel">
-        <div class="panel-header">饼图</div>
-        <div class="panel-body" id="pie"></div>
-    </div>
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+    成绩图表
+</div>
 
-    <div class="panel">
-        <div class="panel-header">柱状图</div>
-        <div class="panel-body" id="bar"></div>
+<div class="open-box" style="padding: 30px 30px 15px 30px;">
+    <div class="demo-main d-flex">
+        <div class="panel">
+            <div class="panel-header">饼图</div>
+            <div class="panel-body" id="pie"></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">柱状图</div>
+            <div class="panel-body" id="bar"></div>
+        </div>
+        <input type="hidden" id="score_area_1" value="#(scores[0])">
+        <input type="hidden" id="score_area_2" value="#(scores[1])">
+        <input type="hidden" id="score_area_3" value="#(scores[2])">
+        <input type="hidden" id="score_area_4" value="#(scores[3])">
+        <input type="hidden" id="score_area_5" value="#(scores[4])">
     </div>
-    <input type="hidden" id="score_area_1" value="#(scores[0])">
-    <input type="hidden" id="score_area_2" value="#(scores[1])">
-    <input type="hidden" id="score_area_3" value="#(scores[2])">
-    <input type="hidden" id="score_area_4" value="#(scores[3])">
-    <input type="hidden" id="score_area_5" value="#(scores[4])">
 </div>
 
 <style>
@@ -44,20 +51,25 @@
      * 分别渲染多个图表
      */
     $(function () {
+        for (let i = 1; i <= 5; i++) {
+            let number = document.getElementById("score_area_" + i).value;
+            interval_number.push(number);
+        }
         renderChart('pie', initPie('分数段占比图', score_interval, interval_number));
-        renderChart('bar', initHist('分数段占比图', score_interval, interval_number));
+        renderChart('bar', initHist('分数段柱状图', score_interval, interval_number));
         // getData();
     });
 
     var score_interval = ['60分以下', '60 ~ 69分', '70 ~ 79分', '80 ~ 89分', '90 ~ 100分']; // 这里用if-else if语句填充分数段, 注意这里是 string 类型变量作为数组
-    var interval_number = [50,20,30,40,20]; // 这里填充每个分数区间有多少人, 这里是 number 类型变量作为数组
+    var interval_number = []; // 这里填充每个分数区间有多少人, 这里是 number 类型变量作为数组
 
-    function getData(){
-        for (let i = 1; i <6 ; i++) {
-            let score = document.getElementById("score_area_"+i).value;
-            interval_number[i-1]=parseInt(score);
+    function getData() {
+        for (let i = 1; i < 6; i++) {
+            let score = document.getElementById("score_area_" + i).value;
+            interval_number[i - 1] = parseInt(score);
         }
     }
+
     /**
      * 渲染图表主功能
      */

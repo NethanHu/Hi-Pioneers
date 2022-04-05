@@ -7,6 +7,21 @@ import com.jfinal.admin.common.model.base.BaseScore;
  */
 @SuppressWarnings("serial")
 public class Score extends BaseScore<Score> {
+    public static final int STATE_MARKED = 1;    // 已发布状态
+    public static final int STATE_UNMARKED = 0;    // 未发布状态
 
+    /**
+     * 是否已发布
+     */
+    public boolean isMarked() {
+        return getInt("state") == STATE_MARKED;
+    }
+
+    /**
+     * 是否未发布
+     */
+    public boolean isUnmarked() {
+        return getInt("state") == STATE_UNMARKED;
+    }
 }
 

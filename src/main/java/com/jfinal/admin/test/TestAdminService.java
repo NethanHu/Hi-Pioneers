@@ -117,6 +117,7 @@ public class TestAdminService {
         score.setPaperId(paperId);
         score.setUpdateTime(new Date());
         score.setStudentId(StudentId);
+        score.setState(score.STATE_UNMARKED);
         score.save();
         return Ret.ok("msg", "创建成功");
     }

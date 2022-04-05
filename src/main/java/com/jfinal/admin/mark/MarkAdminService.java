@@ -46,7 +46,7 @@ public class MarkAdminService {
                 sql = sql + "or type = '" + name[i] + "' ";
             }
         }
-        sql = sql + " order by updateTime ";
+        sql = sql + "and state=0 order by updateTime ";
         return dao.paginate(pageNumber, pageSize, "select *", sql);
     }
 
@@ -84,6 +84,7 @@ public class MarkAdminService {
         score.setTeacherId(TeacherNo);
         score.setScore(scores);
         score.setScoreItems(result);
+        score.setState(score.STATE_MARKED);
         score.update();
         return Ret.ok("msg", "提交成功");
     }

@@ -113,5 +113,13 @@ public abstract class BaseScore<M extends BaseScore<M>> extends Model<M> impleme
 		return getInt("totalScore");
 	}
 	
+	public void setState(java.lang.Integer state) {
+		set("state", state);
+	}
+	
+	public java.lang.Integer getState() {
+		return getInt("state");
+	}
+	
 }
 

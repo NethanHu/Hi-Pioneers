@@ -2,10 +2,14 @@
 <div class="main">
 
     <!-- 点击按钮弹出可视化图 -->
-    <button open url="/admin/result/showCharts?name=#(courseName)" class="btn btn-success btn-sm">
-        <i class="fa fa-bar-chart"></i>
-        成绩图表
+    <button open="{area:'1080px', offset:'139px'}" url="/admin/result/showCharts?name=#(courseName)" class="btn btn-success btn-sm">
+        <i class="fa fa-bar-chart"></i> 成绩图表
     </button>
+
+    <!-- 点击按钮下载 Excel 文件 -->
+    <a href="/admin/result/exportOutExcel" class="btn btn-default btn-sm">
+        <i class="fa fa-file-excel-o"></i> 导出为Excel
+    </a>
 
     <!-- 表格容器 -->
     <div id="table-box" class="table-box">
@@ -38,9 +42,9 @@
     </div>
 
     <!-- 分页 -->
-    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
-
-    #set(append = keyword ? '&keyword=' + keyword : '')
-    #@adminPaginate(page, "/admin/exam?pn=")
+    #if(courseName)
+    #set(append='&name='+ courseName)
+    #end
+    #@adminPaginate(page, "/admin/result/showTotalScore?pn=")
 
 </div>

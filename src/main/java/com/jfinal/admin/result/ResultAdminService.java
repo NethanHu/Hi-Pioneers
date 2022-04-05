@@ -18,6 +18,7 @@ public class ResultAdminService {
     private Course Cdao = new Course().dao();
     private Teaching Tdao = new Teaching().dao();
     private Exam Edao = new Exam().dao();
+
     /**
      * 分页
      */
@@ -84,7 +85,7 @@ public class ResultAdminService {
     public String getHeaderCourse(String HNo) {
         String sql = "select Cno from teaching where Tno = '" + HNo + "'";
         String Cno = Db.queryStr(sql);
-        String sql_type = "select type from Course where Cno = '"+Cno+"'";
+        String sql_type = "select type from Course where Cno = '" + Cno + "'";
         String type = Db.queryStr(sql_type);
         return type;
     }
@@ -93,34 +94,34 @@ public class ResultAdminService {
         return dao.paginate(pageNumber, pageSize, "select *", "from exam where state=1 order by update_time desc");
     }
 
-    public String[][] teacherPaginate( String[] name) {
+    public String[][] teacherPaginate(String[] name) {
         String sql = "select * from exam where ";
         for (int i = 0; i < name.length; i++) {
-            if (i==0){
-                sql=sql+"course_name='"+name[i]+"' ";
-            }
-            else {
-                sql = sql+"or course_name='"+name[i]+"' ";
+            if (i == 0) {
+                sql = sql + "course_name='" + name[i] + "' ";
+            } else {
+                sql = sql + "or course_name='" + name[i] + "' ";
             }
         }
         List<Exam> exam = Edao.find(sql);
         String[][] result = new String[exam.size()][5];
         for (int i = 0; i < exam.size(); i++) {
             Exam E = exam.get(i);
-            result[i][0]=E.getCourseName();
-            result[i][1]=E.getExamName();
-            result[i][2]=Integer.toString(E.getPaperId());
-            String getInvolveNo = "select count(*) from Score where examName='"+E.getExamName()+"' ";
-            result[i][3]=String.valueOf(Db.queryInt(getInvolveNo));
-            String getCourseNo = "select Cno from Course where name='"+E.getCourseName()+"'";
-            String getTotalNo = "select count(*) from CourseSelection where Cno='"+Db.queryStr(getCourseNo)+"' ";
-            result[i][4]=String.valueOf(Db.queryInt(getTotalNo));
+            result[i][0] = E.getCourseName();
+            result[i][1] = E.getExamName();
+            result[i][2] = Integer.toString(E.getPaperId());
+            String getInvolveNo = "select count(*) from Score where examName='" + E.getExamName() + "' ";
+            result[i][3] = String.valueOf(Db.queryInt(getInvolveNo));
+            String getCourseNo = "select Cno from Course where name='" + E.getCourseName() + "'";
+            String getTotalNo = "select count(*) from CourseSelection where Cno='" + Db.queryStr(getCourseNo) + "' ";
+            result[i][4] = String.valueOf(Db.queryInt(getTotalNo));
         }
         return result;
     }
-    public Page<Score> headerPaginate(int pageNumber, String type){
+
+    public Page<Score> headerPaginate(int pageNumber, String type) {
         String sql = "from Score where type='高等数学' or type='线性代数' or type='概率论'";
-        return dao.paginate(pageNumber, pageSize,"select * ",sql);
+        return dao.paginate(pageNumber, pageSize, "select * ", sql);
     }
 
     public Page<Score> studentPaginate(int pageNumber, String studentNo) {
@@ -132,14 +133,17 @@ public class ResultAdminService {
     public Page<Paper> Ppaginate(int pageNumber) {
         return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
-    public Page<Score> totalScorePaginate(int pageNumber,String name){
-        String sql = "from Score where examName='"+name+"' ";
-        return dao.paginate(pageNumber,pageSize,"select * ",sql);
+
+    public Page<Score> totalScorePaginate(int pageNumber, String name) {
+        String sql = "from Score where examName='" + name + "' and state=1 order by studentId desc";
+        return dao.paginate(pageNumber, pageSize, "select * ", sql);
     }
-    public int getScoreNumber(String name,int min_score,int max_score){
-        String sql = "select count(*) from Score where examName='"+name+"' and score>="+min_score+" and score<"+max_score+" ";
+
+    public int getScoreNumber(String name, int min_score, int max_score) {
+        String sql = "select count(*) from Score where examName='" + name + "' and score>=" + min_score + " and score<" + max_score + " ";
         return Db.queryInt(sql);
     }
+
     /**
      * 获取 id
      */
@@ -172,5 +176,12 @@ public class ResultAdminService {
         score.setStudentId(StudentId);
         score.save();
         return Ret.ok("msg", "创建成功");
+    }
+
+    // TODO: 这里添加一下，根据老师教的学生来导出相应的分数，这里演示的是导出所有的分数
+
+    public List<Score> getScoreList() {
+        String sql = "select * from Score";
+        return dao.find(sql);
     }
 }
