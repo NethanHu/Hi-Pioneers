@@ -93,12 +93,15 @@
         <i class="menu-arrow fa #(fa_angle)"></i>
     </div>
     <div class="left-sub-menu" #(sub_menu_state)>
-        <a href="/admin/system">个人设置</a>
-
         #role("学生")
         <a href="/admin/face">人脸信息</a>
         #end
 
+        #role("老师", "学科主任")
+        <a href="/admin/final">成绩导出</a>
+        #end
+
+        <a href="/admin/system">个人设置</a>
         ### 演示 permission 指令 "细粒度" 控制菜单，在后台管理调整账号的权限时，这里的控制会自动生效
         #permission("/admin/func")
         <a href="/admin/func">功能调用</a>

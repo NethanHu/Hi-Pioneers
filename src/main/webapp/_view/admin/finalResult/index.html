@@ -1,0 +1,30 @@
+<div class="main">
+    <div id="table-box" class="table-box">
+
+        <table class="table table-hover">
+
+            <thead>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>考试名称</th>
+                <th>线上成绩</th>
+                <th>总成绩</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            #for (x : page.getList())
+            <tr>
+                <td>#(x.studentId)</td>
+                <td>#(x.name)</td>
+                <td>#(x.examName)</td>
+                <td>#(x.score)</td>
+                <td>#(x.totalScore)</td>
+            </tr>
+            #end
+            </tbody>
+
+        </table>
+    </div>
+</div>

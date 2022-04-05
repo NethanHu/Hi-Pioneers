@@ -100,7 +100,7 @@ public class ResultAdminController extends BaseController {
         List<List<Object>> content = new ArrayList<List<Object>>();
         List<String> title = new ArrayList<String>();
 
-        List<Score> datas = srv.getScoreList();
+        List<Score> data = srv.getScoreList();
 
         // 添加`title`,对应的从数据库检索出`datas`的`title`
         title.add("序号");
@@ -110,16 +110,16 @@ public class ResultAdminController extends BaseController {
         int i = 0;
         OK:
         while (true) {
-            if (datas.size() < (i + 1)) {
+            if (data.size() < (i + 1)) {
                 break OK;
             }
             // 判断单元格是否为空，不为空添加数据
             int index = i + 1;
             List<Object> row = new ArrayList<Object>();
             row.add(index + "");
-            row.add(null == datas.get(i).get("studentId") ? "" : datas.get(i).get("studentId"));
-            row.add(null == datas.get(i).get("examName") ? "" : datas.get(i).get("examName"));
-            row.add(null == datas.get(i).get("score") ? "" : datas.get(i).get("score"));
+            row.add(null == data.get(i).get("studentId") ? "" : data.get(i).get("studentId"));
+            row.add(null == data.get(i).get("examName") ? "" : data.get(i).get("examName"));
+            row.add(null == data.get(i).get("score") ? "" : data.get(i).get("score"));
             content.add(row);
             i++;
         }

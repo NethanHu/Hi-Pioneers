@@ -25,6 +25,14 @@ public abstract class BaseCourseSelection<M extends BaseCourseSelection<M>> exte
 		return getStr("Sno");
 	}
 	
+	public void setName(java.lang.String name) {
+		set("name", name);
+	}
+	
+	public java.lang.String getName() {
+		return getStr("name");
+	}
+	
 	public void setCno(java.lang.String Cno) {
 		set("Cno", Cno);
 	}
