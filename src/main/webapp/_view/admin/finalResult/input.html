@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="always">
+
+    <meta name="keywords" content="Chaoxing">
+    <meta name="description" content="Chaoxing">
+
+
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/jfinal-admin.css?v=1">
+
+    <style>
+        /* html 是根元素
+         * rem（font size of the root element）是相对于 html 元素的字体大小单位
+         * 在不指定时多数浏览器的默认值为 16px
+        */
+        body, html {
+            font-size: 17px;
+            background-color: #F2F2F2;
+        }
+        .container {
+            margin: 15px auto;
+            padding: 20px 40px 1px 40px;
+            background-color: #FFF;
+            border-radius: 5px;
+        }
+        .breadcrumb {
+            padding-left: 0.75rem;
+        }
+        .breadcrumb li.breadcrumb-item {
+            color: #555;
+        }
+        .form-group {
+            margin-top: 22px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 根容器 -->
+<div class="container">
+
+    <!-- 主体内容 -->
+    <div class="article-box">
+
+
+        <form id="open-form" action="/admin/finalResult/update" method="POST"
+              onsubmit="return false;">
+            #if( ! isAdd )
+            <input type="hidden" name="courseSelection.id" value="#(courseSelection.id)">
+            #end
+            <div>
+                #(Sno)
+                #(name)
+            </div>
+            <ul id="score_list">
+                <li>
+                    <div class="form-group">1
+                        <input type="text" id="name_1" value="线上成绩">
+                        <input type="text" id="score_1" value="#(score)">
+                        <input type="text" id="weight_1" >%
+                    </div>
+                </li>
+            </ul>
+
+            <button class="btn btn-success btn-sm" onclick="addOption()">
+                <i class="fa fa-plus-square"></i>&nbsp;添加选项
+            </button>
+            <button class="btn btn-success btn-sm" id="del_button" onclick="deleteOption()" style="display: none">
+                <i class="fa fa-minus-square"></i>&nbsp;移除选项
+            </button>
+
+            <div class="form-group text-center">
+                <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
+                    <i class="fa fa-check mr-1"></i>更新
+                </button>
+            </div>
+            <input type="hidden" id="final_score" name="final_score">
+            <input type="hidden" id="details" name="details">
+
+        </form>
+    </div>
+
+</div>
+
+
+<script src="/assets/lib/jquery/jquery-3.6.0.min.js"></script>
+<script src="/assets/lib/bootstrap/js/popper.min.js"></script>
+<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+<script src="/assets/lib/layer/layer.js"></script>
+<script src="/assets/js/jfinal-kit.js"></script>
+<script src="/assets/js/question-kit.js"></script>
+
+
+<!-- 添加 ckeditor 组件依赖 -->
+<script src="/assets/lib/ckeditor/ckeditor.js"></script>
+
+<script>
+
+    $(function() {
+        // 设置第一个 input 为输入焦点
+        $("#open-form input[type='text']:first").focus();
+
+        // 绑定提交按钮事件
+        $("#submit-btn").on("click", submitQuestion);
+
+        // 绑定 esc 键关键弹出层
+        kit.bindEscKeydown();
+    });
+
+    function submitQuestion() {
+        getFinalScore();
+        getDetails();
+        // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
+        $("#open-form").ajaxSubmit({
+                dataType: 'json', type: 'POST',
+                beforeSerialize: function($form, options) {
+                    // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+                    for (instance in CKEDITOR.instances) {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+                    kit.loading({msg: '正在保存, 请稍候 .....'});
+                },
+                success: function(ret) {
+                    kit.closeLoading();		// 关闭 loading 层
+                    kit.msg(ret);
+
+                    if (ret.state == "ok") {
+                        setTimeout(function() {
+                            location.href = "/admin/finalResult?pn=#(pn ? pn : 1)";
+                        }, 2100);
+                    }
+                }
+            }
+        );
+    }
+
+    var score_list = document.getElementById('score_list');
+    var del_button = document.getElementById('del_button');
+    var score_index = 2;
+    var final_score = 0;
+    var details = "";
+    function dsiplayDelButton() {
+        if (score_index == 2) {
+            del_button.setAttribute('style', 'display: none');
+        } else {
+            del_button.removeAttribute('style');
+        }
+    }
+
+    function addOption() {
+        var node = document.createElement('li');
+        node.innerHTML = "          <div class=\"form-group\">\n" +score_index+
+            "           <input autocomplete=\"off\" id=\"name_" + score_index + "\"  type=\"text\" placeholder=\"请输入分项\">\n" +
+            "           <input autocomplete=\"off\" id=\"score_" + score_index + "\"  type=\"text\" placeholder=\"请输入分数\">\n" +
+            "           <input autocomplete=\"off\" id=\"weight_" + score_index + "\"  type=\"text\" placeholder=\"请输入权重\">%\n" +
+            "          </div>";
+        score_list.appendChild(node);
+        score_index++;
+        dsiplayDelButton();
+    }
+
+    function deleteOption() {
+        var node = document.getElementsByTagName("li");
+        document.getElementById('score_list').removeChild(node[node.length-1]);
+        score_index--;
+        dsiplayDelButton();
+    }
+    function getFinalScore(){
+        for (let i = 1; i <score_index ; i++) {
+            let score = document.getElementById("score_"+i).value;
+            let weight = document.getElementById("weight_"+i).value;
+            final_score += parseInt(score)*parseInt(weight)/100;
+        }
+        document.getElementById("final_score").setAttribute('value',Math.round(final_score));
+    }
+    function getDetails(){
+        for (let i = 1; i <score_index ; i++) {
+            let name = document.getElementById("name_"+i).value;
+            let score = document.getElementById("score_"+i).value;
+            details =details + name + ":" +score +"分 ";
+
+        }
+        document.getElementById("details").setAttribute('value',details);
+    }
+</script>
+</body>
+</html>

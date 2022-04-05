@@ -31,6 +31,10 @@ public class ResultAdminService {
         String sql = "select number from account where id =" + accountId + " limit 1";
         return Db.queryStr(sql);
     }
+    public List<CourseSelection> getName(){
+        String sql = " select distinct Sno , name from CourseSelection ";
+;        return CSdao.find(sql);
+    }
 
     public String[] getStuCourse(String Sno) {
         String sql = "select distinct Cno from CourseSelection where Sno = " + Sno;
@@ -180,8 +184,9 @@ public class ResultAdminService {
 
     // TODO: 这里添加一下，根据老师教的学生来导出相应的分数，这里演示的是导出所有的分数
 
-    public List<Score> getScoreList() {
-        String sql = "select * from Score";
+    public List<Score> getScoreList(String name) {
+        String sql = "select * from Score where examName='"+name+"' ";
         return dao.find(sql);
     }
+
 }

@@ -57,5 +57,13 @@ public abstract class BaseCourseSelection<M extends BaseCourseSelection<M>> exte
 		return getDate("update_time");
 	}
 	
+	public void setDetails(java.lang.String details) {
+		set("details", details);
+	}
+	
+	public java.lang.String getDetails() {
+		return getStr("details");
+	}
+	
 }
 

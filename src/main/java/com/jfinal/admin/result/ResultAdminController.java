@@ -3,6 +3,7 @@ package com.jfinal.admin.result;
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.kit.XLSFileKit;
+import com.jfinal.admin.common.model.CourseSelection;
 import com.jfinal.admin.common.model.Score;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
@@ -61,7 +62,8 @@ public class ResultAdminController extends BaseController {
 
     public void showTotalScore() {
         Page<Score> page = srv.totalScorePaginate(getInt("pn", 1), get("name"));
-        set("page", page).set("courseName", get("name"));
+        List<CourseSelection> list= srv.getName();
+        set("page", page).set("courseName", get("name")).set("list",list);
         render("total_score.html");
     }
 
@@ -83,7 +85,8 @@ public class ResultAdminController extends BaseController {
      */
     @Clear(LayoutInterceptor.class)
     public void exportOutExcel() {
-        String sheetName = "导出的学生成绩";
+        String name = get("name");
+        String sheetName = name;
 
         // 导出`Excel`名称
         String fileName = new Date().getTime() + "_" + UUID.randomUUID().toString() + ".xls";
@@ -100,12 +103,13 @@ public class ResultAdminController extends BaseController {
         List<List<Object>> content = new ArrayList<List<Object>>();
         List<String> title = new ArrayList<String>();
 
-        List<Score> data = srv.getScoreList();
+        List<Score> data = srv.getScoreList(name);
+        List<CourseSelection> list = srv.getName();
 
         // 添加`title`,对应的从数据库检索出`datas`的`title`
         title.add("序号");
         title.add("学号");
-        title.add("考试名称");
+        title.add("学生名字");
         title.add("线上得分");
         int i = 0;
         OK:
@@ -113,15 +117,21 @@ public class ResultAdminController extends BaseController {
             if (data.size() < (i + 1)) {
                 break OK;
             }
-            // 判断单元格是否为空，不为空添加数据
-            int index = i + 1;
-            List<Object> row = new ArrayList<Object>();
-            row.add(index + "");
-            row.add(null == data.get(i).get("studentId") ? "" : data.get(i).get("studentId"));
-            row.add(null == data.get(i).get("examName") ? "" : data.get(i).get("examName"));
-            row.add(null == data.get(i).get("score") ? "" : data.get(i).get("score"));
-            content.add(row);
-            i++;
+            for (int j = 0; j < list.size(); j++) {
+
+                if (data.get(i).get("studentId").equals(list.get(j).getSno())) {
+                    // 判断单元格是否为空，不为空添加数据
+                    int index = i + 1;
+                    List<Object> row = new ArrayList<Object>();
+                    row.add(index + "");
+                    row.add(null == data.get(i).get("studentId") ? "" : data.get(i).get("studentId"));
+                    row.add(null == list.get(j).get("name") ? "" : list.get(j).get("name"));
+                    row.add(null == data.get(i).get("score") ? "" : data.get(i).get("score"));
+                    content.add(row);
+                    i++;
+                    break ;
+                }
+            }
         }
         xlsFileKit.addSheet(content, sheetName, title);
         xlsFileKit.save();

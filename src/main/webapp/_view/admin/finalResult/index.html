@@ -1,30 +1,41 @@
 <div class="main">
     <div id="table-box" class="table-box">
-
+        <a href="/admin/finalResult/exportOutExcel?Tno=#(Tno)" class="btn btn-default btn-sm">
+            <i class="fa fa-file-excel-o"></i> 导出为Excel
+        </a>
+        <input type="hidden" id="course" value="#(course)">
         <table class="table table-hover">
 
             <thead>
             <tr>
                 <th>学号</th>
                 <th>姓名</th>
-                <th>考试名称</th>
-                <th>线上成绩</th>
+                <th>课程名称</th>
                 <th>总成绩</th>
+                <th class="operation">操作</th>
             </tr>
             </thead>
 
             <tbody>
             #for (x : page.getList())
+            #for (y : list)
+            #if(x.Cno.equals(y.Cno))
             <tr>
-                <td>#(x.studentId)</td>
+                <td>#(x.Sno)</td>
                 <td>#(x.name)</td>
-                <td>#(x.examName)</td>
+                <td>#(y.name)</td>
                 <td>#(x.score)</td>
-                <td>#(x.totalScore)</td>
+                <td><a href="/admin/finalResult/input?id=#(x.id)&Sno=#(x.Sno)&course=#(y.name)">录入</a></td>
             </tr>
+            #end
+            #end
             #end
             </tbody>
 
         </table>
     </div>
+    #@adminPaginate(page, "/admin/finalResult?pn=")
 </div>
+<script>
+
+</script>
