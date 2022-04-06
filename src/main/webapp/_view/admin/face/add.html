@@ -9,7 +9,7 @@
 
 <!-- 弹出层主体内容 -->
 <div class="open-box" style="padding: 30px 30px 15px 30px;">
-	<form id="open-form" enctype="multipart/form-data" action="/admin/image/upload" onsubmit="return false;" method="POST">
+	<form id="open-form" enctype="multipart/form-data" action="/admin/face/upload" onsubmit="return false;" method="POST">
 		
 		<div class="custom-file">
 			### 注意必须要有 name 属性，否则无法上传
@@ -61,7 +61,7 @@
 				// 上传失败格式：{"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
 				if (ret.uploaded != 0) {
 					layer.closeAll();	// 提交成功关闭 open 弹出层
-					kit.fill('/admin/image', null, '#content-box');
+					kit.fill('/admin/face', null, '#content-box');
 					kit.ok('上传成功');
 				} else {
 					kit.fail('上传失败: ' + ret.error.message);

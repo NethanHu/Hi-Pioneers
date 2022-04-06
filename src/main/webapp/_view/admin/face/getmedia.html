@@ -1,0 +1,79 @@
+<div id="box">
+    <video id="media" autoplay></video>
+    <button id="capture">点击抓拍</button>
+    <div class="layui-layer-btn" style="padding: 10px 25px 20px 0;">
+        <a class="layui-layer-btn0">上传</a>
+        <a class="layui-layer-btn1">取消</a>
+    </div>
+</div>
+<canvas id="canvas" width="480" height="320"></canvas>
+
+
+
+<!-- 弹出层 js 脚本 -->
+<script>
+
+    const media = document.getElementById('media')	// video元素
+    const capture = document.getElementById('capture')	// button元素
+
+    const canvas = document.getElementById('canvas')  // canvas元素
+    const context = canvas.getContext('2d')
+
+    navigator.mediaDevices.getUserMedia({video: {width: 480, height: 320}, audio: true}).then(stream => {
+        // 将视频流设置为video元素的源
+        media.srcObject = stream
+        // 低版本浏览器
+        // media.src = window.URL.createObjectURL(stream)
+        media.play()
+    })
+
+    // 绑定拍照按钮的单机事件
+    capture.addEventListener('click', () => {
+        context.drawImage(media, 0, 0)	// 将video在canvas上绘制出来
+        canvas.toBlob(blob => {		// 将canvas转换为blob
+            console.log(blob)
+            blob.msSaveBlob(imgData, 'myPhoto.jpg');
+
+        })
+    })
+    $(function() {
+        $('.custom-file-input').on('change', showSelectedFileName);
+
+        // 绑定提交按钮事件
+        $(".layui-layer-btn0").on("click", submitImage);
+    });
+
+    /**
+     * 显示选中文件
+     */
+    function showSelectedFileName() {
+        var fileName = $(this).val();
+        $('.custom-file-label').html(fileName);
+    }
+
+    /**
+     * 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+     */
+    function submitImage() {
+        $("#open-form").ajaxSubmit({
+            dataType: 'json', type: 'POST',
+            beforeSerialize: function($form, options) {
+                kit.loading({msg: '正在上传图片, 请稍候 .....'});
+            },
+            success: function(ret) {
+                kit.closeLoading();		// 关闭 loading 层
+
+                // 上传成功格式：{"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
+                // 上传失败格式：{"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
+                if (ret.uploaded != 0) {
+                    layer.closeAll();	// 提交成功关闭 open 弹出层
+                    kit.fill('/admin/face', null, '#content-box');
+                    kit.ok('上传成功');
+                } else {
+                    kit.fail('上传失败: ' + ret.error.message);
+                }
+            }
+        });
+    }
+
+</script>

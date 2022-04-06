@@ -4,7 +4,7 @@
  * Copyright (c) 2011-2021, jfinal.com
  */
 
-package com.jfinal.admin.image;
+package com.jfinal.admin.face;
 
 import com.jfinal.admin.common.kit.ImageKit;
 import com.jfinal.admin.common.model.Image;
@@ -21,12 +21,12 @@ import java.util.Date;
 /**
  * 图片管理业务层
  */
-public class ImageAdminService {
+public class FaceAdminService {
 
     // 图片文件最大长度
-    public int imageMaxSize = 500 * 1024;
+    int imageMaxSize = 500 * 1024;
     // 图片临时上传目录
-    public String tempUploadPath = "/temp";
+    String tempUploadPath = "/temp";
 
     // 基础上传目录，该目录与 me.setBaseUpload(...) 要保持一致
     String baseUploadPath = "/upload";

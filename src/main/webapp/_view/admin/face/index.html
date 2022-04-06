@@ -9,8 +9,8 @@
 	</div>
 
 	<div class="toolbar">
-		<button open="{area:'420px', offset:'139px'}" url="/admin/face/camera" class="btn btn-success btn-sm">
-			<i class="fa fa-upload mr-1"></i>人脸识别测试
+		<button open="{area:'420px', offset:'139px'}" url="/admin/face/getmedia" class="btn btn-success btn-sm">
+			<i class="fa fa-upload mr-1"></i>人脸识别测试index
 		</button>
 	</div>
 	
@@ -24,7 +24,7 @@
 				
 				<div class="image-footer">
 					<i class="fa fa-copy text-info" image-url='/upload#(x.path)#(x.fileName)' title="复制地址"></i>
-					<i class="fa fa-trash text-danger" confirm='确定删除？' url='/admin/image/delete?id=#(x.id)' title="删除"></i>
+					<i class="fa fa-trash text-danger" confirm='确定删除？' url='/admin/face/delete?id=#(x.id)' title="删除"></i>
 				</div>
 				
 			</div>
@@ -64,7 +64,7 @@
 				layer.close(index);
 				kit.msg(ret);
 				if (ret.state == 'ok') {
-					kit.fill('/admin/image', null, '#content-box');
+					kit.fill('/admin/face', null, '#content-box');
 				}
 			}
 		);
