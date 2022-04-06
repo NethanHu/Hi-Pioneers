@@ -139,14 +139,15 @@ public class PaperAdminController extends BaseController {
      * 手动组卷模块，会跳出题库中的题目以供选择
      */
     public void search() {
+        int accountId = getLoginAccountId();
+        String course = srv.getCourse(accountId);
         int pn = getInt("pn", 1);
-        String course = get("course");
         String level = get("level");
         String type = get("type");
-        Page<Question> page = (StrKit.isBlank(course) & StrKit.isBlank(level) & StrKit.isBlank(type))
-                ? srv.Qpaginate(pn)
-                : srv.searchForQuestion(course, type, level, pn);
-        set("page", page);
+        Page<Question> page = ( StrKit.isBlank(level) & StrKit.isBlank(type))
+                ? srv.Qpaginate(pn,course)
+                : srv.searchForQuestion(course,type, level, pn);
+        set("page", page).set("course",course);
         render("choose_questions.html");
     }
 

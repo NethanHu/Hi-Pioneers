@@ -19,28 +19,36 @@ public class QuestionAdminService {
     /**
      * 分页
      */
-    public Page<Question> paginate(int pageNumber) {
-        return dao.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
+    public Page<Question> paginate(int pageNumber,String type) {
+        return dao.paginate(pageNumber, pageSize, "select *", "from question where course_name='"+type+"' order by update_time desc");
     }
 
     /**
      * 搜索
      */
-    public Page<Question> search(String key, int pageNumber) {
-        String sql = "select * from question where question like concat('%', #para(0), '%') order by update_time desc";
+    public Page<Question> search(String key, int pageNumber , String type) {
+        String sql = "select * from question where course_name='"+type+"' and question like concat('%', #para(0), '%') order by update_time desc";
         return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
     }
 
-    public Page<Question> select(String key, int pageNumber) {
-        String sql = "select * from question where type like concat('%', #para(0), '%') order by update_time desc";
-        return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
-    }
+//    public Page<Question> select(String key, int pageNumber) {
+//        String sql = "select * from question where type like concat('%', #para(0), '%') order by update_time desc";
+//        return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
+//    }
+//
+//    public Page<Question> sort(String key, int pageNumber) {
+//        String sql = "select * from question order by " + key + " desc";
+//        return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
+//    }
 
-    public Page<Question> sort(String key, int pageNumber) {
-        String sql = "select * from question order by " + key + " desc";
-        return dao.templateByString(sql, key).paginate(pageNumber, pageSize);
+    public  String getCourse(int accountId){
+        String sql = "select number from account where id="+accountId+" limit 1";
+        String Tno = Db.queryStr(sql);
+        String getCno = " select Cno from teaching where Tno='"+Tno+"' limit 1";
+        String Cno = Db.queryStr(getCno);
+        String getType = "select type from Course where Cno='"+Cno+"' limit 1";
+        return Db.queryStr(getType);
     }
-
     private Ret validate(Question question) {
         if (question == null) {
             return Ret.fail("msg", "question 对象不能为 null");

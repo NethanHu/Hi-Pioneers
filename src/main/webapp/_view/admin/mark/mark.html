@@ -127,7 +127,7 @@
     var index = 1;
     var choice_sum = 0;
     var sum = 0;
-    var result = "得分情况：";
+    var result = "";
 
     function mark() {
         totalScore();
@@ -161,7 +161,7 @@
     function finalResult() {
         for (let i = choice_num; i < index; i++) {
             let score = document.getElementById("score_" + (i - 3)).value;
-            result = result + i + "、" + score + "分 ";
+            result = result + "~~~" + score ;
         }
     }
 
@@ -176,9 +176,9 @@
         for (let i = 1; i <= answer_array.length - 1; i++) {
             if (student_array[i] == answer_array[i]) {
                 choice_sum += parseInt(scores_array[i]);
-                result = result + index + "、" + scores_array[i] + "分 ";
+                result = result + "~~~"+ scores_array[i] ;
             } else {
-                result = result + index + "、" + 0 + "分 ";
+                result = result +"~~~" + 0 ;
             }
             index++;
         }

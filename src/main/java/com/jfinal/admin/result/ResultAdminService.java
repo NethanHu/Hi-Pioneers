@@ -22,6 +22,7 @@ public class ResultAdminService {
     /**
      * 分页
      */
+
     public int getRoleId(int accountId) {
         String sql = "select roleId from account_role where accountId =" + accountId + " limit 1";
         return Db.queryInt(sql);
@@ -96,6 +97,18 @@ public class ResultAdminService {
 
     public Page<Score> paginate(int pageNumber) {
         return dao.paginate(pageNumber, pageSize, "select *", "from exam where state=1 order by update_time desc");
+    }
+    public Page<Question> Qpaginate(int pageNumber,String[] Qid){
+        String sql="from question where ";
+        for (int i = 1; i < Qid.length; i++) {
+            if (i==1){
+                sql=sql+" id="+Qid[i]+" ";
+            }
+            else {
+                sql=sql +" or id="+Qid[i]+" ";
+            }
+        }
+        return Qdao.paginate(pageNumber,pageSize,"select * ",sql);
     }
 
     public String[][] teacherPaginate(String[] name) {

@@ -4,6 +4,8 @@ import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.kit.XLSFileKit;
 import com.jfinal.admin.common.model.CourseSelection;
+import com.jfinal.admin.common.model.Paper;
+import com.jfinal.admin.common.model.Question;
 import com.jfinal.admin.common.model.Score;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
@@ -56,7 +58,12 @@ public class ResultAdminController extends BaseController {
     }
 
     public void showStudentScore() {
-        set("score", srv.SgetById(getInt("id")));
+        Score score = srv.SgetById(getInt("id"));
+        int Pno = score.getPaperId();
+        Paper paper = srv.PgetById(Pno);
+        String[] Qids=paper.getContent().split("~~~");
+        Page<Question> page = srv.Qpaginate(getInt("pn", 1),Qids);
+        set("page",page).set("score",score);
         render("student_score.html");
     }
 

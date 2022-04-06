@@ -177,8 +177,8 @@ public class PaperAdminService {
     }
 
     // 引入范型为 Question 的分页机制，因为要显示题库以供选择
-    public Page<Question> Qpaginate(int pageNumber) {
-        return Qdao.paginate(pageNumber, pageSize, "select *", "from question order by update_time desc");
+    public Page<Question> Qpaginate(int pageNumber ,String course) {
+        return Qdao.paginate(pageNumber, pageSize, "select *", "from question where course_name='"+course+"' order by update_time desc");
     }
 
     /**
@@ -241,25 +241,27 @@ public class PaperAdminService {
         return dao.findById(id);
     }
 
+    public  String getCourse(int accountId){
+        String sql = "select number from account where id="+accountId+" limit 1";
+        String Tno = Db.queryStr(sql);
+        String getCno = " select Cno from teaching where Tno='"+Tno+"' limit 1";
+        String Cno = Db.queryStr(getCno);
+        String getType = "select type from Course where Cno='"+Cno+"' limit 1";
+        return Db.queryStr(getType);
+    }
     /**
      * 根据题目类型来检索题库，返回对应符合要求的题目
      * 这里由于 if 判断过多，TO DO: 日后可以加以抽象提取一个方法来组合 sql 语句
      */
-    public Page<Question> searchForQuestion(String course, String type, String level, int pageNumber) {
+    public Page<Question> searchForQuestion( String course,String type, String level, int pageNumber) {
         String sql = "select * from question where ";
 
-        if (StrKit.isBlank(course) & StrKit.isBlank(type) & StrKit.isBlank(level)) {
-            sql = "select * from question";
+        if ( StrKit.isBlank(type) & StrKit.isBlank(level)) {
+            sql = "select * from question where course_name='"+course+"'";
         }
-
-        if (!StrKit.isBlank(course)) {
-            if (StrKit.isBlank(type) & StrKit.isBlank(level)) {
-                sql += "course_name = '" + course + "'";
-            } else {
-                sql += "course_name = '" + course + "' and ";
-            }
+        else {
+            sql = "select * from question where course_name='"+course+"' and ";
         }
-        ;
         if (!StrKit.isBlank(type)) {
             if (!StrKit.isBlank(level)) {
                 sql += "type = '" + type + "' and ";

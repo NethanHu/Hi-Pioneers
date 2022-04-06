@@ -4,9 +4,9 @@
 <form id="search" action="/admin/paper/search" onsubmit="return searchQuestions()">
     <div class="toolbar">
         <label>选择题目的条件：</label>
-        <select id="question_course">
-            <option value="">----|选择科目|--</option>
-        </select>
+        <div>
+            课程类型：#(course)
+        </div>
 
         <select id="question_type">
             <option value="">----|选择类型|--</option>
@@ -78,13 +78,12 @@
         banChooseButton();
     });
 
-    var question_course_select = document.getElementById('question_course');
+
     var question_type_select = document.getElementById('question_type');
     var question_level_select = document.getElementById('question_level');
 
     function fillAllSelectOptions() {
         // 填充分类选项
-        fillSelectOptions(question_course, question_course_select);
         fillSelectOptions(question_type, question_type_select);
         fillSelectOptions(question_level, question_level_select);
     }

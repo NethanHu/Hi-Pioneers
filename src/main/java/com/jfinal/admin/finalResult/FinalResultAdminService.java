@@ -76,9 +76,8 @@ public class FinalResultAdminService {
         return CSdao.findFirst(getCS);
     }
 
-    public Ret update(CourseSelection CS, int score, String details) {
+    public Ret update(CourseSelection CS, int score) {
         CS.setScore(score);
-        CS.setDetails(details);
         CS.update();
         return Ret.ok("msg", "更新成功");
     }

@@ -62,18 +62,32 @@
                 <li>
                     <div class="form-group">1
                         <input type="text" id="name_1" value="线上成绩">
-                        <input type="text" id="score_1" value="#(score)">
-                        <input type="text" id="weight_1" >%
+                        <input type="text" id="score_1" name="courseSelection.finalExam" value="#(score)">
+                        <input type="text" id="weight_1" name="courseSelection.finalWeight">%
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">1
+                        <input type="text" id="name_2" value="期中考试">
+                        <input type="text" id="score_2" name="courseSelection.midsemester" placeholder="请输入期中考试">
+                        <input type="text" id="weight_2" name="courseSelection.midWeight" placeholder="请输入期中考试占比（如果无期中考试则填0）">%
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">1
+                        <input type="text" id="name_3" value="平时成绩">
+                        <input type="text" id="score_3" name="courseSelection.usualScore" placeholder="请输入平时成绩">
+                        <input type="text" id="weight_3" name="courseSelection.usualWeight" placeholder="请输入平时成绩占比">%
                     </div>
                 </li>
             </ul>
 
-            <button class="btn btn-success btn-sm" onclick="addOption()">
-                <i class="fa fa-plus-square"></i>&nbsp;添加选项
-            </button>
-            <button class="btn btn-success btn-sm" id="del_button" onclick="deleteOption()" style="display: none">
-                <i class="fa fa-minus-square"></i>&nbsp;移除选项
-            </button>
+<!--            <button class="btn btn-success btn-sm" onclick="addOption()">-->
+<!--                <i class="fa fa-plus-square"></i>&nbsp;添加选项-->
+<!--            </button>-->
+<!--            <button class="btn btn-success btn-sm" id="del_button" onclick="deleteOption()" style="display: none">-->
+<!--                <i class="fa fa-minus-square"></i>&nbsp;移除选项-->
+<!--            </button>-->
 
             <div class="form-group text-center">
                 <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
@@ -81,7 +95,7 @@
                 </button>
             </div>
             <input type="hidden" id="final_score" name="final_score">
-            <input type="hidden" id="details" name="details">
+
 
         </form>
     </div>
@@ -115,30 +129,39 @@
     });
 
     function submitQuestion() {
-        getFinalScore();
-        getDetails();
-        // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
-        $("#open-form").ajaxSubmit({
-                dataType: 'json', type: 'POST',
-                beforeSerialize: function($form, options) {
-                    // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
-                    for (instance in CKEDITOR.instances) {
-                        CKEDITOR.instances[instance].updateElement();
-                    }
-                    kit.loading({msg: '正在保存, 请稍候 .....'});
-                },
-                success: function(ret) {
-                    kit.closeLoading();		// 关闭 loading 层
-                    kit.msg(ret);
+        let sum=0;
+        for (let i = 1; i < 4; i++) {
+            let weight = document.getElementById("weight_"+i).value;
+            sum +=parseInt(weight);
+        }
+        if (sum==100) {
+            getFinalScore();
+            // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
+            $("#open-form").ajaxSubmit({
+                    dataType: 'json', type: 'POST',
+                    beforeSerialize: function ($form, options) {
+                        // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+                        for (instance in CKEDITOR.instances) {
+                            CKEDITOR.instances[instance].updateElement();
+                        }
+                        kit.loading({msg: '正在保存, 请稍候 .....'});
+                    },
+                    success: function (ret) {
+                        kit.closeLoading();		// 关闭 loading 层
+                        kit.msg(ret);
 
-                    if (ret.state == "ok") {
-                        setTimeout(function() {
-                            location.href = "/admin/finalResult?pn=#(pn ? pn : 1)";
-                        }, 2100);
+                        if (ret.state == "ok") {
+                            setTimeout(function () {
+                                location.href = "/admin/finalResult?pn=#(pn ? pn : 1)";
+                            }, 2100);
+                        }
                     }
                 }
-            }
-        );
+            );
+        }
+        else {
+            alert("占比总和不为100%")
+        }
     }
 
     var score_list = document.getElementById('score_list');
@@ -173,22 +196,22 @@
         dsiplayDelButton();
     }
     function getFinalScore(){
-        for (let i = 1; i <score_index ; i++) {
+        for (let i = 1; i <4 ; i++) {
             let score = document.getElementById("score_"+i).value;
             let weight = document.getElementById("weight_"+i).value;
             final_score += parseInt(score)*parseInt(weight)/100;
         }
         document.getElementById("final_score").setAttribute('value',Math.round(final_score));
     }
-    function getDetails(){
-        for (let i = 1; i <score_index ; i++) {
-            let name = document.getElementById("name_"+i).value;
-            let score = document.getElementById("score_"+i).value;
-            details =details + name + ":" +score +"分 ";
-
-        }
-        document.getElementById("details").setAttribute('value',details);
-    }
+    // function getDetails(){
+    //     for (let i = 1; i <score_index ; i++) {
+    //         let name = document.getElementById("name_"+i).value;
+    //         let score = document.getElementById("score_"+i).value;
+    //         details =details + name + ":" +score +"分 ";
+    //
+    //     }
+    //     document.getElementById("details").setAttribute('value',details);
+    // }
 </script>
 </body>
 </html>

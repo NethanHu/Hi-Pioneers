@@ -57,12 +57,52 @@ public abstract class BaseCourseSelection<M extends BaseCourseSelection<M>> exte
 		return getDate("update_time");
 	}
 	
-	public void setDetails(java.lang.String details) {
-		set("details", details);
+	public void setFinalExam(java.lang.Integer finalExam) {
+		set("finalExam", finalExam);
 	}
 	
-	public java.lang.String getDetails() {
-		return getStr("details");
+	public java.lang.Integer getFinalExam() {
+		return getInt("finalExam");
+	}
+	
+	public void setFinalWeight(java.lang.Integer finalWeight) {
+		set("finalWeight", finalWeight);
+	}
+	
+	public java.lang.Integer getFinalWeight() {
+		return getInt("finalWeight");
+	}
+	
+	public void setMidsemester(java.lang.Integer midsemester) {
+		set("midsemester", midsemester);
+	}
+	
+	public java.lang.Integer getMidsemester() {
+		return getInt("midsemester");
+	}
+	
+	public void setMidWeight(java.lang.Integer midWeight) {
+		set("midWeight", midWeight);
+	}
+	
+	public java.lang.Integer getMidWeight() {
+		return getInt("midWeight");
+	}
+	
+	public void setUsualScore(java.lang.Integer usualScore) {
+		set("usualScore", usualScore);
+	}
+	
+	public java.lang.Integer getUsualScore() {
+		return getInt("usualScore");
+	}
+	
+	public void setUsualWeight(java.lang.Integer usualWeight) {
+		set("usualWeight", usualWeight);
+	}
+	
+	public java.lang.Integer getUsualWeight() {
+		return getInt("usualWeight");
 	}
 	
 }

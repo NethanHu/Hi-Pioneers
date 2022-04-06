@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TestAdminService {
     private static int pageSize = 15;
-
+    private Score Sdao = new Score().dao();
     private Exam dao = new Exam().dao();
     private Paper Pdao = new Paper().dao(); // 在 Exam 模块中引入 Paper 的数据库查询功能
     private Question Qdao = new Question().dao(); // 在 Exam 模块中引入 Question 的数据库查询功能
@@ -41,8 +41,12 @@ public class TestAdminService {
         return Db.queryStr(sql);
     }
 
+    public List<Score> getUploadState(String studentNo){
+        String sql="select distinct examID from Score where studentId='"+studentNo+"'";
+        return Sdao.find(sql);
+    }
     public String[] getStuCourse(String Sno) {
-        String sql = "select distinct Cno from CourseSelection where Sno = " + Sno;
+        String sql = "select distinct Cno from CourseSelection where Sno = '" + Sno+"'";
         List<CourseSelection> CS = CSdao.find(sql);
         String[] course = new String[CS.size()];
         for (int i = 0; i < CS.size(); i++) {

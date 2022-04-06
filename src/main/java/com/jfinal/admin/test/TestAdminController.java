@@ -13,6 +13,7 @@ import com.jfinal.plugin.activerecord.Page;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 @Path(value = "/admin/test", viewPath = "/admin/test")
@@ -30,7 +31,16 @@ public class TestAdminController extends BaseController {
             String StudentNo = srv.getStuNo(accountId);
             String[] course_name = srv.getStuCourse(StudentNo);
             Page<Exam> page = srv.studentPaginate(getInt("pn", 1), course_name);
-            set("page", page).set("time",time);
+            List<Score> list = srv.getUploadState(StudentNo);
+            for (int i = 0; i < page.getList().size(); i++) {
+                for (int j = 0; j < list.size(); j++) {
+                    if (list.get(j).getExamID()==page.getList().get(i).getId()){
+                        page.getList().remove(i);
+                        break;
+                    }
+                }
+            }
+            set("page", page).set("time",time).set("list",list);
             render("index.html");
         } else {
             Page<Exam> page = srv.paginate(getInt("pn", 1));

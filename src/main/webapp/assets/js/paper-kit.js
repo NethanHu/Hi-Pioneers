@@ -1,7 +1,7 @@
 /**
  * <select> 元素中所需要填充的元素
  */
-var question_course = ['', '语文', '数学', '英语', '物理'];
+// var question_course = ['', '语文', '数学', '英语', '物理'];
 var question_type = ['', '一般选择题', '简答题', '填空题', '证明题'];
 var question_level = ['', '1', '2', '3', '4', '5'];
 

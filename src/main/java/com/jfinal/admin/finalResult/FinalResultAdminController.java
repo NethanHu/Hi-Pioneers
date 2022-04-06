@@ -39,7 +39,7 @@ public class FinalResultAdminController extends BaseController {
         render("input.html");
     }
     public void update(){
-        Ret ret = srv.update(getBean(CourseSelection.class),Integer.parseInt(get("final_score")),get("details"));
+        Ret ret = srv.update(getBean(CourseSelection.class),Integer.parseInt(get("final_score")));
         renderJson(ret);
     }
     /**
@@ -72,7 +72,12 @@ public class FinalResultAdminController extends BaseController {
             title.add("学号");
             title.add("学生名字");
             title.add("最终分数");
-            title.add("details");
+            title.add("期末考试");
+            title.add("期末考试占比");
+            title.add("期中考试");
+            title.add("期中考试占比");
+            title.add("平时成绩");
+            title.add("平时成绩占比");
             int k = 0;
             OK:
             while (true) {
@@ -87,7 +92,12 @@ public class FinalResultAdminController extends BaseController {
                         row.add(null == data.get(k).get("Sno") ? "" : data.get(k).get("Sno"));
                         row.add(null == data.get(k).get("name") ? "" : data.get(k).get("name"));
                         row.add(null == data.get(k).get("score") ? "" : data.get(k).get("score"));
-                        row.add(null == data.get(k).get("details") ? "" : data.get(k).get("details"));
+                        row.add(null == data.get(k).get("finalExam") ? "" : data.get(k).get("finalExam"));
+                        row.add(null == data.get(k).get("finalWeight") ? "" : data.get(k).get("finalWeight"));
+                        row.add(null == data.get(k).get("midsemester") ? "" : data.get(k).get("midsemester"));
+                        row.add(null == data.get(k).get("midWeight") ? "" : data.get(k).get("midWeight"));
+                        row.add(null == data.get(k).get("usualScore") ? "" : data.get(k).get("usualScore"));
+                        row.add(null == data.get(k).get("usualWeight") ? "" : data.get(k).get("usualWeight"));
                         content.add(row);
                         k++;
 
