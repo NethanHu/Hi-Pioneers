@@ -87,7 +87,7 @@
     var question_list_length = parseInt(document.getElementById('paper_content').value);
     var score = '';
     var totalScore = 0;
-
+    var score_index = 1;
     function setScore(){
         let scores = scoreItems.split("~~~");
         for (let i = 1; i <= question_list_length; i++) {
@@ -95,22 +95,24 @@
             if (option_content == null) {
                 continue;
             }
-            option_content.innerHTML = scores[i];
-
+            option_content.innerHTML = scores[score_index];
+            score_index++;
         }
         for (let i = 1; i <= question_list_length; i++) {
             let option_content = document.getElementById('blank_score_' + i);
             if (option_content == null) {
                 continue;
             }
-            option_content.innerText = scores[i];
+            option_content.innerText = scores[score_index];
+            score_index++;
         }
         for (let i = 1; i <= question_list_length; i++) {
             let option_content = document.getElementById('answer_score_' + i);
             if (option_content == null) {
                 continue;
             }
-            option_content.innerText = scores[i];
+            option_content.innerText = scores[score_index];
+            score_index++;
         }
     }
 
