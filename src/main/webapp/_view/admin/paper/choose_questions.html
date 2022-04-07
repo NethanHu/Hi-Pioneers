@@ -54,9 +54,15 @@
 
         </table>
     </div>
-    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
-    #set(append = keyword ? '&keyword=' + keyword : '')
+    #set(append='')
+    #if(type)
+    #set(append =append +'&type=' + type )
+    #end
+    #if(level)
+    #set(append =append+'&level=' + level )
+    #end
     #@adminPaginate(page, "/admin/paper/search?pn=")
+
 </form>
 </div>
 

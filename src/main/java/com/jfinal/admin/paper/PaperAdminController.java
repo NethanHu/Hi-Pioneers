@@ -2,7 +2,6 @@ package com.jfinal.admin.paper;
 
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
-import com.jfinal.admin.common.model.Account;
 import com.jfinal.admin.common.model.Paper;
 import com.jfinal.admin.common.model.Question;
 import com.jfinal.aop.Clear;
@@ -144,10 +143,10 @@ public class PaperAdminController extends BaseController {
         int pn = getInt("pn", 1);
         String level = get("level");
         String type = get("type");
-        Page<Question> page = ( StrKit.isBlank(level) & StrKit.isBlank(type))
-                ? srv.Qpaginate(pn,course)
-                : srv.searchForQuestion(course,type, level, pn);
-        set("page", page).set("course",course);
+        Page<Question> page = (StrKit.isBlank(level) & StrKit.isBlank(type))
+                ? srv.Qpaginate(pn, course)
+                : srv.searchForQuestion(course, type, level, pn);
+        set("page", page).set("course", course);
         render("choose_questions.html");
     }
 

@@ -49,6 +49,10 @@ public class MarkAdminController extends BaseController {
         String TeacherNo = srv.getTeacherNo(accountId);
         int score = Integer.parseInt(get("score"));
         String result = get("result");
+        String Sno = get("Sno");
+        String type = get("type");
+        String Cno = srv.getCno(type);
+        Ret update = srv.update(srv.getCS(Sno,Cno),score);
         Ret ret = srv.save(getBean(Score.class), TeacherNo, result, score);
         renderJson(ret);
     }

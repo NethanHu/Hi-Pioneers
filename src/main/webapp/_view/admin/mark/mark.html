@@ -82,6 +82,8 @@
         #if( ! isAdd )
         <input type="hidden" name="score.id" value="#(score.id)">
         #end
+        <input type="hidden" name="Sno" value="#(score.studentId)">
+        <input type="hidden" name="type" value="#(score.type)">
         <div class="article-box">
 
             <h1 class="article-title">
@@ -183,7 +185,7 @@
             index++;
         }
         let choice_result = document.getElementById("mark_choice");
-        choice_result.innerHTML = "<i class=\"fa fa-commenting-o\"></i> 选择题自动批阅: 总得分 " + choice_sum + " 分 <hr/>";
+        choice_result.innerHTML = "<i class=\"fa fa-commenting-o\"></i> <strong>选择题自动批阅: 总得分 " + choice_sum + " 分 </strong><hr/>";
     }
 
     function subjective() {

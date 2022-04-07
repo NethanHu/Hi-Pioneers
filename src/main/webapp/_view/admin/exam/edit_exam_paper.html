@@ -223,11 +223,12 @@
             score = score + "~~~" + answer_score.value;
         }
 
-        if (total_score != 100) {
+        total_score.setAttribute('value', totalScore);
+        final_score.setAttribute('value', score);
+
+        if (totalScore != 100) {
             alert('分值总分不是100分，请重试！');
         } else {
-            total_score.setAttribute('value', totalScore);
-            final_score.setAttribute('value', score);
             // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
             $("#exam-form").ajaxSubmit({
                 dataType: 'json', type: 'POST',

@@ -36,6 +36,7 @@ public class TestAdminController extends BaseController {
                 for (int j = 0; j < list.size(); j++) {
                     if (list.get(j).getExamID()==page.getList().get(i).getId()){
                         page.getList().remove(i);
+                        i=-1;
                         break;
                     }
                 }

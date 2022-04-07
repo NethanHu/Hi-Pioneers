@@ -142,7 +142,7 @@ public class ResultAdminService {
     }
 
     public Page<Score> studentPaginate(int pageNumber, String studentNo) {
-        String sql = "from Score where studentId='" + studentNo + "'";
+        String sql = "from Score where state=1 and studentId='" + studentNo + "'";
         return dao.paginate(pageNumber, pageSize, "select * ", sql);
     }
 

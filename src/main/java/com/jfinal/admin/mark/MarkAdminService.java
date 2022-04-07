@@ -1,9 +1,6 @@
 package com.jfinal.admin.mark;
 
-import com.jfinal.admin.common.model.Course;
-import com.jfinal.admin.common.model.Exam;
-import com.jfinal.admin.common.model.Score;
-import com.jfinal.admin.common.model.Teaching;
+import com.jfinal.admin.common.model.*;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -16,6 +13,7 @@ public class MarkAdminService {
     private Teaching Tdao = new Teaching().dao();
     private Course Cdao = new Course().dao();
     private Exam Edao = new Exam().dao();
+    private CourseSelection CSdao = new CourseSelection().dao();
 
     /**
      * 分页
@@ -87,5 +85,18 @@ public class MarkAdminService {
         score.setState(score.STATE_MARKED);
         score.update();
         return Ret.ok("msg", "提交成功");
+    }
+    public Ret update(CourseSelection CS,int score){
+        CS.setFinalExam(score);
+        CS.update();
+        return Ret.ok("msg", "提交成功");
+    }
+    public String getCno(String type){
+        String sql = "select Cno from Course where name='"+type+"'";
+        return Db.queryStr(sql);
+    }
+    public CourseSelection getCS(String Sno,String Cno){
+        String sql = "select * from CourseSelection where Sno='"+Sno+"' and Cno='"+Cno+"'";
+        return CSdao.findFirst(sql);
     }
 }
