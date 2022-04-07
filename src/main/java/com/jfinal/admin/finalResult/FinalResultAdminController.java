@@ -3,7 +3,8 @@ package com.jfinal.admin.finalResult;
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.kit.XLSFileKit;
-import com.jfinal.admin.common.model.*;
+import com.jfinal.admin.common.model.Course;
+import com.jfinal.admin.common.model.CourseSelection;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -21,27 +22,30 @@ public class FinalResultAdminController extends BaseController {
     @Inject
     FinalResultAdminService srv;
 
-    public void index(){
+    public void index() {
         int accountId = getLoginAccountId();
         String Tno = srv.getAccNo(accountId);
         String[] course = srv.getTeacherCourse(Tno);
-        Page<CourseSelection> page = srv.paginate(getInt("pn", 1),course);
-        List<Course> list =srv.getCourse();
-        set("page",page).set("list",list).set("Tno", Tno);
+        Page<CourseSelection> page = srv.paginate(getInt("pn", 1), course);
+        List<Course> list = srv.getCourse();
+        set("page", page).set("list", list).set("Tno", Tno);
         render("index.html");
     }
-    public void input(){
-        int score = srv.getScore(get("Sno"),get("course"));
+
+    public void input() {
+        int score = srv.getScore(get("Sno"), get("course"));
         String name = srv.getStuName(get("Sno"));
         int id = Integer.parseInt(get("id"));
-        CourseSelection courseSelection = srv.getCourseSelection(get("Sno"),get("course"));
-        set("score",score).set("name",name).set("id",id).set("Sno",get("Sno")).set("courseSelection",courseSelection);
+        CourseSelection courseSelection = srv.getCourseSelection(get("Sno"), get("course"));
+        set("score", score).set("name", name).set("id", id).set("Sno", get("Sno")).set("courseSelection", courseSelection);
         render("input.html");
     }
-    public void update(){
-        Ret ret = srv.update(getBean(CourseSelection.class),Integer.parseInt(get("final_score")));
+
+    public void update() {
+        Ret ret = srv.update(getBean(CourseSelection.class), Integer.parseInt(get("final_score")));
         renderJson(ret);
     }
+
     /**
      * 导出表格
      */
@@ -71,13 +75,13 @@ public class FinalResultAdminController extends BaseController {
             title.add("序号");
             title.add("学号");
             title.add("学生名字");
-            title.add("最终分数");
-            title.add("期末考试");
-            title.add("期末考试占比");
-            title.add("期中考试");
-            title.add("期中考试占比");
             title.add("平时成绩");
-            title.add("平时成绩占比");
+//            title.add("平时成绩占比");
+            title.add("期中考试");
+//            title.add("期中考试占比");
+            title.add("期末考试");
+//            title.add("期末考试占比");
+            title.add("最终分数");
             int k = 0;
             OK:
             while (true) {
@@ -85,23 +89,21 @@ public class FinalResultAdminController extends BaseController {
                     break OK;
                 }
 
-                        // 判断单元格是否为空，不为空添加数据
-                        int index = k + 1;
-                        List<Object> row = new ArrayList<Object>();
-                        row.add(index + "");
-                        row.add(null == data.get(k).get("Sno") ? "" : data.get(k).get("Sno"));
-                        row.add(null == data.get(k).get("name") ? "" : data.get(k).get("name"));
-                        row.add(null == data.get(k).get("score") ? "" : data.get(k).get("score"));
-                        row.add(null == data.get(k).get("finalExam") ? "" : data.get(k).get("finalExam"));
-                        row.add(null == data.get(k).get("finalWeight") ? "" : data.get(k).get("finalWeight"));
-                        row.add(null == data.get(k).get("midsemester") ? "" : data.get(k).get("midsemester"));
-                        row.add(null == data.get(k).get("midWeight") ? "" : data.get(k).get("midWeight"));
-                        row.add(null == data.get(k).get("usualScore") ? "" : data.get(k).get("usualScore"));
-                        row.add(null == data.get(k).get("usualWeight") ? "" : data.get(k).get("usualWeight"));
-                        content.add(row);
-                        k++;
-
-
+                // 判断单元格是否为空，不为空添加数据
+                int index = k + 1;
+                List<Object> row = new ArrayList<Object>();
+                row.add(index + "");
+                row.add(null == data.get(k).get("Sno") ? "" : data.get(k).get("Sno"));
+                row.add(null == data.get(k).get("name") ? "" : data.get(k).get("name"));
+                row.add(null == data.get(k).get("usualScore") ? "" : data.get(k).get("usualScore"));
+//                        row.add(null == data.get(k).get("usualWeight") ? "" : data.get(k).get("usualWeight"));
+                row.add(null == data.get(k).get("midsemester") ? "" : data.get(k).get("midsemester"));
+//                        row.add(null == data.get(k).get("midWeight") ? "" : data.get(k).get("midWeight"));
+                row.add(null == data.get(k).get("finalExam") ? "" : data.get(k).get("finalExam"));
+//                        row.add(null == data.get(k).get("finalWeight") ? "" : data.get(k).get("finalWeight"));
+                row.add(null == data.get(k).get("score") ? "" : data.get(k).get("score"));
+                content.add(row);
+                k++;
 
             }
             xlsFileKit.addSheet(content, sheetName, title);

@@ -9,6 +9,8 @@ package com.jfinal.admin.index;
 import com.jfinal.admin.common.model.Image;
 import com.jfinal.plugin.activerecord.Db;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +58,35 @@ public class IndexAdminService {
      */
     public List<Image> getLatestImage() {
         return new Image().find("select * from image order by created desc limit 10");
+    }
+
+    /**
+     * 老师三件套
+     */
+    public int totalTestTeacher() {
+        return Db.queryInt("select count(*) from exam");
+    }
+
+    public int totalNotMark() {
+        return Db.queryInt("select count(*) from Score where state = 0");
+    }
+
+    public int seeStudentScore() {
+        return Db.queryInt("select count(*) from Score where state = 1");
+    }
+
+    /**
+     * 学生两件套
+     */
+    public int totalTestStudent() {
+        Date today = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+        return Db.queryInt("select count(*) from exam where start_date = '" + ft.format(today) + "'");
+    }
+
+    public int seeMyScore(int accId) {
+        String number = Db.queryStr("select number from account where id = " + accId);
+        return Db.queryInt("select count(*) from Score where state = 1 && studentId = '" + number + "'");
     }
 }
 

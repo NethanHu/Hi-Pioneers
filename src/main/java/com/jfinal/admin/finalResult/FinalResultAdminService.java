@@ -26,7 +26,7 @@ public class FinalResultAdminService {
                 sql = sql + "or Cno='" + course[i] + "' ";
             }
         }
-        sql = sql + " order by Sno desc";
+        sql = sql + " order by Sno asc";
         return CSdao.paginate(pageNumber, pageSize, "select *", sql);
     }
 
@@ -55,13 +55,7 @@ public class FinalResultAdminService {
         String judge = "select count(*) from Score where studentId='" + Sno + "' and type='" + course + "' limit 1";
         String sql = "select score from Score where studentId='" + Sno + "' and type='" + course + "' limit 1";
 
-        int score = 0;
-        if (Db.queryInt(judge) == 0) {
-            score = 0;
-        } else {
-            score = Db.queryInt(sql);
-        }
-        return score;
+        return (Db.queryInt(judge) == 0) ? 0 : Db.queryInt(sql);
     }
 
     public String getStuName(String Sno) {
@@ -79,11 +73,11 @@ public class FinalResultAdminService {
     public Ret update(CourseSelection CS, int score) {
         CS.setScore(score);
         CS.update();
-        return Ret.ok("msg", "更新成功");
+        return Ret.ok("msg", "提交成功");
     }
 
     public List<CourseSelection> getCS(String Cno) {
-        String sql = "select * from CourseSelection where Cno='" + Cno + "'";
+        String sql = "select * from CourseSelection where Cno='" + Cno + "' order by Sno asc";
         return CSdao.find(sql);
     }
 

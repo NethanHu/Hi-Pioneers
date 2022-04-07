@@ -31,7 +31,7 @@
                 <textarea id="editor1" name="exam.examDescription">#escape(exam.exam_description ??)</textarea>
             </div>
 
-            <table class="table table-hover" >
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th style="width: 5%">序号</th>
@@ -113,9 +113,6 @@
             <input type="hidden" id="total_score" name="exam.totalScore">
         </div>
     </form>
-    ### 将 keyword 放入 append，促使分页链接中追加该参数用于搜索
-    #set(append = keyword ? '&keyword=' + keyword : '')
-    #@adminPaginate(page, "/admin/paper/search?pn=")
 </div>
 
 <!-- 弹出层 button -->
@@ -206,7 +203,7 @@
             if (choice_score == null) {
                 continue;
             }
-            totalScore +=parseInt(choice_score.value);
+            totalScore += parseInt(choice_score.value);
             score = score + "~~~" + choice_score.value;
         }
         for (let i = 1; i <= question_list_length; i++) {
@@ -214,7 +211,7 @@
             if (blank_score == null) {
                 continue;
             }
-            totalScore +=parseInt(blank_score.value);
+            totalScore += parseInt(blank_score.value);
             score = score + "~~~" + blank_score.value;
         }
         for (let i = 1; i <= question_list_length; i++) {
@@ -222,32 +219,37 @@
             if (answer_score == null) {
                 continue;
             }
-            totalScore +=parseInt(answer_score.value);
+            totalScore += parseInt(answer_score.value);
             score = score + "~~~" + answer_score.value;
         }
-        total_score.setAttribute('value',totalScore);
-        final_score.setAttribute('value', score);
-        // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
-        $("#exam-form").ajaxSubmit({
-            dataType: 'json', type: 'POST',
-            beforeSerialize: function ($form, options) {
-                // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
-                for (instance in CKEDITOR.instances) {
-                    CKEDITOR.instances[instance].updateElement();
-                }
-                kit.loading({msg: '正在保存, 请稍候 .....'});
-            },
-            success: function (ret) {
-                kit.closeLoading();		// 关闭 loading 层
-                kit.msg(ret);
 
-                if (ret.state == "ok") {
-                    setTimeout(function () {
-                        location.href = "/admin/exam?pn=#(pn ? pn : 1)";
-                    }, 2100);
+        if (total_score != 100) {
+            alert('分值总分不是100分，请重试！');
+        } else {
+            total_score.setAttribute('value', totalScore);
+            final_score.setAttribute('value', score);
+            // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+            $("#exam-form").ajaxSubmit({
+                dataType: 'json', type: 'POST',
+                beforeSerialize: function ($form, options) {
+                    // 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+                    for (instance in CKEDITOR.instances) {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+                    kit.loading({msg: '正在保存, 请稍候 .....'});
+                },
+                success: function (ret) {
+                    kit.closeLoading();		// 关闭 loading 层
+                    kit.msg(ret);
+
+                    if (ret.state == "ok") {
+                        setTimeout(function () {
+                            location.href = "/admin/exam?pn=#(pn ? pn : 1)";
+                        }, 2100);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function setIndex() {

@@ -84,13 +84,13 @@
         #end
         <div class="article-box">
 
-            <h2 class="article-title">
+            <h1 class="article-title">
                 #(score.examName)
 
-            </h2>
-            <h1 class="article-title">
-                #(score.studentId)
             </h1>
+            <h2 class="article-title">
+                学生学号: #(score.studentId)
+            </h2>
             <input type="hidden" id="studentAnswer_obj" value="#(score.objectiveAnswer)">
             <input type="hidden" id="studentAnswer_sub" value="#(score.subjectiveAnswer)">
             <input type="hidden" id="scores" value="#(exam.question_scores)">
@@ -160,7 +160,7 @@
 
     function finalResult() {
         for (let i = choice_num; i < index; i++) {
-            let score = document.getElementById("score_" + (i - 3)).value;
+            let score = document.getElementById("score_" + (i - choice_num + 1)).value;
             result = result + "~~~" + score ;
         }
     }
@@ -183,7 +183,7 @@
             index++;
         }
         let choice_result = document.getElementById("mark_choice");
-        choice_result.innerText = "选择题总得分" + choice_sum + "分";
+        choice_result.innerHTML = "<i class=\"fa fa-commenting-o\"></i> 选择题自动批阅: 总得分 " + choice_sum + " 分 <hr/>";
     }
 
     function subjective() {
@@ -194,9 +194,9 @@
         let sub_result = document.getElementById("mark_subjective");
         for (let i = 1; i <= score_array.length - choice_num; i++) {
             sub_result.innerHTML = sub_result.innerHTML +
-                `<div>第${i}题</div>
-                <div>${student_array[i]} (${score_array[index]}分)<input type="text" id="score_${i}" ></div>
-                `
+                `<div>第${i}题  (${score_array[index]}分)</div>
+                <div style="margin: 10px 0px 10px 0px">学生答案: ${student_array[i]}</div>
+                分数: <input type="text" id="score_${i}" style="width: 60px"><hr/>`
             ;
             index++;
         }

@@ -11,7 +11,6 @@ import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class ResultAdminController extends BaseController {
             }
             Page page = new Page();
             page.setList(list);
-            set("page",page);
+            set("page", page);
             render("teacher_index.html");
         }
         if (roleId == 6) {
@@ -53,7 +52,7 @@ public class ResultAdminController extends BaseController {
             String name = srv.getHeaderCourse(headNo);
             Page<Score> page = srv.headerPaginate(getInt("pn", 1), name);
             set("page", page);
-            render("header_index.html");
+            render("teacher_index.html");
         }
     }
 
@@ -61,16 +60,16 @@ public class ResultAdminController extends BaseController {
         Score score = srv.SgetById(getInt("id"));
         int Pno = score.getPaperId();
         Paper paper = srv.PgetById(Pno);
-        String[] Qids=paper.getContent().split("~~~");
-        Page<Question> page = srv.Qpaginate(getInt("pn", 1),Qids);
-        set("page",page).set("score",score);
+        String[] Qids = paper.getContent().split("~~~");
+        Page<Question> page = srv.Qpaginate(getInt("pn", 1), Qids);
+        set("page", page).set("score", score);
         render("student_score.html");
     }
 
     public void showTotalScore() {
         Page<Score> page = srv.totalScorePaginate(getInt("pn", 1), get("name"));
-        List<CourseSelection> list= srv.getName();
-        set("page", page).set("courseName", get("name")).set("list",list);
+        List<CourseSelection> list = srv.getName();
+        set("page", page).set("courseName", get("name")).set("list", list);
         render("total_score.html");
     }
 
@@ -136,7 +135,7 @@ public class ResultAdminController extends BaseController {
                     row.add(null == data.get(i).get("score") ? "" : data.get(i).get("score"));
                     content.add(row);
                     i++;
-                    break ;
+                    break;
                 }
             }
         }

@@ -16,6 +16,11 @@
                     <option>数学</option>
                     <option>英语</option>
                     <option>物理</option>
+                    <option>化学</option>
+                    <option>政治</option>
+                    <option>历史</option>
+                    <option>地理</option>
+                    <option>生物</option>
                 </select>
             </div>
 
@@ -142,10 +147,12 @@
         node.innerHTML = `<label>选择题目类型：</label>
                     <select id="type_select_${choice_index}">
                         <option></option>
-                        <option value="choice">一般选择题</option>
+                        <option>判断题</option>
+                        <option value="choice">选择题</option>
                         <option value="blank">填空题</option>
                         <option value="answer">简答题</option>
                         <option value="proof">证明题</option>
+                        <option>综合题</option>
                     </select>
                     <label>选择试题数量：</label>
                     <input type="text" id="type_number_${choice_index}">`

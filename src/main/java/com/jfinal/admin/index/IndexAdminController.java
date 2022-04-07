@@ -49,8 +49,14 @@ public class IndexAdminController extends BaseController {
         set("totalAccount", srv.getTotalAccount());
         set("totalRole", srv.getTotalRole());
         set("totalPermission", srv.getTotalPermission());
+        set("totalTestTeacher", srv.totalTestTeacher());
+        set("totalNotMark", srv.totalNotMark());
+        set("seeStudentScore", srv.seeStudentScore());
+        set("totalTestStudent", srv.totalTestStudent());
+        set("seeMyScore", srv.seeMyScore(getLoginAccountId()));
         render("_overview.html");
     }
+
 }
 
 

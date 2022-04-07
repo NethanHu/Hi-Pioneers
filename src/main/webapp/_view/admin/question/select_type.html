@@ -50,13 +50,6 @@
 
     <!-- 主体内容 -->
     <div class="article-box">
-
-        <!--		<nav>-->
-        <!--			<ol class="breadcrumb">-->
-        <!--				<li class="breadcrumb-item active">文章管理</li>-->
-        <!--				<li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>-->
-        <!--			</ol>-->
-        <!--		</nav>-->
         <button fill href="/admin/question/index" class="btn btn-success btn-sm">
             <i class="fa fa-hand-o-left"></i>&nbsp;退后
         </button>
@@ -66,30 +59,24 @@
             <div class="form-group">
                 <select id="question_selector">
                     <option selected>默认选项</option>
-                    <option value="answer">简答题</option>
-                    <option value="choice">一般选择题</option>
-                    <option value="proof">证明题</option>
+                    <option value="choice">选择题</option>
                     <option value="blank">填空题</option>
+                    <option value="answer">简答题</option>
+                    <option value="proof">证明题</option>
+                    <option>判断题</option>
+                    <option>计算题</option>
+                    <option>程序题</option>
+                    <option>综合题</option>
+                    <option>口语题</option>
+                    <option>完形填空</option>
+                    <option>阅读理解</option>
                 </select>
-<!--                <select id="level_selector">-->
-<!--                    <option selected>默认选项</option>-->
-<!--                    <option value="1">1</option>-->
-<!--                    <option value="2">2</option>-->
-<!--                    <option value="3">3</option>-->
-<!--                    <option value="4">4</option>-->
-<!--                    <option value="5">5</option>-->
-<!--                </select>-->
             </div>
 
 
-            <!--			<div class="form-group">-->
-            <!--				### escape 指令用于解决 ckeditor 无法显示处于 pre 内的 html 源码的问题-->
-            <!--				<textarea id="editor1" name="article.content">#escape(article.content ??)</textarea>-->
-            <!--			</div>-->
-
             <div class="form-group text-center">
-                <button fill id="question_type_check" class="btn btn-success btn-sm pl-2 pr-3">
-                    <i class="fa fa-hand-lizard-o"></i>&nbsp;确认
+                <button fill id="question_type_check" class="btn btn-success btn-sm">
+                    <i class="fa fa-check mr-1"></i> 确认
                 </button>
             </div>
 

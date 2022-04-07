@@ -51,20 +51,13 @@
   <!-- 主体内容 -->
   <div class="article-box">
 
-<!--    <nav>-->
-<!--      <ol class="breadcrumb">-->
-<!--        <li class="breadcrumb-item active">文章管理</li>-->
-<!--        <li class="breadcrumb-item active">#(isAdd ? '创建文章' : '修改文章')</li>-->
-<!--      </ol>-->
-<!--    </nav>-->
-
     <form id="open-form" action="/admin/question/#(isAdd ? 'save' : 'update')" method="POST"
           onsubmit="return false;">
       #if( ! isAdd )
       <input type="hidden" name="question.id" value="#(question.id)">
       #end
-      <input type="text" name="question.level" placeholder="请输入题目难度等级" class="form-control">
-      <input type="text" name="question.courseName" placeholder="请输入题目所属科目" class="form-control">
+      <span style="width: 25%">题目所属科目: </span><input type="text" name="question.courseName" class="form-control" style="display: inline-block; width:75%"><br />
+      <span style="width: 25%">题目难度等级: </span><input type="text" name="question.level" class="form-control" style="display: inline-block; width:75%">
       <div class="form-group">
         <input type="hidden" name="question.type" value="简答题">
         请输入题目哦：

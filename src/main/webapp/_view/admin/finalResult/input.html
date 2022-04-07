@@ -23,18 +23,22 @@
             font-size: 17px;
             background-color: #F2F2F2;
         }
+
         .container {
             margin: 15px auto;
             padding: 20px 40px 1px 40px;
             background-color: #FFF;
             border-radius: 5px;
         }
+
         .breadcrumb {
             padding-left: 0.75rem;
         }
+
         .breadcrumb li.breadcrumb-item {
             color: #555;
         }
+
         .form-group {
             margin-top: 22px;
         }
@@ -62,41 +66,39 @@
                 <li>
                     <div class="form-group">1
                         <input type="text" id="name_1" value="线上成绩">
+                      <label>分数: </label>
                         <input type="text" id="score_1" name="courseSelection.finalExam" value="#(score)">
+                      <label>占比: </label>
                         <input type="text" id="weight_1" name="courseSelection.finalWeight">%
                     </div>
                 </li>
                 <li>
-                    <div class="form-group">1
+                    <div class="form-group">2
                         <input type="text" id="name_2" value="期中考试">
-                        <input type="text" id="score_2" name="courseSelection.midsemester" placeholder="请输入期中考试">
-                        <input type="text" id="weight_2" name="courseSelection.midWeight" placeholder="请输入期中考试占比（如果无期中考试则填0）">%
+                      <label>分数: </label>
+                        <input type="text" id="score_2" name="courseSelection.midsemester" placeholder="如果无期中考试则填0">
+                      <label>占比: </label>
+                        <input type="text" id="weight_2" name="courseSelection.midWeight"
+                               placeholder="如果无期中考试则填0">%
                     </div>
                 </li>
                 <li>
-                    <div class="form-group">1
+                    <div class="form-group">3
                         <input type="text" id="name_3" value="平时成绩">
-                        <input type="text" id="score_3" name="courseSelection.usualScore" placeholder="请输入平时成绩">
-                        <input type="text" id="weight_3" name="courseSelection.usualWeight" placeholder="请输入平时成绩占比">%
+                      <label>分数: </label>
+                        <input type="text" id="score_3" name="courseSelection.usualScore">
+                      <label>占比: </label>
+                        <input type="text" id="weight_3" name="courseSelection.usualWeight">%
                     </div>
                 </li>
             </ul>
 
-<!--            <button class="btn btn-success btn-sm" onclick="addOption()">-->
-<!--                <i class="fa fa-plus-square"></i>&nbsp;添加选项-->
-<!--            </button>-->
-<!--            <button class="btn btn-success btn-sm" id="del_button" onclick="deleteOption()" style="display: none">-->
-<!--                <i class="fa fa-minus-square"></i>&nbsp;移除选项-->
-<!--            </button>-->
-
             <div class="form-group text-center">
                 <button id="submit-btn" class="btn btn-success btn-sm pl-2 pr-3">
-                    <i class="fa fa-check mr-1"></i>更新
+                    <i class="fa fa-check mr-1"></i> 提交
                 </button>
             </div>
             <input type="hidden" id="final_score" name="final_score">
-
-
         </form>
     </div>
 
@@ -117,7 +119,7 @@
 
 <script>
 
-    $(function() {
+    $(function () {
         // 设置第一个 input 为输入焦点
         $("#open-form input[type='text']:first").focus();
 
@@ -129,12 +131,12 @@
     });
 
     function submitQuestion() {
-        let sum=0;
+        let sum = 0;
         for (let i = 1; i < 4; i++) {
-            let weight = document.getElementById("weight_"+i).value;
-            sum +=parseInt(weight);
+            let weight = document.getElementById("weight_" + i).value;
+            sum += parseInt(weight);
         }
-        if (sum==100) {
+        if (sum == 100) {
             getFinalScore();
             // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交，通过这个方法上传题目内容
             $("#open-form").ajaxSubmit({
@@ -158,8 +160,7 @@
                     }
                 }
             );
-        }
-        else {
+        } else {
             alert("占比总和不为100%")
         }
     }
@@ -169,6 +170,7 @@
     var score_index = 2;
     var final_score = 0;
     var details = "";
+
     function dsiplayDelButton() {
         if (score_index == 2) {
             del_button.setAttribute('style', 'display: none');
@@ -179,7 +181,7 @@
 
     function addOption() {
         var node = document.createElement('li');
-        node.innerHTML = "          <div class=\"form-group\">\n" +score_index+
+        node.innerHTML = "          <div class=\"form-group\">\n" + score_index +
             "           <input autocomplete=\"off\" id=\"name_" + score_index + "\"  type=\"text\" placeholder=\"请输入分项\">\n" +
             "           <input autocomplete=\"off\" id=\"score_" + score_index + "\"  type=\"text\" placeholder=\"请输入分数\">\n" +
             "           <input autocomplete=\"off\" id=\"weight_" + score_index + "\"  type=\"text\" placeholder=\"请输入权重\">%\n" +
@@ -191,27 +193,19 @@
 
     function deleteOption() {
         var node = document.getElementsByTagName("li");
-        document.getElementById('score_list').removeChild(node[node.length-1]);
+        document.getElementById('score_list').removeChild(node[node.length - 1]);
         score_index--;
         dsiplayDelButton();
     }
-    function getFinalScore(){
-        for (let i = 1; i <4 ; i++) {
-            let score = document.getElementById("score_"+i).value;
-            let weight = document.getElementById("weight_"+i).value;
-            final_score += parseInt(score)*parseInt(weight)/100;
+
+    function getFinalScore() {
+        for (let i = 1; i < 4; i++) {
+            let score = document.getElementById("score_" + i).value;
+            let weight = document.getElementById("weight_" + i).value;
+            final_score += parseInt(score) * parseInt(weight) / 100;
         }
-        document.getElementById("final_score").setAttribute('value',Math.round(final_score));
+        document.getElementById("final_score").setAttribute('value', Math.round(final_score));
     }
-    // function getDetails(){
-    //     for (let i = 1; i <score_index ; i++) {
-    //         let name = document.getElementById("name_"+i).value;
-    //         let score = document.getElementById("score_"+i).value;
-    //         details =details + name + ":" +score +"分 ";
-    //
-    //     }
-    //     document.getElementById("details").setAttribute('value',details);
-    // }
 </script>
 </body>
 </html>
