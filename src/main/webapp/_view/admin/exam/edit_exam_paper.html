@@ -57,7 +57,7 @@
                     <td class="operation">
                         <input type="text" id="choice_score_#(page.getList().indexOf(x) + 1)" style="width: 40px">
                     </td>
-                    <td style="display: none">
+                    <td >
                         <input type="hidden" id="choice_answer_#(page.getList().indexOf(x) + 1)" value="#(x.answer)">
                     </td>
                     #end
@@ -76,7 +76,7 @@
                     <td class="operation">
                         <input type="text" id="blank_score_#(page.getList().indexOf(x) + 1)" style="width: 40px">
                     </td>
-                    <td style="display: none"><input type="hidden" id="blank_answer_#(page.getList().indexOf(x) + 1)"
+                    <td ><input type="hidden" id="blank_answer_#(page.getList().indexOf(x) + 1)"
                                                      value="#(x.answer)"></td>
                     #end
                 </tr>
@@ -94,7 +94,7 @@
                     <td class="operation">
                         <input type="text" id="answer_score_#(page.getList().indexOf(x) + 1)" style="width: 40px">
                     </td>
-                    <td style="display: none"><input type="hidden" id="answer_answer_#(page.getList().indexOf(x) + 1)"
+                    <td><input type="hidden" id="answer_answer_#(page.getList().indexOf(x) + 1)"
                                                      value="#(x.answer)"></td>
                     #end
                 </tr>
@@ -148,7 +148,8 @@
     var question_list_length = parseInt(document.getElementById('paper_content').value);
     var score = '';
     var totalScore = 0;
-
+    var answer_1 = document.getElementById("choice_answer_1").value;
+    var answer11 = answer_1.split("~~~");
 
     function setAnswer() {
         let final_obj_answer = "";
@@ -160,7 +161,7 @@
             }
             let answer = (choiceAnswer.value).split("~~~");
             for (let j = 1; j < answer.length; j++) {
-                if (answer[j] == "true") {
+                if (answer[j] == 'true') {
                     if (j == 1) {
                         final_obj_answer = final_obj_answer + "~~~" + "A";
                     }

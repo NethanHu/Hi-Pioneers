@@ -3,10 +3,7 @@ package com.jfinal.admin.result;
 import com.jfinal.admin.common.BaseController;
 import com.jfinal.admin.common.LayoutInterceptor;
 import com.jfinal.admin.common.kit.XLSFileKit;
-import com.jfinal.admin.common.model.CourseSelection;
-import com.jfinal.admin.common.model.Paper;
-import com.jfinal.admin.common.model.Question;
-import com.jfinal.admin.common.model.Score;
+import com.jfinal.admin.common.model.*;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.Path;
@@ -31,7 +28,8 @@ public class ResultAdminController extends BaseController {
             String StudentNo = srv.getAccNo(accountId);
             String[] course_name = srv.getStuCourse(StudentNo);
             Page<Score> page = srv.studentPaginate(getInt("pn", 1), StudentNo);
-            set("page", page);
+            List<Exam> exam = srv.getExam();
+            set("page", page).set("exam",exam);
             render("student_index.html");
         }
         if (roleId == 5) {

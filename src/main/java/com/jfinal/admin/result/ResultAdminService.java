@@ -146,7 +146,11 @@ public class ResultAdminService {
         return dao.paginate(pageNumber, pageSize, "select * ", sql);
     }
 
+    public List<Exam> getExam(){
+        String sql="select id,start_date from exam";
+        return Edao.find(sql);
 
+    }
     public Page<Paper> Ppaginate(int pageNumber) {
         return Pdao.paginate(pageNumber, pageSize, "select *", "from Paper order by update_time desc");
     }
