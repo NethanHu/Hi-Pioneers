@@ -248,7 +248,7 @@
                         <ul id="answer_paper">
                         </ul>
                     </div>
-                    <button id="upload_btn" onclick="uploadTest()">提交</button>
+                    <a id="upload_btn" onclick="uploadTest()">提交</a>
                     <input name="paperId" value="#(paper.id)" type="hidden">
                     <input name="score.examID" value="#(exam.id)" type="hidden">
                     <input name="score.examName" value="#(exam.examName)" type="hidden">
@@ -363,24 +363,34 @@
         }
         finaltime = new Date(finalTime);
     }
-
+    function confirmUpload(){
+        var res = confirm("确认提交答卷？");
+        if(res){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     function uploadTest() {
-        getObjAnswer();
-        getSubAnswer();
-        // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
-        $("#test-form").ajaxSubmit({
-            dataType: 'json', type: 'POST',
-            success: function (ret) {
-                kit.closeLoading();		// 关闭 loading 层
-                kit.msg(ret);
+        if (confirmUpload()) {
+            getObjAnswer();
+            getSubAnswer();
+            // 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+            $("#test-form").ajaxSubmit({
+                dataType: 'json', type: 'POST',
+                success: function (ret) {
+                    kit.closeLoading();		// 关闭 loading 层
+                    kit.msg(ret);
 
-                if (ret.state == "ok") {
-                    setTimeout(function () {
-                        location.href = "/admin/test?pn=#(pn ? pn : 1)";
-                    }, 2100);
+                    if (ret.state == "ok") {
+                        setTimeout(function () {
+                            location.href = "/admin/test?pn=#(pn ? pn : 1)";
+                        }, 2100);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function getObjAnswer() {
