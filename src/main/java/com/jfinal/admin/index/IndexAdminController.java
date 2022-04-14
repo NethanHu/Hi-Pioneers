@@ -44,8 +44,6 @@ public class IndexAdminController extends BaseController {
      * 概览
      */
     public void overview() {
-        set("totalArticle", srv.getTotalArticle());
-        set("totalImage", srv.getTotalImage());
         set("totalAccount", srv.getTotalAccount());
         set("totalRole", srv.getTotalRole());
         set("totalPermission", srv.getTotalPermission());
